@@ -37,21 +37,11 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            background: linear-gradient(145deg, #222, #111);
-            margin: 0 auto 20px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            object-fit: cover;
             border: 2px solid #333;
             box-shadow: 0 10px 25px rgba(0,0,0,0.8);
-        }
-
-        .avatar span {
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+            display: block;
+            margin: 0 auto 20px auto;
         }
 
         h1 {
@@ -274,11 +264,9 @@
 </head>
 <body>
     <div class="container">
-        <!-- ШАПКА С АВАТАРОМ -->
+        <!-- ШАПКА С АВАТАРОМ (ФОТО ДОБАВЛЕНО) -->
         <div class="hero">
-            <div class="avatar">
-                <span>K</span>
-            </div>
+            <img class="avatar" src="https://taplink.st/a/5/8/4/d/daec4f.jpg?1" alt="kvacan">
             <h1>KVACAN</h1>
             <div class="subhead">Вячеслав</div>
         </div>
@@ -378,5 +366,6 @@
     </div>
 </body>
 </html>
+
 
 
