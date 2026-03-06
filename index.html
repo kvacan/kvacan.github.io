@@ -37,7 +37,7 @@
             height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #333;
+            border: 3px solid #343a40;
             display: block;
             margin: 0 auto 15px auto;
             box-shadow: 0 10px 20px rgba(0,0,0,0.8);
@@ -62,28 +62,71 @@
             margin: 30px 0 20px 0;
         }
 
-        .gallery img {
+        .gallery-item {
             width: 100%;
             aspect-ratio: 1/1;
-            object-fit: cover;
+            background-size: cover;
+            background-position: center;
             border-radius: 16px;
-            border: 2px solid #333;
+            border: 2px solid #343a40;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+            border-color: #666;
+        }
+
+        /* ========== АНИМАЦИИ ========== */
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fade {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        .blink {
+            animation: blink 2s infinite;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .fade {
+            animation: fade 2s infinite;
         }
 
         /* ========== РАЗДЕЛИТЕЛИ ========== */
         .divider {
             text-align: center;
             margin: 30px 0 20px 0;
-            color: #555;
+            color: #343a40;
             font-size: 2rem;
             letter-spacing: 5px;
+        }
+
+        .divider.fading {
+            animation: fade 3s infinite;
         }
 
         .arrow-down {
             text-align: center;
             margin: 20px 0;
-            color: #444;
+            color: #343a40;
             font-size: 2rem;
+            animation: fade 2.5s infinite;
         }
 
         /* ========== ЗАГОЛОВКИ ========== */
@@ -105,12 +148,13 @@
             color: #aaa;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            line-height: 1.6;
         }
 
         /* ========== ВОПРОСЫ И ОТВЕТЫ (АККОРДЕОН) ========== */
         .faq-item {
             margin-bottom: 16px;
-            border: 2px solid #333;
+            border: 2px solid #343a40;
             border-radius: 20px;
             overflow: hidden;
         }
@@ -130,6 +174,11 @@
             border: none;
             width: 100%;
             text-align: left;
+            transition: background-color 0.3s;
+        }
+
+        .faq-question:hover {
+            background-color: #1a1a1a;
         }
 
         .faq-question::after {
@@ -153,7 +202,7 @@
             color: #ccc;
             font-size: 1rem;
             line-height: 1.6;
-            border-top: 0px solid #333;
+            border-top: 0px solid #343a40;
         }
 
         .faq-answer.show {
@@ -162,7 +211,7 @@
             border-top-width: 2px;
         }
 
-        /* ========== КНОПКИ (ВСЕ КАК КНОПКИ) ========== */
+        /* ========== КНОПКИ (БЕЗ СМАЙЛИКОВ) ========== */
         .button {
             display: block;
             font-family: 'Russo One', sans-serif;
@@ -177,15 +226,17 @@
             letter-spacing: 1px;
             border: none;
             width: 100%;
-            transition: all 0.2s;
+            transition: all 0.3s;
             margin-bottom: 12px;
             border: 2px solid #444;
+            animation: pulse 3s infinite;
         }
 
         .button:hover {
             background-color: #495057;
             border-color: #666;
             transform: scale(1.02);
+            animation: none;
         }
 
         .button-small {
@@ -200,12 +251,18 @@
             margin: 20px 0;
         }
 
-        /* Кнопки с иконками соцсетей */
-        .social-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+        /* Кнопки с анимацией blink */
+        .button-blink {
+            animation: blink 2.5s infinite;
+        }
+
+        .button-blink:hover {
+            animation: none;
+        }
+
+        /* Кнопки с анимацией pulse (уже есть) */
+        .button-pulse {
+            animation: pulse 2.5s infinite;
         }
 
         /* ========== БЛОК КОНТАКТОВ ========== */
@@ -214,7 +271,7 @@
             border-radius: 30px;
             padding: 30px 20px;
             margin: 30px 0;
-            border: 2px solid #333;
+            border: 2px solid #343a40;
         }
 
         /* ========== ФУТЕР ========== */
@@ -228,6 +285,27 @@
             font-size: 0.9rem;
         }
 
+        .time-block {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #111;
+            border-radius: 20px;
+            border: 1px solid #333;
+        }
+
+        .time-city {
+            color: #888;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .time-value {
+            color: #fff;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
         .footer-email {
             margin-top: 15px;
             color: #666;
@@ -237,6 +315,16 @@
             color: #777;
             text-decoration: none;
             border-bottom: 1px dotted #444;
+        }
+
+        .footer-email a:hover {
+            color: #fff;
+            border-bottom-color: #fff;
+        }
+
+        .copyright {
+            margin-top: 15px;
+            color: #444;
         }
     </style>
 </head>
@@ -248,17 +336,17 @@
         <!-- ИМЯ -->
         <h1>KVACAN</h1>
         
-        <!-- РАЗДЕЛИТЕЛЬ ЗВЕЗДОЧКИ -->
-        <div class="divider">✦ ✦ ✦</div>
+        <!-- РАЗДЕЛИТЕЛЬ ЗВЕЗДОЧКИ С АНИМАЦИЕЙ -->
+        <div class="divider fading">✦ ✦ ✦</div>
         
-        <!-- ГАЛЕРЕЯ ФОТО (БЕЗ ПОДПИСЕЙ) -->
+        <!-- ГАЛЕРЕЯ ФОТО (ТРИ ФОТО) -->
         <div class="gallery">
-            <img src="https://taplink.st/a/d/7/4/6/69250549.jpg?0" alt="">
-            <img src="https://taplink.st/a/3/f/f/4/69250557.jpg?0" alt="">
-            <img src="https://taplink.st/a/4/f/f/b/69250559.jpg?0" alt="">
+            <div class="gallery-item" style="background-image: url('https://taplink.st/p/d/7/4/6/69250549.jpg?0');"></div>
+            <div class="gallery-item" style="background-image: url('https://taplink.st/p/3/f/f/4/69250557.jpg?0');"></div>
+            <div class="gallery-item" style="background-image: url('https://taplink.st/p/4/f/f/b/69250559.jpg?0');"></div>
         </div>
         
-        <!-- СТРЕЛКА ВНИЗ -->
+        <!-- СТРЕЛКА ВНИЗ С АНИМАЦИЕЙ -->
         <div class="arrow-down">▼</div>
         
         <!-- ЗАГОЛОВОК ВОПРОСОВ -->
@@ -317,11 +405,11 @@
         <div class="section-title">СОЦИАЛЬНЫЕ СЕТИ</div>
         <div class="section-subtitle">ПЕРЕХОДИ, СМОТРИ, ПОДПИСЫВАЙСЯ</div>
         
-        <!-- КНОПКИ СОЦСЕТЕЙ -->
+        <!-- КНОПКИ СОЦСЕТЕЙ (БЕЗ СМАЙЛИКОВ) -->
         <div class="button-group">
-            <a href="https://t.me/tvacan" class="button social-button">📱 TELEGRAM</a>
-            <a href="https://instagram.com/tvacan/" class="button social-button">📷 INSTAGRAM</a>
-            <a href="https://www.tiktok.com/@kvacon" class="button social-button">🎵 TIKTOK</a>
+            <a href="https://t.me/tvacan" class="button button-blink">TELEGRAM</a>
+            <a href="https://instagram.com/tvacan/" class="button button-pulse">INSTAGRAM</a>
+            <a href="https://www.tiktok.com/@kvacon" class="button button-blink">TIKTOK</a>
         </div>
         
         <!-- СТРЕЛКА ВНИЗ -->
@@ -331,8 +419,8 @@
         <div class="contacts-block">
             <div class="section-subtitle">ПО ВОПРОСАМ РЕКЛАМЫ И СОТРУДНИЧЕСТВА</div>
             <div class="button-group">
-                <a href="https://t.me/kvacan" class="button button-small">📱 TELEGRAM</a>
-                <a href="mailto:tvacan@internet.ru" class="button button-small">📧 ПОЧТА</a>
+                <a href="https://t.me/kvacan" class="button button-small button-pulse">TELEGRAM</a>
+                <a href="mailto:tvacan@internet.ru" class="button button-small button-blink">ПОЧТА</a>
             </div>
         </div>
         
@@ -345,13 +433,20 @@
         
         <!-- КНОПКИ ДОНАТОВ -->
         <div class="button-group">
-            <a href="https://pay.cloudtips.ru/p/a64a46d8" class="button button-small">💰 DONATION KVACAN</a>
-            <a href="https://finance.ozon.ru/apps/sbp/ozonbankpay/019a9ca8-77bb-7f0f-a532-53c7dca11b0b" class="button button-small">💰 DONATION KVACAN</a>
+            <a href="https://pay.cloudtips.ru/p/a64a46d8" class="button button-small button-pulse">DONATION KVACAN</a>
+            <a href="https://finance.ozon.ru/apps/sbp/ozonbankpay/019a9ca8-77bb-7f0f-a532-53c7dca11b0b" class="button button-small button-blink">DONATION KVACAN</a>
         </div>
         
-        <!-- ФУТЕР -->
+        <!-- ФУТЕР С ВРЕМЕНЕМ -->
         <footer>
-            <div>© 2026 kvacan, Все права защищены.</div>
+            <div class="time-block">
+                <div class="time-city">ИРКУТСК (IRKT)</div>
+                <div class="time-value" id="irkutsk-time">--:--:--</div>
+                <div class="time-city">МОСКВА (MSK)</div>
+                <div class="time-value" id="moscow-time">--:--:--</div>
+            </div>
+            
+            <div class="copyright">© 2026 kvacan, Все права защищены.</div>
             <div class="footer-email">
                 <a href="mailto:tvacan@internet.ru">tvacan@internet.ru</a>
             </div>
@@ -359,11 +454,36 @@
     </div>
     
     <script>
+        // Функция для аккордеона
         function toggleFaq(element) {
             element.classList.toggle('active');
             var answer = element.nextElementSibling;
             answer.classList.toggle('show');
         }
+        
+        // Функция для обновления времени
+        function updateTime() {
+            const now = new Date();
+            
+            // Иркутск (UTC+8)
+            const irkutskTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Irkutsk' }));
+            const irkutskHours = String(irkutskTime.getHours()).padStart(2, '0');
+            const irkutskMinutes = String(irkutskTime.getMinutes()).padStart(2, '0');
+            const irkutskSeconds = String(irkutskTime.getSeconds()).padStart(2, '0');
+            document.getElementById('irkutsk-time').textContent = `${irkutskHours}:${irkutskMinutes}:${irkutskSeconds}`;
+            
+            // Москва (UTC+3)
+            const moscowTime = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Moscow' }));
+            const moscowHours = String(moscowTime.getHours()).padStart(2, '0');
+            const moscowMinutes = String(moscowTime.getMinutes()).padStart(2, '0');
+            const moscowSeconds = String(moscowTime.getSeconds()).padStart(2, '0');
+            document.getElementById('moscow-time').textContent = `${moscowHours}:${moscowMinutes}:${moscowSeconds}`;
+        }
+        
+        // Обновляем время каждую секунду
+        updateTime();
+        setInterval(updateTime, 1000);
     </script>
 </body>
 </html>
+
