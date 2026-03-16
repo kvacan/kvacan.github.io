@@ -13,13 +13,13 @@
         
         body {
             font-family: 'Russo One', sans-serif;
-            background: #0a0a1a; /* Простой темный фон вместо градиента */
+            background: #0a0a1a;
             color: #fff;
             line-height: 1.5;
             min-height: 100vh;
         }
         
-        /* ПРОСТЫЕ ЗВЕЗДЫ - без анимации, минимум слоев */
+        /* ПРОСТЫЕ ЗВЕЗДЫ */
         body::before {
             content: "";
             position: fixed;
@@ -52,17 +52,14 @@
         
         @media (min-width: 768px) { .container { max-width: 550px; padding: 30px 20px 80px 20px; } }
         
-        /* МИНИМАЛЬНЫЕ АНИМАЦИИ - только для важных элементов */
+        /* Анимация только для кнопки чата */
         @keyframes pulse {
             0% { opacity: 1; }
             50% { opacity: 0.9; }
             100% { opacity: 1; }
         }
         
-        /* Анимация ТОЛЬКО для кнопки чата */
-        .chat-button { 
-            animation: pulse 3s infinite; 
-        }
+        .chat-button { animation: pulse 3s infinite; }
         
         .avatar {
             width: 140px; height: 140px; border-radius: 50%; object-fit: cover;
@@ -75,28 +72,72 @@
             color: #fff; text-transform: uppercase;
         }
         
-        /* ГАЛЕРЕЯ - 4 фото как в исходнике */
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+        /* ========== ГОРИЗОНТАЛЬНАЯ ГАЛЕРЕЯ ========== */
+        .gallery-container {
             margin: 30px 0 20px;
+            position: relative;
         }
         
-        @media (min-width: 480px) {
-            .gallery {
-                grid-template-columns: repeat(4, 1fr);
-            }
+        .gallery-title {
+            font-size: 1.2rem;
+            color: #aaa;
+            margin-bottom: 10px;
+            padding-left: 5px;
+        }
+        
+        .gallery-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 5px 0 15px 0;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch; /* плавный скролл на iOS */
+            scrollbar-width: thin; /* тонкий скроллбар */
+            scrollbar-color: #4a4a6a #1a1a2a;
+        }
+        
+        /* Стилизация скроллбара для WebKit (Chrome, Safari) */
+        .gallery-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .gallery-scroll::-webkit-scrollbar-track {
+            background: #1a1a2a;
+            border-radius: 10px;
+        }
+        
+        .gallery-scroll::-webkit-scrollbar-thumb {
+            background: #4a4a6a;
+            border-radius: 10px;
+        }
+        
+        .gallery-scroll::-webkit-scrollbar-thumb:hover {
+            background: #6a6a9a;
         }
         
         .gallery-item {
-            width: 100%; aspect-ratio: 1/1; background-size: cover; background-position: center;
-            border-radius: 16px; border: 2px solid #4a4a6a; cursor: pointer;
+            flex: 0 0 auto;
+            width: 150px;
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            border: 3px solid #4a4a6a;
+            cursor: pointer;
             transition: transform 0.1s ease;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            scroll-snap-align: start;
         }
         
         .gallery-item:hover { transform: scale(1.02); border-color: #8888aa; }
+        
+        /* Для маленьких экранов */
+        @media (max-width: 480px) {
+            .gallery-item {
+                width: 130px;
+                height: 130px;
+            }
+        }
         
         /* МОДАЛЬНОЕ ОКНО */
         .modal {
@@ -134,9 +175,8 @@
             text-transform: none; line-height: 1.5;
         }
         
-        /* БЛОКИ - БЕЗ backdrop-filter (как в исходнике) */
         .block, .contacts-block {
-            background-color: #242438; /* Темно-серый как в Taplink */
+            background-color: #242438;
             border-radius: 24px;
             padding: 25px 18px;
             margin: 25px 0;
@@ -196,10 +236,9 @@
             border-top-width: 1px;
         }
         
-        /* КНОПКИ - БЕЗ АНИМАЦИЙ, как в исходнике Taplink */
         .button {
             display: block;
-            background-color: #343a40; /* Цвет как в исходнике */
+            background-color: #343a40;
             color: #fff;
             text-decoration: none;
             padding: 16px 18px;
@@ -221,7 +260,6 @@
         .button-small { font-size: 1rem; padding: 14px 16px; }
         .button-group { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
         
-        /* КНОПКА НАВЕРХ - упрощенная */
         .scroll-top {
             position: fixed;
             bottom: 100px;
@@ -249,7 +287,6 @@
             visibility: visible;
         }
         
-        /* ЧАТ - упрощенный */
         .chat-widget {
             position: fixed;
             bottom: 30px;
@@ -440,12 +477,17 @@
         
         <div class="divider">✦ ✦ ✦</div>
         
-        <!-- ГАЛЕРЕЯ С 4 ФОТО (как в исходнике) -->
-        <div class="gallery">
-            <div class="gallery-item" style="background-image:url('https://taplink.st/p/d/7/4/6/69250549.jpg?0')" onclick="openModal(this)"></div>
-            <div class="gallery-item" style="background-image:url('https://taplink.st/p/3/f/f/4/69250557.jpg?0')" onclick="openModal(this)"></div>
-            <div class="gallery-item" style="background-image:url('https://taplink.st/p/4/f/f/b/69250559.jpg?0')" onclick="openModal(this)"></div>
-            <div class="gallery-item" style="background-image:url('https://taplink.st/p/2/2/3/c/69471405.jpg?0')" onclick="openModal(this)"></div>
+        <!-- ГОРИЗОНТАЛЬНАЯ ГАЛЕРЕЯ -->
+        <div class="gallery-container">
+            <div class="gallery-scroll">
+                <div class="gallery-item" style="background-image:url('https://taplink.st/p/d/7/4/6/69250549.jpg?0')" onclick="openModal(this)"></div>
+                <div class="gallery-item" style="background-image:url('https://taplink.st/p/3/f/f/4/69250557.jpg?0')" onclick="openModal(this)"></div>
+                <div class="gallery-item" style="background-image:url('https://taplink.st/p/4/f/f/b/69250559.jpg?0')" onclick="openModal(this)"></div>
+                <div class="gallery-item" style="background-image:url('https://taplink.st/p/2/2/3/c/69471405.jpg?0')" onclick="openModal(this)"></div>
+                <!-- Добавь еще фото если есть -->
+                <!-- <div class="gallery-item" style="background-image:url('ссылку_на_фото')" onclick="openModal(this)"></div> -->
+            </div>
+            <div style="text-align: center; color: #888; font-size: 0.8rem; margin-top: 5px;">← листай →</div>
         </div>
         
         <div class="arrow-down">▼</div>
