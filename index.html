@@ -7,6 +7,8 @@
     <link rel="icon" href="https://taplink.st/a/5/8/4/d/daec4f.jpg?1">
     <link rel="apple-touch-icon" href="https://taplink.st/a/5/8/4/d/daec4f.jpg?1">
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <!-- Telegram Widget JS -->
+    <script async src="https://telegram.org/js/telegram-widget.js?23"></script>
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -178,6 +180,7 @@
             border-radius: 20px;
             margin: 12px 0;
             border: 2px solid #b294ff;
+            aspect-ratio: 16 / 9;
         }
         
         .post-image {
@@ -191,6 +194,20 @@
         
         .post-image:hover {
             transform: scale(1.01);
+        }
+        
+        /* Telegram виджет */
+        .telegram-post {
+            margin: 12px 0;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid #b294ff;
+            background: transparent;
+        }
+        
+        .telegram-post iframe {
+            width: 100% !important;
+            border: none !important;
         }
         
         .loading {
@@ -480,11 +497,6 @@
         <img class="modal-content" id="modalImage" src="">
     </div>
 
-    <div class="modal" id="videoModal" onclick="closeVideoModal()">
-        <span class="modal-close" onclick="closeVideoModal()">×</span>
-        <div class="modal-content" id="videoContainer" style="background: black; display: flex; justify-content: center; align-items: center; max-width: 95%; max-height: 95%; overflow: hidden;"></div>
-    </div>
-
     <div class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</div>
 
     <div class="chat-widget">
@@ -660,25 +672,31 @@
                    url.includes('youtube.com/watch') || url.includes('youtu.be') || url.includes('vimeo.com');
         }
 
-        function openVideoModal(url) {
-            const container = document.getElementById('videoContainer');
-            let html = '';
-            if (url.includes('youtube.com/watch') || url.includes('youtu.be')) {
-                let videoId = url.includes('youtu.be') ? url.split('/').pop() : new URL(url).searchParams.get('v');
-                if (videoId) html = `<iframe width="100%" height="100%" style="min-width: 300px; min-height: 300px; max-width: 90vw; max-height: 90vh; aspect-ratio: 16/9;" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-            } else if (url.includes('vimeo.com')) {
-                let videoId = url.split('/').pop();
-                html = `<iframe width="100%" height="100%" style="min-width: 300px; min-height: 300px; max-width: 90vw; max-height: 90vh; aspect-ratio: 16/9;" src="https://player.vimeo.com/video/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-            } else {
-                html = `<video controls style="max-width: 90vw; max-height: 90vh; width: auto; height: auto;"><source src="${url}" type="video/mp4">Ваш браузер не поддерживает видео</video>`;
-            }
-            container.innerHTML = html;
-            document.getElementById('videoModal').classList.add('show');
+        function isTelegramUrl(url) {
+            return url.includes('t.me/') && !url.includes('t.me/tvacan_bot');
         }
 
-        function closeVideoModal() {
-            document.getElementById('videoModal').classList.remove('show');
-            document.getElementById('videoContainer').innerHTML = '';
+        function getTelegramPostId(url) {
+            // формат: https://t.me/username/post_id или https://t.me/c/channel_id/post_id
+            const match = url.match(/t\.me\/([^\/]+)\/(\d+)/);
+            if (match) {
+                return `${match[1]}/${match[2]}`;
+            }
+            return null;
+        }
+
+        function getVideoEmbedUrl(url) {
+            if (url.includes('youtube.com/watch')) {
+                let videoId = new URL(url).searchParams.get('v');
+                if (videoId) return `https://www.youtube.com/embed/${videoId}`;
+            } else if (url.includes('youtu.be')) {
+                let videoId = url.split('/').pop().split('?')[0];
+                if (videoId) return `https://www.youtube.com/embed/${videoId}`;
+            } else if (url.includes('vimeo.com')) {
+                let videoId = url.split('/').pop().split('?')[0];
+                if (videoId) return `https://player.vimeo.com/video/${videoId}`;
+            }
+            return url;
         }
 
         function renderPosts(posts) {
@@ -687,14 +705,24 @@
                 container.innerHTML = '<div class="section-subtitle">📭 Пока нет постов</div>';
                 return;
             }
+            
             container.innerHTML = posts.map(post => {
                 let mediaHtml = '';
                 if (post.mediaUrl && post.mediaUrl.trim()) {
                     let url = post.mediaUrl.trim();
-                    if (isImageUrl(url)) {
+                    
+                    if (isTelegramUrl(url)) {
+                        const postId = getTelegramPostId(url);
+                        if (postId) {
+                            mediaHtml = `<div class="telegram-post"><script async src="https://telegram.org/js/telegram-widget.js?23" data-telegram-post="${postId}" data-width="100%"></script></div>`;
+                        } else {
+                            mediaHtml = `<a href="${url}" target="_blank" style="color:#b294ff; display:inline-block; margin-top:10px;">📨 Открыть в Telegram</a>`;
+                        }
+                    } else if (isImageUrl(url)) {
                         mediaHtml = `<img class="post-image" src="${url}" onclick="openModalFromUrl('${url}')" loading="lazy">`;
                     } else if (isVideoUrl(url)) {
-                        mediaHtml = `<div class="post-video" style="cursor: pointer; background: #2a1a3a; display: flex; align-items: center; justify-content: center; min-height: 150px;" onclick="openVideoModal('${url}')">🎬 Нажмите для просмотра видео</div>`;
+                        let embedUrl = getVideoEmbedUrl(url);
+                        mediaHtml = `<iframe class="post-video" src="${embedUrl}" frameborder="0" allowfullscreen allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture"></iframe>`;
                     } else {
                         mediaHtml = `<a href="${url}" target="_blank" style="color:#b294ff; display:inline-block; margin-top:10px;">🔗 Открыть ссылку</a>`;
                     }
@@ -709,6 +737,11 @@
                     </div>
                 `;
             }).join('');
+            
+            // Telegram виджет требует повторной инициализации после добавления в DOM
+            if (window.TelegramWidget) {
+                window.TelegramWidget.init();
+            }
         }
 
         function openModalFromUrl(url) {
@@ -761,10 +794,7 @@
         }
         
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-                closeVideoModal();
-            }
+            if (e.key === 'Escape') closeModal();
         });
         
         window.addEventListener('scroll', function() {
@@ -780,7 +810,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
-        // ЗАГРУЗКА ПОСТОВ
+        
         loadPosts();
     </script>
 </body>
