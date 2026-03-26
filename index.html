@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>kvacan — официальный сайт</title>
+    <title>kvacan</title>
     <link rel="icon" href="https://taplink.st/a/5/8/4/d/daec4f.jpg?1">
+    <link rel="apple-touch-icon" href="https://taplink.st/a/5/8/4/d/daec4f.jpg?1">
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+        
         body {
             font-family: 'Russo One', sans-serif;
             background: #0a0515;
@@ -16,6 +18,7 @@
             line-height: 1.5;
             min-height: 100vh;
         }
+        
         body::before {
             content: "";
             position: fixed;
@@ -23,77 +26,89 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(1px 1px at 5% 10%, #fff, transparent),
+            background-image: 
+                radial-gradient(1px 1px at 5% 10%, #fff, transparent),
                 radial-gradient(1.5px 1.5px at 15% 25%, #fff, transparent),
                 radial-gradient(2px 2px at 25% 40%, #d4b5ff, transparent),
                 radial-gradient(1px 1px at 35% 60%, #fff, transparent),
-                radial-gradient(2.5px 2.5px at 45% 75%, #c49bff, transparent);
+                radial-gradient(2.5px 2.5px at 45% 75%, #c49bff, transparent),
+                radial-gradient(1px 1px at 55% 15%, #fff, transparent),
+                radial-gradient(2px 2px at 65% 35%, #b380ff, transparent),
+                radial-gradient(1.5px 1.5px at 75% 55%, #fff, transparent),
+                radial-gradient(2px 2px at 85% 80%, #e6d0ff, transparent),
+                radial-gradient(1px 1px at 95% 20%, #fff, transparent);
             background-size: 400px 400px;
             background-repeat: repeat;
             opacity: 0.6;
             pointer-events: none;
             z-index: 0;
         }
+        
         .container {
             max-width: 500px;
             margin: 0 auto;
-            padding: 20px 16px 80px;
+            padding: 20px 16px 80px 16px;
             position: relative;
             z-index: 1;
         }
-        @media (min-width: 768px) { .container { max-width: 550px; } }
+        
+        @media (min-width: 768px) { .container { max-width: 550px; padding: 30px 20px 80px 20px; } }
+        
+        @keyframes softPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes softGlow {
+            0% { box-shadow: 0 5px 15px rgba(160, 120, 255, 0.2); }
+            50% { box-shadow: 0 5px 20px rgba(180, 140, 255, 0.5); }
+            100% { box-shadow: 0 5px 15px rgba(160, 120, 255, 0.2); }
+        }
+        
         .avatar {
             width: 140px; height: 140px; border-radius: 50%; object-fit: cover;
             border: 3px solid #b294ff;
             display: block; margin: 0 auto 15px;
             box-shadow: 0 10px 25px rgba(160, 120, 255, 0.3);
         }
+        
         h1 {
-            font-size: 3.5rem; text-align: center; margin-bottom: 25px;
-            color: #fff;
+            font-size: 3.5rem; text-align: center; letter-spacing: 1px; margin-bottom: 25px;
+            color: #fff; text-transform: uppercase;
             text-shadow: 0 0 15px rgba(180, 140, 255, 0.5);
         }
-        .posts-block {
-            background: rgba(20, 10, 35, 0.85);
-            border-radius: 30px;
-            padding: 25px 18px;
-            margin: 25px 0;
-            border: 1px solid #b294ff;
-            backdrop-filter: blur(2px);
+        
+        .gallery-container {
+            margin: 30px 0 20px;
+            position: relative;
         }
-        .post-item {
-            background: rgba(30, 18, 48, 0.7);
-            border-radius: 25px;
-            padding: 18px;
-            margin-bottom: 20px;
-            border-left: 4px solid #b294ff;
-        }
-        .post-date {
-            font-size: 0.75rem;
-            color: #b294ff;
-            margin-bottom: 10px;
-        }
-        .post-title {
-            font-size: 1.4rem;
-            margin-bottom: 12px;
-            color: #fff;
-        }
-        .post-content {
-            color: #ddd;
-            line-height: 1.5;
-            font-family: system-ui, sans-serif;
-            white-space: pre-wrap;
-        }
-        .post-content a { color: #d4b5ff; text-decoration: underline; }
-        .post-video { width: 100%; border-radius: 20px; margin: 12px 0; border: 2px solid #b294ff; }
-        .loading { text-align: center; padding: 40px; color: #b294ff; }
+        
         .gallery-scroll {
             display: flex;
             overflow-x: auto;
             gap: 12px;
-            padding: 5px 0 15px;
+            padding: 5px 0 15px 0;
             scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #b294ff #1a0f2a;
         }
+        
+        .gallery-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .gallery-scroll::-webkit-scrollbar-track {
+            background: #1a0f2a;
+            border-radius: 10px;
+        }
+        
+        .gallery-scroll::-webkit-scrollbar-thumb {
+            background: #b294ff;
+            border-radius: 10px;
+        }
+        
         .gallery-item {
             flex: 0 0 auto;
             width: 150px;
@@ -103,385 +118,670 @@
             border-radius: 20px;
             border: 3px solid #b294ff;
             cursor: pointer;
+            transition: transform 0.2s ease;
+            box-shadow: 0 5px 15px rgba(160, 120, 255, 0.3);
+            scroll-snap-align: start;
         }
+        
+        .gallery-item:hover { transform: scale(1.03); border-color: #d4b5ff; }
+        
+        @media (max-width: 480px) {
+            .gallery-item { width: 130px; height: 130px; }
+        }
+        
+        /* Стили для постов */
+        .posts-block {
+            background: rgba(20, 10, 35, 0.85);
+            border-radius: 30px;
+            padding: 25px 18px;
+            margin: 25px 0;
+            border: 1px solid #b294ff;
+            backdrop-filter: blur(2px);
+        }
+        
+        .post-item {
+            background: rgba(30, 18, 48, 0.7);
+            border-radius: 25px;
+            padding: 18px;
+            margin-bottom: 20px;
+            border-left: 4px solid #b294ff;
+        }
+        
+        .post-date {
+            font-size: 0.75rem;
+            color: #b294ff;
+            margin-bottom: 10px;
+        }
+        
+        .post-title {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+        
+        .post-content {
+            color: #ddd;
+            line-height: 1.5;
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            margin-bottom: 12px;
+            white-space: pre-wrap;
+        }
+        
+        .post-content a {
+            color: #d4b5ff;
+            text-decoration: underline;
+            word-break: break-all;
+        }
+        
+        .post-video {
+            width: 100%;
+            border-radius: 20px;
+            margin: 12px 0;
+            border: 2px solid #b294ff;
+        }
+        
+        .post-image {
+            width: 100%;
+            border-radius: 20px;
+            margin: 12px 0;
+            border: 2px solid #b294ff;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .post-image:hover {
+            transform: scale(1.01);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #b294ff;
+        }
+        
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(10, 5, 20, 0.98); z-index: 2000; justify-content: center;
             align-items: center;
         }
-        .modal.show { display: flex; }
-        .modal-content { max-width: 90%; max-height: 90%; border: 4px solid #b294ff; border-radius: 25px; }
-        .modal-close { position: absolute; top: 20px; right: 20px; font-size: 3rem; cursor: pointer; color: white; }
-        .divider, .arrow-down { text-align: center; margin: 10px 0; color: #b294ff; font-size: 1.5rem; }
-        .section-title { font-size: 1.6rem; text-align: center; margin: 20px 0 15px; }
-        .section-subtitle { font-size: 1rem; text-align: center; margin: 10px 0 15px; color: #ccc; }
-        .block, .contacts-block { background: rgba(20, 10, 35, 0.85); border-radius: 30px; padding: 25px 18px; margin: 25px 0; border: 1px solid #b294ff; }
-        .faq-item { margin-bottom: 12px; border: 1px solid #b294ff; border-radius: 20px; overflow: hidden; }
-        .faq-question { background: rgba(35, 20, 55, 0.8); padding: 16px 18px; cursor: pointer; display: flex; justify-content: space-between; }
-        .faq-question::after { content: "▼"; color: #b294ff; transition: transform 0.2s; }
-        .faq-question.active::after { transform: rotate(180deg); }
-        .faq-answer { background: rgba(20, 10, 30, 0.7); padding: 0 18px; max-height: 0; overflow: hidden; transition: max-height 0.2s; color: #ccc; }
-        .faq-answer.show { padding: 16px 18px; max-height: 600px; }
-        .button { display: block; background: linear-gradient(145deg, #2a1a3a, #1a0f2a); color: #fff; text-decoration: none; padding: 16px; border-radius: 50px; text-align: center; margin-bottom: 10px; border: 2px solid #b294ff; }
-        .scroll-top { position: fixed; bottom: 100px; right: 15px; width: 44px; height: 44px; border-radius: 22px; background: #2a1a3a; border: 2px solid #b294ff; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transition: 0.3s; z-index: 999; font-size: 1.5rem; color: #fff;}
-        .scroll-top.visible { opacity: 0.9; visibility: visible; }
-        .chat-widget { position: fixed; bottom: 30px; right: 15px; z-index: 1000; }
-        .chat-button { width: 60px; height: 60px; border-radius: 30px; background: #2a1a3a; border: 2px solid #b294ff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .chat-button span { font-size: 2rem; }
-        .chat-menu { position: absolute; bottom: 70px; right: 0; width: 200px; background: #1a0f2a; border-radius: 25px; border: 2px solid #b294ff; padding: 15px; display: none; }
-        .chat-menu.show { display: block; }
-        .chat-menu-item { display: block; background: #2a1a3a; padding: 12px; border-radius: 40px; text-align: center; color: #fff; text-decoration: none; margin-bottom: 8px; border: 1px solid #b294ff; }
-        footer { margin-top: 40px; padding-top: 20px; border-top: 2px solid #b294ff; text-align: center; color: #aaa; font-size: 0.8rem;}
-        .footer-email a { color: #b294ff; text-decoration: none; }
-        .gallery-hint { text-align: center; color: #b294ff; font-size: 0.8rem; margin-top: 5px; }
         
-        .admin-panel {
-            background: #1a0f2a;
+        .modal.show { display: flex; }
+        
+        .modal-content {
+            max-width: 90%; max-height: 90%; border: 4px solid #b294ff;
+            border-radius: 25px;
+            box-shadow: 0 0 40px rgba(180, 140, 255, 0.6);
+        }
+        
+        .modal-close {
+            position: absolute; top: 20px; right: 20px; color: #fff;
+            font-size: 3rem; cursor: pointer;
+            text-shadow: 0 0 15px #b294ff;
+        }
+        
+        .divider {
+            text-align: center; margin: 20px 0 10px; color: #b294ff; font-size: 1.5rem;
+            letter-spacing: 5px;
+            text-shadow: 0 0 10px rgba(180, 140, 255, 0.5);
+        }
+        
+        .arrow-down { 
+            text-align: center; margin: 10px 0; color: #b294ff; font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(180, 140, 255, 0.5);
+        }
+        
+        .section-title {
+            font-size: 1.6rem; text-align: center; margin: 20px 0 15px; color: #fff;
+            text-transform: none;
+            text-shadow: 0 0 10px rgba(180, 140, 255, 0.3);
+        }
+        
+        .section-subtitle {
+            font-size: 1rem; text-align: center; margin: 10px 0 15px; color: #ccc;
+            text-transform: none; line-height: 1.5;
+        }
+        
+        .block, .contacts-block {
+            background: rgba(20, 10, 35, 0.85);
             border-radius: 30px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 2px solid #b294ff;
-            display: none;
-        }
-        .admin-panel.visible { display: block; }
-        .admin-form input, .admin-form textarea {
-            width: 100%;
-            background: #2a1a3a;
+            padding: 25px 18px;
+            margin: 25px 0;
             border: 1px solid #b294ff;
-            padding: 12px;
-            border-radius: 30px;
-            color: white;
-            margin-bottom: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(2px);
         }
-        .admin-form textarea { min-height: 80px; }
-        .admin-btn {
-            background: #3a2555;
-            border: 2px solid #b294ff;
-            padding: 12px;
-            border-radius: 50px;
-            color: white;
-            cursor: pointer;
-            width: 100%;
-        }
-        .login-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 5, 20, 0.98);
-            z-index: 3000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            display: none;
-        }
-        .login-box {
-            background: #1a0f2a;
-            border: 2px solid #b294ff;
-            border-radius: 40px;
-            padding: 35px 25px;
-            width: 300px;
-            text-align: center;
-        }
-        .login-box input {
-            width: 100%;
-            background: #2a1a3a;
+        
+        .faq-item {
+            margin-bottom: 12px;
             border: 1px solid #b294ff;
-            padding: 12px;
-            border-radius: 50px;
-            color: white;
-            margin: 12px 0;
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(25, 15, 40, 0.7);
         }
-        .logout-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: #2a1a3a;
-            border: 2px solid #b294ff;
-            border-radius: 40px;
-            padding: 8px 16px;
+        
+        .faq-question {
+            background: rgba(35, 20, 55, 0.8);
+            padding: 16px 18px;
+            font-size: 1.1rem;
             color: #fff;
             cursor: pointer;
-            z-index: 1100;
-            display: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-transform: none;
+            width: 100%;
+            text-align: left;
+            border: none;
+            transition: background-color 0.2s;
         }
-        .logout-btn.visible { display: block; }
+        
+        .faq-question:hover { background: rgba(55, 35, 85, 0.9); }
+        
+        .faq-question::after {
+            content: "▼";
+            font-size: 0.9rem;
+            color: #b294ff;
+            transition: transform 0.2s;
+        }
+        
+        .faq-question.active::after {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            background: rgba(20, 10, 30, 0.7);
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            border-top: 0 solid #b294ff;
+        }
+        
+        .faq-answer.show { 
+            padding: 16px 18px;
+            max-height: 600px;
+            border-top-width: 1px;
+        }
+        
+        .button {
+            display: block;
+            background: linear-gradient(145deg, #2a1a3a, #1a0f2a);
+            color: #fff;
+            text-decoration: none;
+            padding: 16px 18px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 2px solid #b294ff;
+            box-shadow: 0 5px 15px rgba(160, 120, 255, 0.2);
+            transition: all 0.2s ease;
+            animation: softPulse 3s infinite, softGlow 3s infinite;
+        }
+        
+        .button:hover {
+            background: linear-gradient(145deg, #3a2555, #2a1a3a);
+            border-color: #d4b5ff;
+            transform: scale(1.02);
+            animation: none;
+        }
+        
+        .button:active {
+            transform: scale(0.98);
+        }
+        
+        .button-small { 
+            font-size: 1rem; 
+            padding: 14px 16px;
+            animation: softPulse 4s infinite, softGlow 4s infinite;
+        }
+        
+        .button-group { display: flex; flex-direction: column; gap: 12px; margin: 15px 0; }
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 100px;
+            right: 15px;
+            width: 44px;
+            height: 44px;
+            border-radius: 22px;
+            background: #2a1a3a;
+            border: 2px solid #b294ff;
+            box-shadow: 0 2px 15px rgba(160, 120, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+            font-size: 1.5rem;
+            color: #fff;
+            animation: softPulse 2s infinite;
+        }
+        
+        .scroll-top.visible {
+            opacity: 0.9;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            transform: scale(1.1);
+            background: #3a2555;
+        }
+        
+        .chat-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 15px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            background: linear-gradient(145deg, #3a2555, #1a0f2a);
+            border: 2px solid #b294ff;
+            box-shadow: 0 5px 15px rgba(160, 120, 255, 0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            animation: softPulse 2.5s infinite, softGlow 2.5s infinite;
+        }
+        
+        .chat-button:hover { 
+            transform: scale(1.1);
+            border-color: #d4b5ff;
+        }
+        
+        .chat-button:active { transform: scale(0.95); }
+        .chat-button span { font-size: 2rem; color: #fff; }
+        
+        .chat-menu {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 220px;
+            background: rgba(25, 15, 40, 0.98);
+            border-radius: 25px;
+            border: 2px solid #b294ff;
+            padding: 15px;
+            display: none;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+        }
+        
+        .chat-menu.show { display: block; }
+        
+        .chat-menu-item {
+            display: block;
+            background: linear-gradient(145deg, #2a1a3a, #1a0f2a);
+            color: #fff;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 40px;
+            text-align: center;
+            font-size: 1.1rem;
+            border: 2px solid #b294ff;
+            transition: all 0.2s;
+            box-shadow: 0 5px 15px rgba(160, 120, 255, 0.2);
+        }
+        
+        .chat-menu-item:hover {
+            background: #3a2555;
+            border-color: #d4b5ff;
+            transform: scale(1.02);
+        }
+        
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #b294ff;
+            text-align: center;
+            color: #aaa;
+            font-size: 0.8rem;
+        }
+        
+        .footer-email { margin-top: 10px; }
+        .footer-email a { 
+            color: #b294ff; 
+            text-decoration: none; 
+            border-bottom: 1px dotted #b294ff;
+            transition: color 0.2s;
+        }
+        .footer-email a:hover { color: #d4b5ff; }
+        .copyright { color: #888; }
+        
+        .gallery-hint {
+            text-align: center;
+            color: #b294ff;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
-
-<div id="loginOverlay" class="login-overlay">
-    <div class="login-box">
-        <h3>🔐 Вход</h3>
-        <input type="text" id="adminLogin" placeholder="Логин" value="kvacan">
-        <input type="password" id="adminPassword" placeholder="Пароль">
-        <button class="login-btn" onclick="attemptLogin()">Войти</button>
+    <div class="modal" id="photoModal" onclick="closeModal()">
+        <span class="modal-close" onclick="closeModal()">×</span>
+        <img class="modal-content" id="modalImage" src="">
     </div>
-</div>
 
-<div class="logout-btn" id="logoutBtn" onclick="logout()">🚪 Выйти</div>
-
-<div class="modal" id="photoModal" onclick="closeModal()">
-    <span class="modal-close" onclick="closeModal()">×</span>
-    <img class="modal-content" id="modalImage" src="">
-</div>
-
-<div class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</div>
-
-<div class="chat-widget">
-    <div class="chat-button" onclick="toggleChat()"><span>✉️</span></div>
-    <div class="chat-menu" id="chatMenu">
-        <a href="https://t.me/tvacan_bot" class="chat-menu-item" target="_blank">Написать блогеру</a>
+    <div class="modal" id="videoModal" onclick="closeVideoModal()">
+        <span class="modal-close" onclick="closeVideoModal()">×</span>
+        <div class="modal-content" id="videoContainer" style="background: black; display: flex; justify-content: center; align-items: center; max-width: 95%; max-height: 95%; overflow: hidden;"></div>
     </div>
-</div>
 
-<div class="container">
-    <img class="avatar" src="https://taplink.st/a/5/8/4/d/daec4f.jpg?1" alt="kvacan">
-    <h1>KVACAN</h1>
-    <div class="divider">✦ ✦ ✦</div>
-    
-    <div class="gallery-container">
-        <div class="gallery-scroll">
-            <div class="gallery-item" style="background-image:url('https://taplink.st/p/d/7/4/6/69250549.jpg?0')" onclick="openModal(this)"></div>
-            <div class="gallery-item" style="background-image:url('https://taplink.st/p/3/f/f/4/69250557.jpg?0')" onclick="openModal(this)"></div>
-            <div class="gallery-item" style="background-image:url('https://taplink.st/p/4/f/f/b/69250559.jpg?0')" onclick="openModal(this)"></div>
-            <div class="gallery-item" style="background-image:url('https://taplink.st/p/2/2/3/c/69471405.jpg?0')" onclick="openModal(this)"></div>
+    <div class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</div>
+
+    <div class="chat-widget">
+        <div class="chat-button" onclick="toggleChat()"><span>✉️</span></div>
+        <div class="chat-menu" id="chatMenu">
+            <a href="https://t.me/tvacan_bot" class="chat-menu-item" target="_blank">Написать блогеру</a>
         </div>
-        <div class="gallery-hint">← листай →</div>
     </div>
-    
-    <div class="arrow-down">▼</div>
-    
-    <div class="posts-block">
-        <div class="section-title">📢 Актуальное</div>
-        <div id="postsContainer"><div class="loading">Загрузка постов... ✨</div></div>
-    </div>
-    
-    <div id="adminPanel" class="admin-panel">
-        <div class="section-title">🔐 Добавить пост (тест)</div>
-        <div class="admin-form">
-            <input type="text" id="postTitle" placeholder="Заголовок">
-            <textarea id="postText" placeholder="Текст"></textarea>
-            <input type="text" id="postVideoUrl" placeholder="Ссылка на видео">
-            <button class="admin-btn" onclick="publishPost()">📌 Опубликовать (локально)</button>
+
+    <div class="container">
+        <img class="avatar" src="https://taplink.st/a/5/8/4/d/daec4f.jpg?1" alt="kvacan">
+        <h1>KVACAN</h1>
+        
+        <div class="divider">✦ ✦ ✦</div>
+        
+        <div class="gallery-container">
+            <div class="gallery-scroll">
+                <div class="gallery-item" style="background-image:url('https://taplink.st/p/d/7/4/6/69250549.jpg?0')" onclick="openModal(this)"></div>
+                <div class="gallery-item" style="background-image:url('https://taplink.st/p/3/f/f/4/69250557.jpg?0')" onclick="openModal(this)"></div>
+                <div class="gallery-item" style="background-image:url('https://taplink.st/p/4/f/f/b/69250559.jpg?0')" onclick="openModal(this)"></div>
+                <div class="gallery-item" style="background-image:url('https://taplink.st/p/2/2/3/c/69471405.jpg?0')" onclick="openModal(this)"></div>
+            </div>
+            <div class="gallery-hint">← листай →</div>
         </div>
-        <div class="section-subtitle">⚠️ Для всех постов: редактируйте Google Таблицу</div>
-    </div>
-    
-    <div class="block">
-        <div class="section-title">Часто задаваемые вопросы</div>
-        <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Кто такой kvacan?</div><div class="faq-answer">kvacan — это Вячеслав. Человек, который снимает жизнь без фальши.</div></div>
-        <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Почему tvacan в ссылках?</div><div class="faq-answer">Чтобы все соцсети были на одном адресе.</div></div>
-        <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Как можно поддержать?</div><div class="faq-answer">Донат по ссылкам ниже.</div></div>
-    </div>
-    
-    <div class="arrow-down">▼</div>
-    
-    <div class="block">
-        <div class="section-title">Социальные сети</div>
-        <a href="https://t.me/tvacan" class="button">TELEGRAM</a>
-        <a href="https://instagram.com/tvacan/" class="button">INSTAGRAM</a>
-        <a href="https://www.tiktok.com/@kvacon" class="button">TIKTOK</a>
-    </div>
-    
-    <div class="contacts-block">
-        <div class="section-title">Контакты</div>
-        <a href="https://t.me/kvacan" class="button">TELEGRAM</a>
-        <a href="mailto:tvacan@internet.ru" class="button">EMAIL</a>
-    </div>
-    
-    <div class="block">
-        <div class="section-title">Поддержка</div>
-        <a href="https://pay.cloudtips.ru/p/a64a46d8" class="button">DONATION</a>
-        <a href="https://finance.ozon.ru/apps/sbp/ozonbankpay/019a9ca8-77bb-7f0f-a532-53c7dca11b0b" class="button">DONATION</a>
-    </div>
-    
-    <footer>
-        <div class="copyright">© 2026 kvacan</div>
-        <div class="footer-email"><a href="mailto:tvacan@internet.ru">tvacan@internet.ru</a></div>
-    </footer>
-</div>
-
-<script>
-// ==================== ВАША ССЫЛКА НА CSV (уже вставлена) ====================
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdSZzujU8slFBMeyFuo5r_Wo-IGtSD2XenkggmvSVDHxueB5v0JsZ2X90SPR5XlEb_JHXGYt2GCV-w/pub?output=csv";
-// ========================================================================
-
-let isAdmin = false;
-const ADMIN_LOGIN = "kvacan";
-const PASSWORD_HASH = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92";
-
-async function loadPosts() {
-    try {
-        const response = await fetch(CSV_URL);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         
-        const csvText = await response.text();
-        const posts = parseCSV(csvText);
-        renderPosts(posts);
-    } catch(e) {
-        console.error('Ошибка:', e);
-        document.getElementById('postsContainer').innerHTML = 
-            '<div class="section-subtitle" style="color:#ff8888;">❌ Ошибка загрузки. Проверьте ссылку на таблицу.</div>';
-    }
-}
-
-function parseCSV(csvText) {
-    const lines = csvText.split('\n').filter(l => l.trim());
-    if (lines.length < 2) return [];
-    
-    const posts = [];
-    for (let i = 1; i < lines.length; i++) {
-        const values = [];
-        let inQuote = false;
-        let current = '';
+        <div class="arrow-down">▼</div>
         
-        for (let ch of lines[i]) {
-            if (ch === '"') {
-                inQuote = !inQuote;
-            } else if (ch === ',' && !inQuote) {
-                values.push(current);
-                current = '';
-            } else {
-                current += ch;
+        <!-- БЛОК ПОСТОВ ИЗ GOOGLE ТАБЛИЦЫ -->
+        <div class="posts-block">
+            <div class="section-title">📢 Актуальное</div>
+            <div id="postsContainer"><div class="loading">Загрузка постов... ✨</div></div>
+        </div>
+        
+        <div class="block">
+            <div class="section-title">Часто задаваемые вопросы</div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Кто такой kvacan?</div>
+                <div class="faq-answer">kvacan — это Вячеслав. Человек, который решил не откладывать, а просто начать снимать. Здесь нет сценического образа или вымышленной личности. Всё по-настоящему.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Почему в ссылках tvacan?</div>
+                <div class="faq-answer">kvacan — это ник. То самое имя, которое появилось в самом начале и под которым человека знают в сети. Оно не менялось и не поменяется.<br><br>Но с адресами в социальных сетях всё устроено немного сложнее. Когда стали собирать все ссылки в одном месте, оказалось, что не везде можно использовать одно и то же имя. Где-то kvacan уже был занят, где-то оказался свободен, но хотелось, чтобы все адреса были одинаковыми. Чтобы человек зашёл на сайт, нажал на иконку и попал куда нужно, не запоминая два или три разных варианта.<br><br>Поэтому выбрали tvacan. Всего одна буква — и порядок. Теперь все соцсети ведут на один адрес. Никакой путаницы, никаких лишних вопросов.<br><br>А kvacan остаётся тем же, чем и был — ником, по которому человека знают. Всё просто.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Зачем создан этот сайт?</div>
+                <div class="faq-answer">Это не проект и не портфолио. Это просто навигатор, входная дверь во все социальные сети сразу. Минимум текста, максимум пользы — все ссылки в одном месте.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Что особенного в контенте?</div>
+                <div class="faq-answer">Честность. Никаких постановочных студий, дорогих декораций или фальшивых эмоций. Только живые видео и фото, снятые в моменте. То, что окружает каждый день.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Как часто выходит новый контент?</div>
+                <div class="faq-answer">Контент появляется по мере того, как идёт жизнь. Маленькие шаги, регулярное движение, никаких жёстких дедлайнов — только искреннее желание делиться происходящим.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Чем контент будет отличаться в будущем?</div>
+                <div class="faq-answer">С развитием автора будет расти и контент. Главная задача — чтобы и создателю, и зрителю было комфортно. Форматы могут меняться, но основа останется — живые эмоции и честность.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Можно ли общаться с автором?</div>
+                <div class="faq-answer">Да. Все социальные сети открыты, ссылки на них есть на этом сайте. Можно писать, комментировать, обсуждать — диалог приветствуется.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Как можно поддержать?</div>
+                <div class="faq-answer">Если контент заходит и хочется сказать спасибо делом — можно поддержать донатом. Любая помощь греет и мотивирует снимать дальше. Ссылка на донат тоже здесь.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Это надолго?</div>
+                <div class="faq-answer">Пока есть желание снимать и делиться — контент будет жить. А желание есть.</div>
+            </div>
+        </div>
+        
+        <div class="arrow-down">▼</div>
+        
+        <div class="block">
+            <div class="section-title">Социальные сети</div>
+            <div class="section-subtitle">Переходи, смотри, подписывайся</div>
+            <div class="button-group">
+                <a href="https://t.me/tvacan" class="button">TELEGRAM</a>
+                <a href="https://instagram.com/tvacan/" class="button">INSTAGRAM</a>
+                <a href="https://www.tiktok.com/@kvacon" class="button">TIKTOK</a>
+            </div>
+        </div>
+        
+        <div class="arrow-down">▼</div>
+        
+        <div class="contacts-block">
+            <div class="section-title">Контакты для связи</div>
+            <div class="section-subtitle">По вопросам рекламы и сотрудничества</div>
+            <div class="button-group">
+                <a href="https://t.me/kvacan" class="button button-small">TELEGRAM</a>
+                <a href="mailto:tvacan@internet.ru" class="button button-small">EMAIL</a>
+            </div>
+        </div>
+        
+        <div class="arrow-down">▼</div>
+        
+        <div class="block">
+            <div class="section-title">Поддержка</div>
+            <div class="section-subtitle">Если заходит — можно поддержать донатом. Любая помощь греет и мотивирует снимать дальше.</div>
+            <div class="button-group">
+                <a href="https://pay.cloudtips.ru/p/a64a46d8" class="button button-small">DONATION KVACAN</a>
+                <a href="https://finance.ozon.ru/apps/sbp/ozonbankpay/019a9ca8-77bb-7f0f-a532-53c7dca11b0b" class="button button-small">DONATION KVACAN</a>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="copyright">© 2026 kvacan, Все права защищены.</div>
+            <div class="footer-email"><a href="mailto:tvacan@internet.ru">tvacan@internet.ru</a></div>
+        </footer>
+    </div>
+
+    <script>
+        // ==================== ПОДКЛЮЧЕНИЕ GOOGLE ТАБЛИЦЫ ====================
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdSZzujU8slFBMeyFuo5r_Wo-IGtSD2XenkggmvSVDHxueB5v0JsZ2X90SPR5XlEb_JHXGYt2GCV-w/pub?output=csv";
+        
+        async function loadPosts() {
+            try {
+                const response = await fetch(CSV_URL);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const csvText = await response.text();
+                const posts = parseCSV(csvText);
+                renderPosts(posts);
+            } catch(e) {
+                console.error('Ошибка:', e);
+                document.getElementById('postsContainer').innerHTML = '<div class="section-subtitle" style="color:#ff8888;">❌ Ошибка загрузки постов</div>';
             }
         }
-        values.push(current);
-        
-        const clean = values.map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"'));
-        
-        if (clean[1] && clean[1].trim()) {
-            posts.push({
-                date: clean[0] || '',
-                title: clean[1] || '',
-                text: clean[2] || '',
-                videoUrl: clean[3] || ''
+
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n').filter(l => l.trim());
+            if (lines.length < 2) return [];
+            const posts = [];
+            for (let i = 1; i < lines.length; i++) {
+                const values = [];
+                let inQuote = false;
+                let current = '';
+                for (let ch of lines[i]) {
+                    if (ch === '"') inQuote = !inQuote;
+                    else if (ch === ',' && !inQuote) { values.push(current); current = ''; }
+                    else current += ch;
+                }
+                values.push(current);
+                const clean = values.map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"'));
+                if (clean[1] && clean[1].trim()) {
+                    posts.push({
+                        date: clean[0] || '',
+                        title: clean[1] || '',
+                        text: clean[2] || '',
+                        mediaUrl: clean[3] || ''
+                    });
+                }
+            }
+            return posts;
+        }
+
+        function isImageUrl(url) {
+            return /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url.split('?')[0]);
+        }
+
+        function isVideoUrl(url) {
+            return /\.(mp4|webm|mov|avi|mkv)$/i.test(url.split('?')[0]) || 
+                   url.includes('youtube.com/watch') || url.includes('youtu.be') || url.includes('vimeo.com');
+        }
+
+        function openVideoModal(url) {
+            const container = document.getElementById('videoContainer');
+            let html = '';
+            if (url.includes('youtube.com/watch') || url.includes('youtu.be')) {
+                let videoId = url.includes('youtu.be') ? url.split('/').pop() : new URL(url).searchParams.get('v');
+                if (videoId) html = `<iframe width="100%" height="100%" style="min-width: 300px; min-height: 300px; max-width: 90vw; max-height: 90vh; aspect-ratio: 16/9;" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+            } else if (url.includes('vimeo.com')) {
+                let videoId = url.split('/').pop();
+                html = `<iframe width="100%" height="100%" style="min-width: 300px; min-height: 300px; max-width: 90vw; max-height: 90vh; aspect-ratio: 16/9;" src="https://player.vimeo.com/video/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+            } else {
+                html = `<video controls style="max-width: 90vw; max-height: 90vh; width: auto; height: auto;"><source src="${url}" type="video/mp4">Ваш браузер не поддерживает видео</video>`;
+            }
+            container.innerHTML = html;
+            document.getElementById('videoModal').classList.add('show');
+        }
+
+        function closeVideoModal() {
+            document.getElementById('videoModal').classList.remove('show');
+            document.getElementById('videoContainer').innerHTML = '';
+        }
+
+        function renderPosts(posts) {
+            const container = document.getElementById('postsContainer');
+            if (!posts.length) {
+                container.innerHTML = '<div class="section-subtitle">📭 Пока нет постов</div>';
+                return;
+            }
+            container.innerHTML = posts.map(post => {
+                let mediaHtml = '';
+                if (post.mediaUrl && post.mediaUrl.trim()) {
+                    let url = post.mediaUrl.trim();
+                    if (isImageUrl(url)) {
+                        mediaHtml = `<img class="post-image" src="${url}" onclick="openModalFromUrl('${url}')" loading="lazy">`;
+                    } else if (isVideoUrl(url)) {
+                        mediaHtml = `<div class="post-video" style="cursor: pointer; background: #2a1a3a; display: flex; align-items: center; justify-content: center; min-height: 150px;" onclick="openVideoModal('${url}')">🎬 Нажмите для просмотра видео</div>`;
+                    } else {
+                        mediaHtml = `<a href="${url}" target="_blank" style="color:#b294ff; display:inline-block; margin-top:10px;">🔗 Открыть ссылку</a>`;
+                    }
+                }
+                const textWithLinks = post.text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+                return `
+                    <div class="post-item">
+                        <div class="post-date">📅 ${post.date}</div>
+                        <div class="post-title">${escapeHtml(post.title)}</div>
+                        <div class="post-content">${textWithLinks}</div>
+                        ${mediaHtml}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openModalFromUrl(url) {
+            document.getElementById('modalImage').src = url;
+            document.getElementById('photoModal').classList.add('show');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, m => {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
             });
         }
-    }
-    return posts;
-}
 
-function renderPosts(posts) {
-    const container = document.getElementById('postsContainer');
-    if (!posts.length) {
-        container.innerHTML = '<div class="section-subtitle">📭 Пока нет постов. Добавьте их в Google Таблицу!</div>';
-        return;
-    }
-    
-    container.innerHTML = posts.map(post => {
-        let videoHtml = '';
-        if (post.videoUrl && post.videoUrl.trim()) {
-            let url = post.videoUrl.trim();
-            if (url.includes('youtube.com/watch') || url.includes('youtu.be')) {
-                let id = url.includes('youtu.be') ? url.split('/').pop() : new URL(url).searchParams.get('v');
-                if (id) videoHtml = `<iframe class="post-video" width="100%" height="200" src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;
-            } else if (url.includes('vimeo.com')) {
-                let id = url.split('/').pop();
-                videoHtml = `<iframe class="post-video" width="100%" height="200" src="https://player.vimeo.com/video/${id}" frameborder="0" allowfullscreen></iframe>`;
-            } else if (url.match(/\.(mp4|webm|mov)$/i)) {
-                videoHtml = `<video class="post-video" controls><source src="${url}"></video>`;
-            } else {
-                videoHtml = `<a href="${url}" target="_blank" style="color:#b294ff; display:inline-block; margin-top:10px;">🎬 Смотреть видео</a>`;
-            }
+        // ==================== ЗАЩИТА ОТ КОПИРОВАНИЯ ====================
+        document.addEventListener('copy', e => { e.preventDefault(); return false; });
+        document.addEventListener('contextmenu', e => { e.preventDefault(); return false; });
+        document.addEventListener('dragstart', e => { e.preventDefault(); return false; });
+        
+        // ==================== ОСТАЛЬНЫЕ ФУНКЦИИ ====================
+        function toggleFaq(e) { 
+            e.classList.toggle('active'); 
+            let answer = e.nextElementSibling;
+            answer.classList.toggle('show');
         }
         
-        const textWithLinks = post.text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+        function toggleChat() { 
+            document.getElementById('chatMenu').classList.toggle('show'); 
+        }
         
-        return `
-            <div class="post-item">
-                <div class="post-date">📅 ${post.date}</div>
-                <div class="post-title">${escapeHtml(post.title)}</div>
-                <div class="post-content">${textWithLinks}</div>
-                ${videoHtml}
-            </div>
-        `;
-    }).join('');
-}
-
-function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-    });
-}
-
-function publishPost() {
-    if (!isAdmin) {
-        alert('Доступ запрещен. Войдите в админ-панель (Shift + A)');
-        return;
-    }
-    
-    const title = document.getElementById('postTitle').value.trim();
-    const text = document.getElementById('postText').value.trim();
-    const videoUrl = document.getElementById('postVideoUrl').value.trim();
-    
-    if (!title || !text) {
-        alert('Заполните заголовок и текст');
-        return;
-    }
-    
-    alert('✅ Пост сохранен локально.\n\nДля публикации для всех — добавьте строку в Google Таблицу:\n' + CSV_URL.replace('?output=csv', '/edit'));
-    
-    document.getElementById('postTitle').value = '';
-    document.getElementById('postText').value = '';
-    document.getElementById('postVideoUrl').value = '';
-}
-
-function attemptLogin() {
-    const login = document.getElementById('adminLogin').value;
-    const pass = document.getElementById('adminPassword').value;
-    
-    if (login === ADMIN_LOGIN && CryptoJS.SHA256(pass).toString() === PASSWORD_HASH) {
-        isAdmin = true;
-        document.getElementById('loginOverlay').style.display = 'none';
-        document.getElementById('adminPanel').classList.add('visible');
-        document.getElementById('logoutBtn').classList.add('visible');
-        alert('Добро пожаловать в админ-панель!');
-    } else {
-        alert('Неверный логин или пароль');
-    }
-}
-
-function logout() {
-    isAdmin = false;
-    document.getElementById('adminPanel').classList.remove('visible');
-    document.getElementById('logoutBtn').classList.remove('visible');
-    alert('Вы вышли');
-}
-
-function showLogin() {
-    document.getElementById('loginOverlay').style.display = 'flex';
-}
-
-document.addEventListener('keydown', function(e) {
-    if (e.shiftKey && e.key === 'A') {
-        if (!isAdmin) showLogin();
-        else alert('Вы уже в админ-панели');
-    }
-    if (e.key === 'Escape') {
-        closeModal();
-        document.getElementById('loginOverlay').style.display = 'none';
-    }
-});
-
-document.addEventListener('copy', e => { e.preventDefault(); alert('📛 Копирование контента запрещено'); return false; });
-document.addEventListener('contextmenu', e => { e.preventDefault(); return false; });
-document.addEventListener('dragstart', e => { e.preventDefault(); return false; });
-
-function toggleFaq(e) { e.classList.toggle('active'); e.nextElementSibling.classList.toggle('show'); }
-function toggleChat() { document.getElementById('chatMenu').classList.toggle('show'); }
-document.addEventListener('click', e => { if (!e.target.closest('.chat-widget')) document.getElementById('chatMenu')?.classList.remove('show'); });
-function openModal(el) { document.getElementById('modalImage').src = window.getComputedStyle(el).backgroundImage.slice(5, -2); document.getElementById('photoModal').classList.add('show'); }
-function closeModal() { document.getElementById('photoModal').classList.remove('show'); }
-window.addEventListener('scroll', () => { let btn = document.getElementById('scrollTop'); if (window.scrollY > 300) btn.classList.add('visible'); else btn.classList.remove('visible'); });
-function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
-loadPosts();
-</script>
+        document.addEventListener('click', function(e) {
+            let chatWidget = document.querySelector('.chat-widget');
+            if (chatWidget && !chatWidget.contains(e.target)) {
+                document.getElementById('chatMenu')?.classList.remove('show');
+            }
+        });
+        
+        function openModal(element) {
+            let style = window.getComputedStyle(element);
+            let imgSrc = style.backgroundImage.slice(5, -2);
+            document.getElementById('modalImage').src = imgSrc;
+            document.getElementById('photoModal').classList.add('show');
+        }
+        
+        function closeModal() {
+            document.getElementById('photoModal').classList.remove('show');
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeVideoModal();
+            }
+        });
+        
+        window.addEventListener('scroll', function() {
+            let scrollBtn = document.getElementById('scrollTop');
+            if (window.scrollY > 300) {
+                scrollBtn.classList.add('visible');
+            } else {
+                scrollBtn.classList.remove('visible');
+            }
+        });
+        
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // ЗАГРУЗКА ПОСТОВ
+        loadPosts();
+    </script>
 </body>
 </html>
