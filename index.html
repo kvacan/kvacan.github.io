@@ -34,7 +34,6 @@
             100% { background-position: 0% 50%; }
         }
         
-        /* ЗВЁЗДЫ (настоящие, с лучами) */
         .stars {
             position: fixed;
             top: 0;
@@ -114,6 +113,96 @@
             text-shadow: 0 0 25px rgba(200, 140, 255, 0.9);
             animation: glowPulse 2s infinite alternate;
             font-weight: 400;
+        }
+        
+        /* МОДАЛЬНОЕ ОКНО (ДОБАВЛЕНО) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(212, 165, 255, 0.5);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: #fff;
+            cursor: pointer;
+            z-index: 10001;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        
+        .modal-close:hover {
+            transform: scale(1.1);
+            color: #d4a5ff;
+        }
+        
+        .modal-prev, .modal-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 50px;
+            color: #fff;
+            cursor: pointer;
+            padding: 20px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 10001;
+        }
+        
+        .modal-prev {
+            left: 20px;
+        }
+        
+        .modal-next {
+            right: 20px;
+        }
+        
+        .modal-prev:hover, .modal-next:hover {
+            background: #d4a5ff;
+            color: #1a0a2a;
+        }
+        
+        @media (max-width: 768px) {
+            .modal-prev, .modal-next {
+                width: 40px;
+                height: 40px;
+                font-size: 30px;
+                padding: 10px;
+            }
+            .modal-close {
+                top: 10px;
+                right: 20px;
+                font-size: 35px;
+            }
         }
         
         /* ГАЛЕРЕЯ (карусель) */
@@ -280,7 +369,7 @@
             word-break: break-all;
         }
         
-        /* КАРУСЕЛЬ ВНУТРИ ПОСТА (для нескольких медиа) */
+        /* КАРУСЕЛЬ ВНУТРИ ПОСТА */
         .post-media-carousel {
             position: relative;
             width: 100%;
@@ -645,7 +734,7 @@
     <!-- ЗВЁЗДЫ НА ФОНЕ -->
     <div class="stars" id="starsContainer"></div>
     
-    <!-- Модальное окно (оставлено только для фотографий из постов, если нужно) -->
+    <!-- МОДАЛЬНОЕ ОКНО -->
     <div class="modal" id="photoModal" onclick="closeModalOnBackground(event)">
         <span class="modal-close" onclick="closeModal()">×</span>
         <div class="modal-prev" onclick="prevImage(event)">‹</div>
@@ -693,18 +782,56 @@
             <div id="postsContainer"><div class="loading">Загрузка постов...</div></div>
         </div>
         
-        <!-- ОСТАЛЬНЫЕ БЛОКИ (FAQ, СОЦСЕТИ, КОНТАКТЫ, ПОДДЕРЖКА) -->
+        <!-- ОСТАЛЬНЫЕ БЛОКИ -->
+
         <div class="block">
-            <div class="section-title">Часто задаваемые вопросы</div>
-            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Кто такой kvacan?</div><div class="faq-answer">kvacan — это Вячеслав. Человек, который решил не откладывать, а просто начать снимать. Здесь нет сценического образа или вымышленной личности. Всё по-настоящему.</div></div>
-            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Почему в ссылках tvacan?</div><div class="faq-answer">kvacan — это ник. Чтобы все соцсети были на одном адресе, выбрали tvacan. Всего одна буква — и порядок. Теперь все соцсети ведут на один адрес. Никакой путаницы.<br><br>А kvacan остаётся тем же, чем и был — ником, по которому человека знают. Всё просто.</div></div>
-            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Зачем создан этот сайт?</div><div class="faq-answer">Это навигатор, входная дверь во все социальные сети сразу. Минимум текста, максимум пользы — все ссылки в одном месте.</div></div>
-            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Что особенного в контенте?</div><div class="faq-answer">Честность. Никаких постановочных студий, дорогих декораций или фальшивых эмоций. Только живые видео и фото, снятые в моменте.</div></div>
-            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Как часто выходит новый контент?</div><div class="faq-answer">Контент появляется по мере того, как идёт жизнь. Без жёстких дедлайнов.</div></div>
-            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Можно ли общаться с автором?</div><div class="faq-answer">Да. Все социальные сети открыты, ссылки на них есть на этом сайте. Диалог приветствуется.</div></div>
-            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Как можно поддержать?</div><div class="faq-answer">Донат по ссылкам ниже. Любая помощь греет и мотивирует снимать дальше.</div></div>
-            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Это надолго?</div><div class="faq-answer">Пока есть желание снимать и делиться — контент будет жить. А желание есть.</div></div>
-        </div>
+    <div class="section-title">Часто задаваемые вопросы</div>
+    
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">Кто такой kvacan?</div>
+        <div class="faq-answer">kvacan — это Вячеслав. Человек, который решил не откладывать, а просто начать снимать. Здесь нет сценического образа или вымышленной личности. Всё по-настоящему.</div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">Почему в ссылках tvacan, если автор представляется как kvacan?</div>
+        <div class="faq-answer">Хороший вопрос. Сейчас объясним.<br><br>kvacan — это ник. То самое имя, которое появилось в самом начале и под которым человека знают в сети. Оно не менялось и не поменяется.<br><br>Но с адресами в социальных сетях всё устроено немного сложнее. Когда стали собирать все ссылки в одном месте, оказалось, что не везде можно использовать одно и то же имя. Где-то kvacan уже был занят, где-то оказался свободен, но хотелось, чтобы все адреса были одинаковыми. Чтобы человек зашёл на сайт, нажал на иконку и попал куда нужно, не запоминая два или три разных варианта.<br><br>Поэтому выбрали tvacan. Всего одна буква — и порядок. Теперь все соцсети ведут на один адрес. Никакой путаницы, никаких лишних вопросов.<br><br>А kvacan остаётся тем же, чем и был — ником, по которому человека знают. Всё просто.</div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">Зачем создан этот сайт?</div>
+        <div class="faq-answer">Это не проект и не портфолио. Это просто навигатор, входная дверь во все социальные сети сразу. Минимум текста, максимум пользы — все ссылки в одном месте.</div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">Что особенного в контенте?</div>
+        <div class="faq-answer">Честность. Никаких постановочных студий, дорогих декораций или фальшивых эмоций. Только живые видео и фото, снятые в моменте. То, что окружает каждый день.</div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">Как часто выходит новый контент?</div>
+        <div class="faq-answer">Контент появляется по мере того, как идёт жизнь. Маленькие шаги, регулярное движение, никаких жёстких дедлайнов — только искреннее желание делиться происходящим.</div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">Чем контент будет отличаться в будущем?</div>
+        <div class="faq-answer">С развитием автора будет расти и контент. Главная задача — чтобы и создателю, и зрителю было комфортно. Форматы могут меняться, но основа останется — живые эмоции и честность.</div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">Можно ли общаться с автором?</div>
+        <div class="faq-answer">Да. Все социальные сети открыты, ссылки на них есть на этом сайте. Можно писать, комментировать, обсуждать — диалог приветствуется.</div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">Как можно поддержать?</div>
+        <div class="faq-answer">Если контент заходит и хочется сказать спасибо делом — можно поддержать донатом. Любая помощь греет и мотивирует снимать дальше. Ссылка на донат тоже здесь.</div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">Это надолго?</div>
+        <div class="faq-answer">Пока есть желание снимать и делиться — контент будет жить. А желание есть.</div>
+    </div>
+</div>
         
         <div class="arrow-down">▼</div>
         
@@ -747,7 +874,7 @@
     </div>
 
     <script>
-        // ==================== ЗВЁЗДЫ ====================
+        // ... весь JavaScript без изменений ...
         const starsContainer = document.getElementById('starsContainer');
         for (let i = 0; i < 80; i++) {
             const star = document.createElement('div');
@@ -764,7 +891,6 @@
             starsContainer.appendChild(star);
         }
         
-        // ==================== ГАЛЕРЕЯ КАРУСЕЛЬ ====================
         const galleryTrack = document.getElementById('galleryTrack');
         const gallerySlides = document.querySelectorAll('.carousel-slide');
         const prevBtn = document.getElementById('prevGallery');
@@ -774,7 +900,6 @@
         let galleryStartX = 0;
         let galleryIsDragging = false;
         
-        // Создание индикаторов
         gallerySlides.forEach((_, i) => {
             const ind = document.createElement('div');
             ind.classList.add('indicator');
@@ -812,7 +937,6 @@
         prevBtn.addEventListener('click', prevGallery);
         nextBtn.addEventListener('click', nextGallery);
         
-        // Свайп для галереи
         const galleryContainer = document.querySelector('.carousel-container');
         galleryContainer.addEventListener('touchstart', (e) => {
             galleryStartX = e.touches[0].clientX;
@@ -830,7 +954,6 @@
         });
         galleryContainer.addEventListener('touchend', () => { galleryIsDragging = false; });
         
-        // Мышь для десктопа
         galleryContainer.addEventListener('mousedown', (e) => {
             galleryStartX = e.clientX;
             galleryIsDragging = true;
@@ -853,7 +976,6 @@
         });
         galleryContainer.style.cursor = 'grab';
         
-        // ==================== ЗАГРУЗКА ПОСТОВ ИЗ GOOGLE ТАБЛИЦЫ ====================
         const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdSZzujU8slFBMeyFuo5r_Wo-IGtSD2XenkggmvSVDHxueB5v0JsZ2X90SPR5XlEb_JHXGYt2GCV-w/pub?output=csv";
         
         function parseCSV(csvText) {
@@ -1082,7 +1204,6 @@
             });
         }
         
-        // ==================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ====================
         let currentGallerySet = [];
         let currentGalleryIndex = 0;
         let touchStartX = 0;
