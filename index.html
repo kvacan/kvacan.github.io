@@ -19,6 +19,7 @@
             min-height: 100vh;
         }
         
+        /* ЯРКИЙ ФИОЛЕТОВЫЙ ФОН */
         body::before {
             content: "";
             position: fixed;
@@ -26,20 +27,35 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(156, 80, 255, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(120, 60, 220, 0.5) 0%, transparent 50%),
                 radial-gradient(1px 1px at 5% 10%, #fff, transparent),
                 radial-gradient(1.5px 1.5px at 15% 25%, #fff, transparent),
-                radial-gradient(2px 2px at 25% 40%, #d4b5ff, transparent),
+                radial-gradient(2px 2px at 25% 40%, #e6ccff, transparent),
                 radial-gradient(1px 1px at 35% 60%, #fff, transparent),
-                radial-gradient(2.5px 2.5px at 45% 75%, #c49bff, transparent),
+                radial-gradient(2.5px 2.5px at 45% 75%, #d9b3ff, transparent),
                 radial-gradient(1px 1px at 55% 15%, #fff, transparent),
-                radial-gradient(2px 2px at 65% 35%, #b380ff, transparent),
+                radial-gradient(2px 2px at 65% 35%, #c28eff, transparent),
                 radial-gradient(1.5px 1.5px at 75% 55%, #fff, transparent),
-                radial-gradient(2px 2px at 85% 80%, #e6d0ff, transparent),
+                radial-gradient(2px 2px at 85% 80%, #b87cff, transparent),
                 radial-gradient(1px 1px at 95% 20%, #fff, transparent);
-            background-size: 400px 400px;
-            background-repeat: repeat;
-            opacity: 0.6;
+            background-size: 400px 400px, 400px 400px, 400px 400px;
+            background-repeat: repeat, repeat, repeat;
+            opacity: 1;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Дополнительный яркий фиолетовый слой */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(100, 40, 200, 0.3) 0%, rgba(40, 20, 80, 0.6) 100%);
             pointer-events: none;
             z-index: 0;
         }
@@ -55,15 +71,14 @@
         @media (min-width: 768px) { .container { max-width: 550px; padding: 30px 20px 80px 20px; } }
         
         @keyframes softPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
+            0% { transform: scale(1); box-shadow: 0 5px 15px rgba(160, 120, 255, 0.2); }
+            50% { transform: scale(1.02); box-shadow: 0 5px 25px rgba(180, 140, 255, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 5px 15px rgba(160, 120, 255, 0.2); }
         }
         
-        @keyframes softGlow {
-            0% { box-shadow: 0 5px 15px rgba(160, 120, 255, 0.2); }
-            50% { box-shadow: 0 5px 20px rgba(180, 140, 255, 0.5); }
-            100% { box-shadow: 0 5px 15px rgba(160, 120, 255, 0.2); }
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 5px rgba(180, 140, 255, 0.3); }
+            100% { text-shadow: 0 0 20px rgba(180, 140, 255, 0.8); }
         }
         
         .avatar {
@@ -71,22 +86,24 @@
             height: 140px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #b294ff;
+            border: 3px solid #c49bff;
             display: block;
             margin: 0 auto 15px;
-            box-shadow: 0 10px 25px rgba(160, 120, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(140, 80, 255, 0.5);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         
         .avatar:hover {
             transform: scale(1.02);
+            box-shadow: 0 15px 35px rgba(160, 100, 255, 0.7);
         }
         
         h1 {
             font-size: 3.5rem; text-align: center; letter-spacing: 1px; margin-bottom: 25px;
             color: #fff; text-transform: uppercase;
-            text-shadow: 0 0 15px rgba(180, 140, 255, 0.5);
+            text-shadow: 0 0 20px rgba(180, 140, 255, 0.8);
+            animation: glowPulse 2s infinite alternate;
         }
         
         .gallery-container {
@@ -102,7 +119,7 @@
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
-            scrollbar-color: #b294ff #1a0f2a;
+            scrollbar-color: #c49bff #2a1a3a;
         }
         
         .gallery-scroll::-webkit-scrollbar {
@@ -110,12 +127,12 @@
         }
         
         .gallery-scroll::-webkit-scrollbar-track {
-            background: #1a0f2a;
+            background: #2a1a3a;
             border-radius: 10px;
         }
         
         .gallery-scroll::-webkit-scrollbar-thumb {
-            background: #b294ff;
+            background: #c49bff;
             border-radius: 10px;
         }
         
@@ -126,14 +143,14 @@
             background-size: cover;
             background-position: center;
             border-radius: 20px;
-            border: 3px solid #b294ff;
+            border: 3px solid #c49bff;
             cursor: pointer;
-            transition: transform 0.2s ease;
-            box-shadow: 0 5px 15px rgba(160, 120, 255, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s;
+            box-shadow: 0 5px 20px rgba(140, 80, 255, 0.4);
             scroll-snap-align: start;
         }
         
-        .gallery-item:hover { transform: scale(1.03); border-color: #d4b5ff; }
+        .gallery-item:hover { transform: scale(1.03); border-color: #e6ccff; box-shadow: 0 8px 25px rgba(180, 120, 255, 0.6); }
         
         @media (max-width: 480px) {
             .gallery-item { width: 130px; height: 130px; }
@@ -141,25 +158,31 @@
         
         /* Стили для постов */
         .posts-block {
-            background: rgba(20, 10, 35, 0.85);
+            background: rgba(30, 15, 50, 0.9);
             border-radius: 30px;
             padding: 25px 18px;
             margin: 25px 0;
-            border: 1px solid #b294ff;
-            backdrop-filter: blur(2px);
+            border: 1px solid #c49bff;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px rgba(100, 50, 200, 0.3);
         }
         
         .post-item {
-            background: rgba(30, 18, 48, 0.7);
+            background: rgba(40, 25, 65, 0.8);
             border-radius: 25px;
             padding: 18px;
             margin-bottom: 20px;
-            border-left: 4px solid #b294ff;
+            border-left: 4px solid #c49bff;
+            transition: transform 0.2s;
+        }
+        
+        .post-item:hover {
+            transform: translateX(5px);
         }
         
         .post-date {
             font-size: 0.75rem;
-            color: #b294ff;
+            color: #c49bff;
             margin-bottom: 10px;
         }
         
@@ -170,7 +193,7 @@
         }
         
         .post-content {
-            color: #ddd;
+            color: #e0d0ff;
             line-height: 1.5;
             font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
             margin-bottom: 12px;
@@ -178,7 +201,7 @@
         }
         
         .post-content a {
-            color: #d4b5ff;
+            color: #d9b3ff;
             text-decoration: underline;
             word-break: break-all;
         }
@@ -187,7 +210,7 @@
             width: 100%;
             border-radius: 20px;
             margin: 12px 0;
-            border: 2px solid #b294ff;
+            border: 2px solid #c49bff;
             aspect-ratio: 16 / 9;
         }
         
@@ -195,7 +218,7 @@
             width: 100%;
             border-radius: 20px;
             margin: 12px 0;
-            border: 2px solid #b294ff;
+            border: 2px solid #c49bff;
             cursor: pointer;
             transition: transform 0.2s;
         }
@@ -207,7 +230,7 @@
         .loading {
             text-align: center;
             padding: 40px;
-            color: #b294ff;
+            color: #c49bff;
         }
         
         /* Модальное окно */
@@ -218,11 +241,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 5, 20, 0.98);
+            background: rgba(10, 5, 25, 0.98);
             z-index: 2000;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
         
         .modal.show { display: flex; }
@@ -231,10 +254,10 @@
             max-width: 90%;
             max-height: 90%;
             object-fit: contain;
-            border: 4px solid #b294ff;
+            border: 4px solid #c49bff;
             border-radius: 25px;
-            box-shadow: 0 0 40px rgba(180, 140, 255, 0.6);
-            transition: transform 0.1s ease;
+            box-shadow: 0 0 50px rgba(160, 100, 255, 0.8);
+            cursor: pointer;
         }
         
         .modal-close {
@@ -244,65 +267,95 @@
             color: #fff;
             font-size: 3rem;
             cursor: pointer;
-            text-shadow: 0 0 15px #b294ff;
+            text-shadow: 0 0 20px #c49bff;
             z-index: 2001;
+            transition: transform 0.2s;
         }
         
-        /* Подсказка для свайпа */
-        .swipe-hint {
+        .modal-close:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Кнопки навигации */
+        .modal-prev, .modal-next {
             position: absolute;
-            bottom: 30px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            color: rgba(255,255,255,0.5);
-            font-size: 0.8rem;
-            pointer-events: none;
-            z-index: 2002;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(60, 40, 100, 0.7);
+            border: 2px solid #c49bff;
+            color: white;
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 2001;
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-prev { left: 20px; }
+        .modal-next { right: 20px; }
+        
+        .modal-prev:hover, .modal-next:hover {
+            background: #c49bff;
+            color: #0a0515;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .modal-prev, .modal-next {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
         }
         
         .divider {
-            text-align: center; margin: 20px 0 10px; color: #b294ff; font-size: 1.5rem;
+            text-align: center; margin: 20px 0 10px; color: #c49bff; font-size: 1.5rem;
             letter-spacing: 5px;
-            text-shadow: 0 0 10px rgba(180, 140, 255, 0.5);
+            text-shadow: 0 0 15px rgba(180, 140, 255, 0.8);
         }
         
         .arrow-down { 
-            text-align: center; margin: 10px 0; color: #b294ff; font-size: 1.5rem;
-            text-shadow: 0 0 10px rgba(180, 140, 255, 0.5);
+            text-align: center; margin: 10px 0; color: #c49bff; font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(180, 140, 255, 0.6);
         }
         
         .section-title {
             font-size: 1.6rem; text-align: center; margin: 20px 0 15px; color: #fff;
             text-transform: none;
-            text-shadow: 0 0 10px rgba(180, 140, 255, 0.3);
+            text-shadow: 0 0 12px rgba(180, 140, 255, 0.6);
         }
         
         .section-subtitle {
-            font-size: 1rem; text-align: center; margin: 10px 0 15px; color: #ccc;
+            font-size: 1rem; text-align: center; margin: 10px 0 15px; color: #e0d0ff;
             text-transform: none; line-height: 1.5;
         }
         
         .block, .contacts-block {
-            background: rgba(20, 10, 35, 0.85);
+            background: rgba(30, 15, 50, 0.9);
             border-radius: 30px;
             padding: 25px 18px;
             margin: 25px 0;
-            border: 1px solid #b294ff;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-            backdrop-filter: blur(2px);
+            border: 1px solid #c49bff;
+            box-shadow: 0 10px 30px rgba(100, 50, 200, 0.3);
+            backdrop-filter: blur(5px);
         }
         
         .faq-item {
             margin-bottom: 12px;
-            border: 1px solid #b294ff;
+            border: 1px solid #c49bff;
             border-radius: 20px;
             overflow: hidden;
-            background: rgba(25, 15, 40, 0.7);
+            background: rgba(40, 25, 70, 0.8);
         }
         
         .faq-question {
-            background: rgba(35, 20, 55, 0.8);
+            background: rgba(55, 35, 95, 0.9);
             padding: 16px 18px;
             font-size: 1.1rem;
             color: #fff;
@@ -317,12 +370,12 @@
             transition: background-color 0.2s;
         }
         
-        .faq-question:hover { background: rgba(55, 35, 85, 0.9); }
+        .faq-question:hover { background: rgba(85, 55, 135, 0.9); }
         
         .faq-question::after {
             content: "▼";
             font-size: 0.9rem;
-            color: #b294ff;
+            color: #c49bff;
             transition: transform 0.2s;
         }
         
@@ -331,15 +384,15 @@
         }
         
         .faq-answer {
-            background: rgba(20, 10, 30, 0.7);
+            background: rgba(30, 15, 55, 0.9);
             padding: 0 18px;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.2s ease-out;
-            color: #ccc;
+            color: #e0d0ff;
             font-size: 0.95rem;
             line-height: 1.5;
-            border-top: 0 solid #b294ff;
+            border-top: 0 solid #c49bff;
         }
         
         .faq-answer.show { 
@@ -350,7 +403,7 @@
         
         .button {
             display: block;
-            background: linear-gradient(145deg, #2a1a3a, #1a0f2a);
+            background: linear-gradient(145deg, #3a2555, #2a1a4a);
             color: #fff;
             text-decoration: none;
             padding: 16px 18px;
@@ -361,17 +414,18 @@
             letter-spacing: 1px;
             width: 100%;
             margin-bottom: 10px;
-            border: 2px solid #b294ff;
-            box-shadow: 0 5px 15px rgba(160, 120, 255, 0.2);
+            border: 2px solid #c49bff;
+            box-shadow: 0 5px 20px rgba(140, 80, 255, 0.3);
             transition: all 0.2s ease;
-            animation: softPulse 3s infinite, softGlow 3s infinite;
+            animation: softPulse 3s infinite;
         }
         
         .button:hover {
-            background: linear-gradient(145deg, #3a2555, #2a1a3a);
-            border-color: #d4b5ff;
+            background: linear-gradient(145deg, #5a3a85, #3a2565);
+            border-color: #e6ccff;
             transform: scale(1.02);
             animation: none;
+            box-shadow: 0 8px 25px rgba(160, 100, 255, 0.5);
         }
         
         .button:active {
@@ -381,7 +435,7 @@
         .button-small { 
             font-size: 1rem; 
             padding: 14px 16px;
-            animation: softPulse 4s infinite, softGlow 4s infinite;
+            animation: softPulse 4s infinite;
         }
         
         .button-group { display: flex; flex-direction: column; gap: 12px; margin: 15px 0; }
@@ -393,9 +447,9 @@
             width: 44px;
             height: 44px;
             border-radius: 22px;
-            background: #2a1a3a;
-            border: 2px solid #b294ff;
-            box-shadow: 0 2px 15px rgba(160, 120, 255, 0.4);
+            background: #3a2555;
+            border: 2px solid #c49bff;
+            box-shadow: 0 2px 20px rgba(140, 80, 255, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -406,7 +460,6 @@
             z-index: 999;
             font-size: 1.5rem;
             color: #fff;
-            animation: softPulse 2s infinite;
         }
         
         .scroll-top.visible {
@@ -416,7 +469,7 @@
         
         .scroll-top:hover {
             transform: scale(1.1);
-            background: #3a2555;
+            background: #5a3a85;
         }
         
         .chat-widget {
@@ -433,20 +486,20 @@
             width: 60px;
             height: 60px;
             border-radius: 30px;
-            background: linear-gradient(145deg, #3a2555, #1a0f2a);
-            border: 2px solid #b294ff;
-            box-shadow: 0 5px 15px rgba(160, 120, 255, 0.4);
+            background: linear-gradient(145deg, #3a2555, #2a1a4a);
+            border: 2px solid #c49bff;
+            box-shadow: 0 5px 20px rgba(140, 80, 255, 0.4);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
-            animation: softPulse 2.5s infinite, softGlow 2.5s infinite;
+            animation: softPulse 2.5s infinite;
         }
         
         .chat-button:hover { 
             transform: scale(1.1);
-            border-color: #d4b5ff;
+            border-color: #e6ccff;
         }
         
         .chat-button:active { transform: scale(0.95); }
@@ -457,41 +510,40 @@
             bottom: 70px;
             right: 0;
             width: 220px;
-            background: rgba(25, 15, 40, 0.98);
+            background: rgba(30, 15, 55, 0.98);
             border-radius: 25px;
-            border: 2px solid #b294ff;
+            border: 2px solid #c49bff;
             padding: 15px;
             display: none;
             box-shadow: 0 15px 30px rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
         
         .chat-menu.show { display: block; }
         
         .chat-menu-item {
             display: block;
-            background: linear-gradient(145deg, #2a1a3a, #1a0f2a);
+            background: linear-gradient(145deg, #3a2555, #2a1a4a);
             color: #fff;
             text-decoration: none;
             padding: 14px;
             border-radius: 40px;
             text-align: center;
             font-size: 1.1rem;
-            border: 2px solid #b294ff;
+            border: 2px solid #c49bff;
             transition: all 0.2s;
-            box-shadow: 0 5px 15px rgba(160, 120, 255, 0.2);
         }
         
         .chat-menu-item:hover {
-            background: #3a2555;
-            border-color: #d4b5ff;
+            background: #5a3a85;
+            border-color: #e6ccff;
             transform: scale(1.02);
         }
         
         footer {
             margin-top: 40px;
             padding-top: 20px;
-            border-top: 2px solid #b294ff;
+            border-top: 2px solid #c49bff;
             text-align: center;
             color: #aaa;
             font-size: 0.8rem;
@@ -499,13 +551,13 @@
         
         .footer-email { margin-top: 10px; }
         .footer-email a { 
-            color: #b294ff; 
+            color: #c49bff; 
             text-decoration: none; 
-            border-bottom: 1px dotted #b294ff;
+            border-bottom: 1px dotted #c49bff;
             transition: color 0.2s;
         }
-        .footer-email a:hover { color: #d4b5ff; }
-        .copyright { color: #888; }
+        .footer-email a:hover { color: #e6ccff; }
+        .copyright { color: #b294ff; }
         
         .gallery-hint {
             display: none;
@@ -516,8 +568,9 @@
     <!-- Модальное окно для фото -->
     <div class="modal" id="photoModal" onclick="closeModalOnBackground(event)">
         <span class="modal-close" onclick="closeModal()">×</span>
-        <img class="modal-content" id="modalImage" src="" style="cursor: zoom-in;">
-        <div class="swipe-hint" id="swipeHint">← свайп влево/вправо →</div>
+        <div class="modal-prev" onclick="prevImage(event)">‹</div>
+        <div class="modal-next" onclick="nextImage(event)">›</div>
+        <img class="modal-content" id="modalImage" src="">
     </div>
 
     <div class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</div>
@@ -547,7 +600,7 @@
         
         <!-- БЛОК ПОСТОВ ИЗ GOOGLE ТАБЛИЦЫ -->
         <div class="posts-block">
-            <div class="section-title"> Актуальное</div>
+            <div class="section-title">📢 Актуальное</div>
             <div id="postsContainer"><div class="loading">Загрузка постов... ✨</div></div>
         </div>
         
@@ -642,22 +695,20 @@
 
     <script>
         // ==================== ПЕРЕМЕННЫЕ ====================
-        let currentGallerySet = [];    // текущий набор фото для листалки
+        let currentGallerySet = [];
         let currentGalleryIndex = 0;
         let touchStartX = 0;
         let touchEndX = 0;
-        let isZoomed = false;
         
-        // Фото галереи (отдельный набор)
         const galleryImages = [
             "https://taplink.st/p/3/f/f/4/69250557.jpg?0",
             "https://taplink.st/p/4/f/f/b/69250559.jpg?0",
             "https://taplink.st/p/2/2/3/c/69471405.jpg?0"
         ];
         
-        // ==================== ПОДКЛЮЧЕНИЕ GOOGLE ТАБЛИЦЫ ====================
         const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdSZzujU8slFBMeyFuo5r_Wo-IGtSD2XenkggmvSVDHxueB5v0JsZ2X90SPR5XlEb_JHXGYt2GCV-w/pub?output=csv";
         
+        // ==================== ЗАГРУЗКА ПОСТОВ ====================
         async function loadPosts() {
             try {
                 const response = await fetch(CSV_URL);
@@ -727,7 +778,6 @@
             currentGalleryIndex = index;
             updateModalImage();
             document.getElementById('photoModal').classList.add('show');
-            document.getElementById('swipeHint').style.display = 'block';
         }
 
         function openPostImage(url) {
@@ -735,7 +785,6 @@
             currentGalleryIndex = 0;
             updateModalImage();
             document.getElementById('photoModal').classList.add('show');
-            document.getElementById('swipeHint').style.display = 'none';
         }
 
         function openAvatarModal() {
@@ -745,7 +794,6 @@
                 currentGalleryIndex = 0;
                 updateModalImage();
                 document.getElementById('photoModal').classList.add('show');
-                document.getElementById('swipeHint').style.display = 'none';
             }
         }
 
@@ -754,27 +802,23 @@
             if (currentGallerySet.length > 0 && currentGalleryIndex >= 0 && currentGalleryIndex < currentGallerySet.length) {
                 img.src = currentGallerySet[currentGalleryIndex];
             }
-            // Сбрасываем zoom
-            img.style.transform = 'scale(1)';
-            img.style.cursor = 'zoom-in';
-            isZoomed = false;
         }
 
-        function nextImage() {
+        function nextImage(event) {
+            if (event) event.stopPropagation();
             if (currentGallerySet.length <= 1) return;
             currentGalleryIndex = (currentGalleryIndex + 1) % currentGallerySet.length;
             updateModalImage();
         }
 
-        function prevImage() {
+        function prevImage(event) {
+            if (event) event.stopPropagation();
             if (currentGallerySet.length <= 1) return;
             currentGalleryIndex = (currentGalleryIndex - 1 + currentGallerySet.length) % currentGallerySet.length;
             updateModalImage();
         }
 
-        // ==================== ОБРАБОТЧИКИ СОБЫТИЙ ====================
-        
-        // Свайп для листалки
+        // ==================== ОБРАБОТЧИКИ СВАЙПА ====================
         function handleTouchStart(event) {
             touchStartX = event.touches[0].clientX;
         }
@@ -784,59 +828,10 @@
             touchEndX = event.changedTouches[0].clientX;
             const swipeThreshold = 50;
             if (touchEndX < touchStartX - swipeThreshold) {
-                nextImage();
+                nextImage(event);
             }
             if (touchEndX > touchStartX + swipeThreshold) {
-                prevImage();
-            }
-        }
-        
-        // Пинч-зум (увеличение двумя пальцами) и клик для зума
-        let initialDistance = 0;
-        let currentScale = 1;
-        
-        function handleTouchStartZoom(event) {
-            if (event.touches.length === 2) {
-                initialDistance = Math.hypot(
-                    event.touches[0].clientX - event.touches[1].clientX,
-                    event.touches[0].clientY - event.touches[1].clientY
-                );
-            }
-        }
-        
-        function handleTouchMoveZoom(event) {
-            if (event.touches.length === 2 && initialDistance > 0) {
-                event.preventDefault();
-                const newDistance = Math.hypot(
-                    event.touches[0].clientX - event.touches[1].clientX,
-                    event.touches[0].clientY - event.touches[1].clientY
-                );
-                const scale = newDistance / initialDistance;
-                currentScale = Math.min(Math.max(1, scale), 3);
-                const img = document.getElementById('modalImage');
-                img.style.transform = `scale(${currentScale})`;
-                img.style.cursor = currentScale > 1 ? 'zoom-out' : 'zoom-in';
-                isZoomed = currentScale > 1;
-                initialDistance = newDistance;
-            }
-        }
-        
-        function handleTouchEndZoom() {
-            initialDistance = 0;
-        }
-        
-        // Клик для зума (альтернатива)
-        function toggleZoom(event) {
-            event.stopPropagation();
-            const img = document.getElementById('modalImage');
-            if (isZoomed) {
-                img.style.transform = 'scale(1)';
-                img.style.cursor = 'zoom-in';
-                isZoomed = false;
-            } else {
-                img.style.transform = 'scale(2)';
-                img.style.cursor = 'zoom-out';
-                isZoomed = true;
+                prevImage(event);
             }
         }
 
@@ -848,9 +843,6 @@
 
         function closeModal() {
             document.getElementById('photoModal').classList.remove('show');
-            const img = document.getElementById('modalImage');
-            img.style.transform = 'scale(1)';
-            isZoomed = false;
         }
 
         // ==================== РЕНДЕРИНГ ПОСТОВ ====================
@@ -871,7 +863,7 @@
                         let embedUrl = getVideoEmbedUrl(url);
                         mediaHtml = `<iframe class="post-video" src="${embedUrl}" frameborder="0" allowfullscreen allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture"></iframe>`;
                     } else {
-                        mediaHtml = `<a href="${url}" target="_blank" style="color:#b294ff; display:inline-block; margin-top:10px;">🔗 Открыть ссылку</a>`;
+                        mediaHtml = `<a href="${url}" target="_blank" style="color:#c49bff; display:inline-block; margin-top:10px;">🔗 Открыть ссылку</a>`;
                     }
                 }
                 const textWithLinks = post.text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
@@ -919,27 +911,20 @@
             }
         });
         
-        // Добавляем обработчики для модального окна
+        // Добавляем обработчики свайпа
         const modal = document.getElementById('photoModal');
-        const modalImg = document.getElementById('modalImage');
         if (modal) {
             modal.addEventListener('touchstart', handleTouchStart, false);
             modal.addEventListener('touchend', handleTouchEnd, false);
-            modal.addEventListener('touchstart', handleTouchStartZoom, false);
-            modal.addEventListener('touchmove', handleTouchMoveZoom, false);
-            modal.addEventListener('touchend', handleTouchEndZoom, false);
-        }
-        if (modalImg) {
-            modalImg.addEventListener('click', toggleZoom);
         }
         
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeModal();
             if (e.key === 'ArrowLeft' && document.getElementById('photoModal').classList.contains('show')) {
-                prevImage();
+                prevImage(e);
             }
             if (e.key === 'ArrowRight' && document.getElementById('photoModal').classList.contains('show')) {
-                nextImage();
+                nextImage(e);
             }
         });
         
@@ -956,7 +941,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
-        // Загрузка постов
         loadPosts();
     </script>
 </body>
