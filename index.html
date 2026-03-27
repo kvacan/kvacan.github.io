@@ -200,24 +200,83 @@
             color: #b294ff;
         }
         
+        /* Модальное окно для фото с листалкой */
         .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 5, 20, 0.98); z-index: 2000; justify-content: center;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 5, 20, 0.98);
+            z-index: 2000;
+            justify-content: center;
             align-items: center;
+            backdrop-filter: blur(5px);
         }
         
         .modal.show { display: flex; }
         
         .modal-content {
-            max-width: 90%; max-height: 90%; border: 4px solid #b294ff;
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border: 4px solid #b294ff;
             border-radius: 25px;
             box-shadow: 0 0 40px rgba(180, 140, 255, 0.6);
+            cursor: zoom-in;
+        }
+        
+        .modal-content.zoomed {
+            cursor: zoom-out;
+            transform: scale(1.5);
         }
         
         .modal-close {
-            position: absolute; top: 20px; right: 20px; color: #fff;
-            font-size: 3rem; cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            font-size: 3rem;
+            cursor: pointer;
             text-shadow: 0 0 15px #b294ff;
+            z-index: 2001;
+        }
+        
+        /* Кнопки навигации */
+        .modal-prev, .modal-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            border: 2px solid #b294ff;
+            color: white;
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 2001;
+        }
+        
+        .modal-prev { left: 20px; }
+        .modal-next { right: 20px; }
+        
+        .modal-prev:hover, .modal-next:hover {
+            background: #b294ff;
+            color: #0a0515;
+        }
+        
+        @media (max-width: 768px) {
+            .modal-prev, .modal-next {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
         }
         
         .divider {
@@ -466,19 +525,19 @@
         .footer-email a:hover { color: #d4b5ff; }
         .copyright { color: #888; }
         
+        /* Убираем подсказку галереи */
         .gallery-hint {
-            text-align: center;
-            color: #b294ff;
-            font-size: 0.8rem;
-            margin-top: 5px;
-            letter-spacing: 1px;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="modal" id="photoModal" onclick="closeModal()">
+    <!-- Модальное окно для фото с листалкой -->
+    <div class="modal" id="photoModal" onclick="closeModalOnBackground(event)">
         <span class="modal-close" onclick="closeModal()">×</span>
-        <img class="modal-content" id="modalImage" src="">
+        <div class="modal-prev" onclick="prevImage(event)">‹</div>
+        <div class="modal-next" onclick="nextImage(event)">›</div>
+        <img class="modal-content" id="modalImage" src="" onclick="toggleZoom(event)">
     </div>
 
     <div class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</div>
@@ -498,12 +557,11 @@
         
         <div class="gallery-container">
             <div class="gallery-scroll">
-                <div class="gallery-item" style="background-image:url('https://taplink.st/p/d/7/4/6/69250549.jpg?0')" onclick="openModal(this)"></div>
-                <div class="gallery-item" style="background-image:url('https://taplink.st/p/3/f/f/4/69250557.jpg?0')" onclick="openModal(this)"></div>
-                <div class="gallery-item" style="background-image:url('https://taplink.st/p/4/f/f/b/69250559.jpg?0')" onclick="openModal(this)"></div>
-                <div class="gallery-item" style="background-image:url('https://taplink.st/p/2/2/3/c/69471405.jpg?0')" onclick="openModal(this)"></div>
+                <div class="gallery-item" style="background-image:url('https://taplink.st/p/d/7/4/6/69250549.jpg?0')" onclick="openModalFromElement(this)"></div>
+                <div class="gallery-item" style="background-image:url('https://taplink.st/p/3/f/f/4/69250557.jpg?0')" onclick="openModalFromElement(this)"></div>
+                <div class="gallery-item" style="background-image:url('https://taplink.st/p/4/f/f/b/69250559.jpg?0')" onclick="openModalFromElement(this)"></div>
+                <div class="gallery-item" style="background-image:url('https://taplink.st/p/2/2/3/c/69471405.jpg?0')" onclick="openModalFromElement(this)"></div>
             </div>
-            <div class="gallery-hint">← листай →</div>
         </div>
         
         <div class="arrow-down">▼</div>
@@ -604,6 +662,10 @@
     </div>
 
     <script>
+        // ==================== ПЕРЕМЕННЫЕ ДЛЯ ГАЛЕРЕИ ====================
+        let allImages = [];      // массив всех URL изображений на странице
+        let currentImageIndex = 0;
+        
         // ==================== ПОДКЛЮЧЕНИЕ GOOGLE ТАБЛИЦЫ ====================
         const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdSZzujU8slFBMeyFuo5r_Wo-IGtSD2XenkggmvSVDHxueB5v0JsZ2X90SPR5XlEb_JHXGYt2GCV-w/pub?output=csv";
         
@@ -670,6 +732,82 @@
             return url;
         }
 
+        // Функция для сбора всех изображений на странице (галерея + посты)
+        function collectAllImages() {
+            allImages = [];
+            // Собираем из галереи
+            document.querySelectorAll('.gallery-item').forEach(el => {
+                let bg = window.getComputedStyle(el).backgroundImage;
+                let url = bg.slice(5, -2);
+                if (url && !url.includes('none')) allImages.push(url);
+            });
+            // Собираем из постов
+            document.querySelectorAll('.post-image').forEach(img => {
+                if (img.src) allImages.push(img.src);
+            });
+        }
+
+        function openModalFromElement(element) {
+            let bg = window.getComputedStyle(element).backgroundImage;
+            let imgSrc = bg.slice(5, -2);
+            if (imgSrc && !imgSrc.includes('none')) {
+                openModalWithImage(imgSrc);
+            }
+        }
+
+        function openModalFromUrl(url) {
+            openModalWithImage(url);
+        }
+
+        function openModalWithImage(url) {
+            collectAllImages();
+            currentImageIndex = allImages.findIndex(img => img === url);
+            if (currentImageIndex === -1) currentImageIndex = 0;
+            updateModalImage();
+            document.getElementById('photoModal').classList.add('show');
+        }
+
+        function updateModalImage() {
+            const img = document.getElementById('modalImage');
+            if (allImages.length > 0 && currentImageIndex >= 0 && currentImageIndex < allImages.length) {
+                img.src = allImages[currentImageIndex];
+            }
+            // Сбрасываем zoom при смене изображения
+            img.classList.remove('zoomed');
+        }
+
+        function nextImage(event) {
+            event.stopPropagation();
+            if (allImages.length === 0) return;
+            currentImageIndex = (currentImageIndex + 1) % allImages.length;
+            updateModalImage();
+        }
+
+        function prevImage(event) {
+            event.stopPropagation();
+            if (allImages.length === 0) return;
+            currentImageIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
+            updateModalImage();
+        }
+
+        function toggleZoom(event) {
+            event.stopPropagation();
+            const img = document.getElementById('modalImage');
+            img.classList.toggle('zoomed');
+        }
+
+        function closeModalOnBackground(event) {
+            if (event.target === document.getElementById('photoModal')) {
+                closeModal();
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('photoModal').classList.remove('show');
+            const img = document.getElementById('modalImage');
+            img.classList.remove('zoomed');
+        }
+
         function renderPosts(posts) {
             const container = document.getElementById('postsContainer');
             if (!posts.length) {
@@ -700,11 +838,9 @@
                     </div>
                 `;
             }).join('');
-        }
-
-        function openModalFromUrl(url) {
-            document.getElementById('modalImage').src = url;
-            document.getElementById('photoModal').classList.add('show');
+            
+            // После рендеринга постов собираем все изображения для листалки
+            setTimeout(collectAllImages, 100);
         }
 
         function escapeHtml(str) {
@@ -740,19 +876,14 @@
             }
         });
         
-        function openModal(element) {
-            let style = window.getComputedStyle(element);
-            let imgSrc = style.backgroundImage.slice(5, -2);
-            document.getElementById('modalImage').src = imgSrc;
-            document.getElementById('photoModal').classList.add('show');
-        }
-        
-        function closeModal() {
-            document.getElementById('photoModal').classList.remove('show');
-        }
-        
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowLeft' && document.getElementById('photoModal').classList.contains('show')) {
+                prevImage(e);
+            }
+            if (e.key === 'ArrowRight' && document.getElementById('photoModal').classList.contains('show')) {
+                nextImage(e);
+            }
         });
         
         window.addEventListener('scroll', function() {
@@ -768,7 +899,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
-        // ЗАГРУЗКА ПОСТОВ
+        // Загрузка постов
         loadPosts();
     </script>
 </body>
