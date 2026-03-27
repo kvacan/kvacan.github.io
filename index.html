@@ -9,21 +9,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
         
         body {
             font-family: 'Russo One', sans-serif;
-            background: #1a0a2a;
+            background: linear-gradient(135deg, #3a1a5a 0%, #2a0a3a 50%, #3a1a5a 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
             color: #fff;
             line-height: 1.5;
             min-height: 100vh;
             overflow-x: hidden;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #3a1a5a 0%, #2a0a3a 25%, #4a2a6a 50%, #2a0a3a 75%, #3a1a5a 100%);
-            background-size: 200% 200%;
-            animation: gradientShift 8s ease infinite;
         }
         
         @keyframes gradientShift {
@@ -32,13 +34,90 @@
             100% { background-position: 0% 50%; }
         }
         
-        /* ОПТИМИЗАЦИЯ ЗАГРУЗКИ */
-        img, iframe, video {
-            content-visibility: auto;
-            contain: content;
+        /* ЗВЁЗДЫ (настоящие, с лучами) */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
         }
         
-        .photo-gallery {
+        .star {
+            position: absolute;
+            background: radial-gradient(circle, #fff 0%, rgba(255,255,200,0.8) 40%, rgba(255,255,200,0) 70%);
+            border-radius: 50%;
+            animation: twinkleStar 3s ease-in-out infinite;
+            pointer-events: none;
+            box-shadow: 0 0 8px rgba(255,255,200,0.5);
+        }
+        
+        @keyframes twinkleStar {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 15px rgba(255,255,200,0.9); }
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px 16px 80px 16px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 550px;
+                padding: 30px 20px 80px 20px;
+            }
+        }
+        
+        @keyframes softPulse {
+            0% { transform: scale(1); box-shadow: 0 5px 15px rgba(180, 120, 255, 0.3); }
+            50% { transform: scale(1.02); box-shadow: 0 5px 25px rgba(200, 140, 255, 0.7); }
+            100% { transform: scale(1); box-shadow: 0 5px 15px rgba(180, 120, 255, 0.3); }
+        }
+        
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 5px rgba(200, 140, 255, 0.5); }
+            100% { text-shadow: 0 0 25px rgba(220, 160, 255, 0.9); }
+        }
+        
+        .avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #d4a5ff;
+            display: block;
+            margin: 0 auto 15px;
+            box-shadow: 0 10px 30px rgba(180, 100, 255, 0.5);
+            cursor: default;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .avatar:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 35px rgba(200, 120, 255, 0.7);
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+            text-align: center;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            color: #fff;
+            text-transform: uppercase;
+            text-shadow: 0 0 25px rgba(200, 140, 255, 0.9);
+            animation: glowPulse 2s infinite alternate;
+            font-weight: 400;
+        }
+        
+        /* ГАЛЕРЕЯ (карусель) */
+        .gallery-carousel {
             background: rgba(50, 30, 80, 0.85);
             border-radius: 30px;
             padding: 20px;
@@ -48,15 +127,16 @@
             text-align: center;
         }
         
-        .photo-gallery-title {
-            font-size: 1.6rem;
+        .gallery-title {
+            font-size: 1.5rem;
             margin-bottom: 15px;
             color: #fff;
             text-shadow: 0 0 10px #d4a5ff;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            font-weight: 400;
         }
         
-        .gallery-carousel {
+        .carousel-container {
             position: relative;
             width: 100%;
             overflow: hidden;
@@ -67,9 +147,8 @@
         
         .carousel-track {
             display: flex;
-            transition: transform 0.2s ease-out;
+            transition: transform 0.3s ease-out;
             cursor: grab;
-            will-change: transform;
         }
         
         .carousel-track:active {
@@ -93,11 +172,40 @@
             display: block;
         }
         
+        .carousel-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            gap: 15px;
+        }
+        
+        .nav-btn {
+            background: rgba(80, 50, 130, 0.8);
+            border: 2px solid #d4a5ff;
+            color: white;
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        
+        .nav-btn:hover {
+            background: #d4a5ff;
+            color: #1a0a2a;
+            transform: scale(1.05);
+        }
+        
         .carousel-indicators {
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin-top: 15px;
+            margin-top: 12px;
         }
         
         .indicator {
@@ -116,57 +224,7 @@
             box-shadow: 0 0 10px #d4a5ff;
         }
         
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px 16px 80px 16px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        @media (min-width: 768px) { .container { max-width: 550px; padding: 30px 20px 80px 20px; } }
-        
-        @keyframes softPulse {
-            0% { transform: scale(1); box-shadow: 0 5px 15px rgba(180, 120, 255, 0.3); }
-            50% { transform: scale(1.02); box-shadow: 0 5px 25px rgba(200, 140, 255, 0.7); }
-            100% { transform: scale(1); box-shadow: 0 5px 15px rgba(180, 120, 255, 0.3); }
-        }
-        
-        @keyframes glowPulse {
-            0% { text-shadow: 0 0 5px rgba(200, 140, 255, 0.5); }
-            100% { text-shadow: 0 0 25px rgba(220, 160, 255, 0.9); }
-        }
-        
-        .avatar {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #d4a5ff;
-            display: block;
-            margin: 0 auto 15px;
-            box-shadow: 0 10px 30px rgba(180, 100, 255, 0.5);
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        .avatar:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 35px rgba(200, 120, 255, 0.7);
-        }
-        
-        h1 {
-            font-size: 3.8rem;
-            text-align: center;
-            letter-spacing: 2px;
-            margin-bottom: 25px;
-            color: #fff;
-            text-transform: uppercase;
-            text-shadow: 0 0 25px rgba(200, 140, 255, 0.9);
-            animation: glowPulse 2s infinite alternate;
-            font-weight: 400;
-        }
-        
+        /* ПОСТЫ */
         .posts-block {
             background: rgba(50, 30, 80, 0.85);
             border-radius: 30px;
@@ -195,16 +253,14 @@
             color: #d4a5ff;
             margin-bottom: 10px;
             font-weight: 400;
-            letter-spacing: 0.5px;
         }
         
         .post-title {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             margin-bottom: 12px;
             color: #fff;
             word-break: break-word;
             font-weight: 400;
-            letter-spacing: 1px;
         }
         
         .post-content {
@@ -222,10 +278,9 @@
             color: #e0b0ff;
             text-decoration: underline;
             word-break: break-all;
-            font-weight: 400;
         }
         
-        /* КАРУСЕЛЬ ВНУТРИ ПОСТА */
+        /* КАРУСЕЛЬ ВНУТРИ ПОСТА (для нескольких медиа) */
         .post-media-carousel {
             position: relative;
             width: 100%;
@@ -238,9 +293,8 @@
         
         .post-media-track {
             display: flex;
-            transition: transform 0.2s ease-out;
+            transition: transform 0.3s ease-out;
             cursor: grab;
-            will-change: transform;
         }
         
         .post-media-track:active {
@@ -253,13 +307,11 @@
             justify-content: center;
             align-items: center;
             background: #1a0a2a;
-            min-height: 200px;
         }
         
         .post-media-slide img {
             width: 100%;
             height: auto;
-            max-height: 500px;
             object-fit: contain;
             pointer-events: none;
             display: block;
@@ -267,13 +319,14 @@
         
         .post-media-slide iframe {
             width: 100%;
-            height: 300px;
+            height: auto;
+            aspect-ratio: 16 / 9;
             border: none;
         }
         
         .post-media-slide video {
             width: 100%;
-            max-height: 500px;
+            height: auto;
             object-fit: contain;
         }
         
@@ -300,185 +353,49 @@
             box-shadow: 0 0 8px #d4a5ff;
         }
         
+        /* Кнопки навигации внутри поста */
+        .post-media-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            gap: 15px;
+        }
+        
+        .post-nav-btn {
+            background: rgba(80, 50, 130, 0.8);
+            border: 2px solid #d4a5ff;
+            color: white;
+            font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        
+        .post-nav-btn:hover {
+            background: #d4a5ff;
+            color: #1a0a2a;
+            transform: scale(1.05);
+        }
+        
+        @media (max-width: 480px) {
+            .post-nav-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+        }
+        
         .loading {
             text-align: center;
             padding: 40px;
             color: #d4a5ff;
-            font-size: 1.2rem;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(20, 5, 40, 0.98);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(10px);
-        }
-        
-        .modal.show { display: flex; }
-        
-        .modal-content {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border: 4px solid #d4a5ff;
-            border-radius: 25px;
-            box-shadow: 0 0 50px rgba(180, 100, 255, 0.9);
-            cursor: pointer;
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: #fff;
-            font-size: 3rem;
-            cursor: pointer;
-            text-shadow: 0 0 20px #d4a5ff;
-            z-index: 2001;
-            transition: transform 0.2s;
-        }
-        
-        .modal-close:hover {
-            transform: scale(1.1);
-        }
-        
-        .modal-prev, .modal-next {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(80, 50, 130, 0.8);
-            border: 2px solid #d4a5ff;
-            color: white;
-            font-size: 2rem;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            z-index: 2001;
-            backdrop-filter: blur(4px);
-        }
-        
-        .modal-prev { left: 20px; }
-        .modal-next { right: 20px; }
-        
-        .modal-prev:hover, .modal-next:hover {
-            background: #d4a5ff;
-            color: #1a0a2a;
-            transform: translateY(-50%) scale(1.1);
-        }
-        
-        @media (max-width: 768px) {
-            .modal-prev, .modal-next {
-                width: 40px;
-                height: 40px;
-                font-size: 1.5rem;
-            }
-        }
-        
-        .divider {
-            text-align: center; margin: 20px 0 10px; color: #d4a5ff; font-size: 1.5rem;
-            letter-spacing: 5px;
-            text-shadow: 0 0 15px rgba(200, 140, 255, 0.8);
-        }
-        
-        .arrow-down { 
-            text-align: center; margin: 10px 0; color: #d4a5ff; font-size: 1.5rem;
-            text-shadow: 0 0 10px rgba(200, 140, 255, 0.6);
-        }
-        
-        .section-title {
-            font-size: 1.8rem;
-            text-align: center;
-            margin: 20px 0 15px;
-            color: #fff;
-            text-transform: uppercase;
-            text-shadow: 0 0 12px rgba(200, 140, 255, 0.6);
-            letter-spacing: 2px;
-        }
-        
-        .section-subtitle {
-            font-size: 1rem;
-            text-align: center;
-            margin: 10px 0 15px;
-            color: #e8d0ff;
-            text-transform: none;
-            line-height: 1.5;
-        }
-        
-        .block, .contacts-block {
-            background: rgba(50, 30, 80, 0.85);
-            border-radius: 30px;
-            padding: 25px 18px;
-            margin: 25px 0;
-            border: 1px solid #d4a5ff;
-            box-shadow: 0 10px 30px rgba(120, 60, 200, 0.4);
-            backdrop-filter: blur(8px);
-        }
-        
-        .faq-item {
-            margin-bottom: 12px;
-            border: 1px solid #d4a5ff;
-            border-radius: 20px;
-            overflow: hidden;
-            background: rgba(70, 40, 110, 0.8);
-        }
-        
-        .faq-question {
-            background: rgba(90, 55, 140, 0.9);
-            padding: 16px 18px;
-            font-size: 1.1rem;
-            color: #fff;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            text-transform: none;
-            width: 100%;
-            text-align: left;
-            border: none;
-            transition: background-color 0.2s;
-        }
-        
-        .faq-question:hover { background: rgba(120, 75, 180, 0.9); }
-        
-        .faq-question::after {
-            content: "▼";
-            font-size: 0.9rem;
-            color: #d4a5ff;
-            transition: transform 0.2s;
-        }
-        
-        .faq-question.active::after {
-            transform: rotate(180deg);
-        }
-        
-        .faq-answer {
-            background: rgba(50, 30, 85, 0.9);
-            padding: 0 18px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.2s ease-out;
-            color: #e8d0ff;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            border-top: 0 solid #d4a5ff;
-        }
-        
-        .faq-answer.show { 
-            padding: 16px 18px;
-            max-height: 600px;
-            border-top-width: 1px;
+            font-weight: 400;
         }
         
         .button {
@@ -488,16 +405,17 @@
             text-decoration: none;
             padding: 16px 18px;
             border-radius: 50px;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             text-align: center;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             width: 100%;
             margin-bottom: 10px;
             border: 2px solid #d4a5ff;
             box-shadow: 0 5px 20px rgba(140, 80, 220, 0.4);
             transition: all 0.2s ease;
             animation: softPulse 3s infinite;
+            font-weight: 400;
         }
         
         .button:hover {
@@ -512,13 +430,18 @@
             transform: scale(0.98);
         }
         
-        .button-small { 
-            font-size: 1rem; 
+        .button-small {
+            font-size: 1rem;
             padding: 14px 16px;
             animation: softPulse 4s infinite;
         }
         
-        .button-group { display: flex; flex-direction: column; gap: 12px; margin: 15px 0; }
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 15px 0;
+        }
         
         .scroll-top {
             position: fixed;
@@ -577,13 +500,19 @@
             animation: softPulse 2.5s infinite;
         }
         
-        .chat-button:hover { 
+        .chat-button:hover {
             transform: scale(1.1);
             border-color: #f0ccff;
         }
         
-        .chat-button:active { transform: scale(0.95); }
-        .chat-button span { font-size: 2rem; color: #fff; }
+        .chat-button:active {
+            transform: scale(0.95);
+        }
+        
+        .chat-button span {
+            font-size: 2rem;
+            color: #fff;
+        }
         
         .chat-menu {
             position: absolute;
@@ -595,11 +524,13 @@
             border: 2px solid #d4a5ff;
             padding: 15px;
             display: none;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(8px);
         }
         
-        .chat-menu.show { display: block; }
+        .chat-menu.show {
+            display: block;
+        }
         
         .chat-menu-item {
             display: block;
@@ -612,6 +543,7 @@
             font-size: 1.1rem;
             border: 2px solid #d4a5ff;
             transition: all 0.2s;
+            font-weight: 400;
         }
         
         .chat-menu-item:hover {
@@ -629,15 +561,118 @@
             font-size: 0.8rem;
         }
         
-        .footer-email { margin-top: 10px; }
-        .footer-email a { 
-            color: #d4a5ff; 
-            text-decoration: none; 
+        .footer-email {
+            margin-top: 10px;
+        }
+        
+        .footer-email a {
+            color: #d4a5ff;
+            text-decoration: none;
             border-bottom: 1px dotted #d4a5ff;
             transition: color 0.2s;
         }
-        .footer-email a:hover { color: #f0ccff; }
-        .copyright { color: #c0a0e0; }
+        
+        .footer-email a:hover {
+            color: #f0ccff;
+        }
+        
+        .copyright {
+            color: #c0a0e0;
+        }
+        
+        .divider, .arrow-down {
+            text-align: center;
+            margin: 20px 0 10px;
+            color: #d4a5ff;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(200, 140, 255, 0.6);
+        }
+        
+        .section-title {
+            font-size: 1.6rem;
+            text-align: center;
+            margin: 20px 0 15px;
+            color: #fff;
+            text-transform: none;
+            text-shadow: 0 0 12px rgba(200, 140, 255, 0.6);
+            font-weight: 400;
+        }
+        
+        .section-subtitle {
+            font-size: 1rem;
+            text-align: center;
+            margin: 10px 0 15px;
+            color: #e8d0ff;
+            font-weight: 400;
+        }
+        
+        .block, .contacts-block {
+            background: rgba(50, 30, 80, 0.85);
+            border-radius: 30px;
+            padding: 25px 18px;
+            margin: 25px 0;
+            border: 1px solid #d4a5ff;
+            box-shadow: 0 10px 30px rgba(120, 60, 200, 0.4);
+            backdrop-filter: blur(8px);
+        }
+        
+        .faq-item {
+            margin-bottom: 12px;
+            border: 1px solid #d4a5ff;
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(70, 40, 110, 0.8);
+        }
+        
+        .faq-question {
+            background: rgba(90, 55, 140, 0.9);
+            padding: 16px 18px;
+            font-size: 1.1rem;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            text-align: left;
+            border: none;
+            transition: background-color 0.2s;
+            font-weight: 400;
+        }
+        
+        .faq-question:hover {
+            background: rgba(120, 75, 180, 0.9);
+        }
+        
+        .faq-question::after {
+            content: "▼";
+            font-size: 0.9rem;
+            color: #d4a5ff;
+            transition: transform 0.2s;
+        }
+        
+        .faq-question.active::after {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            background: rgba(50, 30, 85, 0.9);
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            color: #e8d0ff;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            border-top: 0 solid #d4a5ff;
+            font-weight: 400;
+        }
+        
+        .faq-answer.show {
+            padding: 16px 18px;
+            max-height: 600px;
+            border-top-width: 1px;
+        }
         
         .gallery-hint {
             display: none;
@@ -645,6 +680,10 @@
     </style>
 </head>
 <body>
+    <!-- ЗВЁЗДЫ НА ФОНЕ -->
+    <div class="stars" id="starsContainer"></div>
+    
+    <!-- Модальное окно (оставлено только для фотографий из постов, если нужно) -->
     <div class="modal" id="photoModal" onclick="closeModalOnBackground(event)">
         <span class="modal-close" onclick="closeModal()">×</span>
         <div class="modal-prev" onclick="prevImage(event)">‹</div>
@@ -662,77 +701,47 @@
     </div>
 
     <div class="container">
-        <img class="avatar" src="https://taplink.st/a/5/8/4/d/daec4f.jpg?1" alt="kvacan" onclick="openAvatarModal()">
+        <img class="avatar" src="https://taplink.st/a/5/8/4/d/daec4f.jpg?1" alt="kvacan">
         <h1>KVACAN</h1>
         
         <div class="divider">✦ ✦ ✦</div>
         
-        <div class="photo-gallery">
-            <div class="photo-gallery-title">ГАЛЕРЕЯ ФОТОГРАФИЙ</div>
-            <div class="gallery-carousel" id="galleryCarousel">
-                <div class="carousel-track" id="carouselTrack">
+        <!-- ГАЛЕРЕЯ (карусель) -->
+        <div class="gallery-carousel">
+            <div class="gallery-title">Галерея фотографий</div>
+            <div class="carousel-container" id="galleryCarousel">
+                <div class="carousel-track" id="galleryTrack">
                     <div class="carousel-slide"><img src="https://taplink.st/p/3/f/f/4/69250557.jpg?0" alt="Фото 1" loading="lazy"></div>
                     <div class="carousel-slide"><img src="https://taplink.st/p/4/f/f/b/69250559.jpg?0" alt="Фото 2" loading="lazy"></div>
                     <div class="carousel-slide"><img src="https://taplink.st/p/2/2/3/c/69471405.jpg?0" alt="Фото 3" loading="lazy"></div>
                 </div>
             </div>
-            <div class="carousel-indicators" id="carouselIndicators"></div>
+            <div class="carousel-nav">
+                <button class="nav-btn" id="prevGallery">‹</button>
+                <button class="nav-btn" id="nextGallery">›</button>
+            </div>
+            <div class="carousel-indicators" id="galleryIndicators"></div>
         </div>
         
         <div class="arrow-down">▼</div>
         
+        <!-- БЛОК ПОСТОВ ИЗ GOOGLE ТАБЛИЦЫ -->
         <div class="posts-block">
             <div class="section-title">Актуальное</div>
             <div id="postsContainer"><div class="loading">Загрузка постов...</div></div>
         </div>
         
+        <!-- ОСТАЛЬНЫЕ БЛОКИ (FAQ, СОЦСЕТИ, КОНТАКТЫ, ПОДДЕРЖКА) -->
         <div class="block">
             <div class="section-title">Часто задаваемые вопросы</div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Кто такой kvacan?</div>
-                <div class="faq-answer">kvacan — это Вячеслав. Человек, который решил не откладывать, а просто начать снимать. Здесь нет сценического образа или вымышленной личности. Всё по-настоящему.</div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Почему в ссылках tvacan?</div>
-                <div class="faq-answer">kvacan — это ник. То самое имя, которое появилось в самом начале и под которым человека знают в сети. Оно не менялось и не поменяется.<br><br>Но с адресами в социальных сетях всё устроено немного сложнее. Когда стали собирать все ссылки в одном месте, оказалось, что не везде можно использовать одно и то же имя. Где-то kvacan уже был занят, где-то оказался свободен, но хотелось, чтобы все адреса были одинаковыми. Чтобы человек зашёл на сайт, нажал на иконку и попал куда нужно, не запоминая два или три разных варианта.<br><br>Поэтому выбрали tvacan. Всего одна буква — и порядок. Теперь все соцсети ведут на один адрес. Никакой путаницы, никаких лишних вопросов.<br><br>А kvacan остаётся тем же, чем и был — ником, по которому человека знают. Всё просто.</div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Зачем создан этот сайт?</div>
-                <div class="faq-answer">Это не проект и не портфолио. Это просто навигатор, входная дверь во все социальные сети сразу. Минимум текста, максимум пользы — все ссылки в одном месте.</div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Что особенного в контенте?</div>
-                <div class="faq-answer">Честность. Никаких постановочных студий, дорогих декораций или фальшивых эмоций. Только живые видео и фото, снятые в моменте. То, что окружает каждый день.</div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Как часто выходит новый контент?</div>
-                <div class="faq-answer">Контент появляется по мере того, как идёт жизнь. Маленькие шаги, регулярное движение, никаких жёстких дедлайнов — только искреннее желание делиться происходящим.</div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Чем контент будет отличаться в будущем?</div>
-                <div class="faq-answer">С развитием автора будет расти и контент. Главная задача — чтобы и создателю, и зрителю было комфортно. Форматы могут меняться, но основа останется — живые эмоции и честность.</div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Можно ли общаться с автором?</div>
-                <div class="faq-answer">Да. Все социальные сети открыты, ссылки на них есть на этом сайте. Можно писать, комментировать, обсуждать — диалог приветствуется.</div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Как можно поддержать?</div>
-                <div class="faq-answer">Если контент заходит и хочется сказать спасибо делом — можно поддержать донатом. Любая помощь греет и мотивирует снимать дальше. Ссылка на донат тоже здесь.</div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Это надолго?</div>
-                <div class="faq-answer">Пока есть желание снимать и делиться — контент будет жить. А желание есть.</div>
-            </div>
+            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Кто такой kvacan?</div><div class="faq-answer">kvacan — это Вячеслав. Человек, который решил не откладывать, а просто начать снимать. Здесь нет сценического образа или вымышленной личности. Всё по-настоящему.</div></div>
+            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Почему в ссылках tvacan?</div><div class="faq-answer">kvacan — это ник. Чтобы все соцсети были на одном адресе, выбрали tvacan. Всего одна буква — и порядок. Теперь все соцсети ведут на один адрес. Никакой путаницы.<br><br>А kvacan остаётся тем же, чем и был — ником, по которому человека знают. Всё просто.</div></div>
+            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Зачем создан этот сайт?</div><div class="faq-answer">Это навигатор, входная дверь во все социальные сети сразу. Минимум текста, максимум пользы — все ссылки в одном месте.</div></div>
+            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Что особенного в контенте?</div><div class="faq-answer">Честность. Никаких постановочных студий, дорогих декораций или фальшивых эмоций. Только живые видео и фото, снятые в моменте.</div></div>
+            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Как часто выходит новый контент?</div><div class="faq-answer">Контент появляется по мере того, как идёт жизнь. Без жёстких дедлайнов.</div></div>
+            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Можно ли общаться с автором?</div><div class="faq-answer">Да. Все социальные сети открыты, ссылки на них есть на этом сайте. Диалог приветствуется.</div></div>
+            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Как можно поддержать?</div><div class="faq-answer">Донат по ссылкам ниже. Любая помощь греет и мотивирует снимать дальше.</div></div>
+            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Это надолго?</div><div class="faq-answer">Пока есть желание снимать и делиться — контент будет жить. А желание есть.</div></div>
         </div>
         
         <div class="arrow-down">▼</div>
@@ -764,8 +773,8 @@
             <div class="section-title">Поддержка</div>
             <div class="section-subtitle">Если заходит — можно поддержать донатом. Любая помощь греет и мотивирует снимать дальше.</div>
             <div class="button-group">
-                <a href="https://pay.cloudtips.ru/p/a64a46d8" class="button button-small">DONATION KVACAN</a>
-                <a href="https://finance.ozon.ru/apps/sbp/ozonbankpay/019a9ca8-77bb-7f0f-a532-53c7dca11b0b" class="button button-small">DONATION KVACAN</a>
+                <a href="https://pay.cloudtips.ru/p/a64a46d8" class="button button-small">DONATION</a>
+                <a href="https://finance.ozon.ru/apps/sbp/ozonbankpay/019a9ca8-77bb-7f0f-a532-53c7dca11b0b" class="button button-small">DONATION</a>
             </div>
         </div>
         
@@ -776,115 +785,113 @@
     </div>
 
     <script>
-        // ==================== КАРУСЕЛЬ ГАЛЕРЕИ ====================
-        const track = document.getElementById('carouselTrack');
-        const slides = document.querySelectorAll('.carousel-slide');
-        const indicatorsContainer = document.getElementById('carouselIndicators');
-        let currentIndex = 0;
-        let startX = 0;
-        let isDragging = false;
+        // ==================== ЗВЁЗДЫ ====================
+        const starsContainer = document.getElementById('starsContainer');
+        for (let i = 0; i < 80; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 4 + 2;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            const duration = Math.random() * 5 + 2;
+            star.style.animationDuration = `${duration}s`;
+            const delay = Math.random() * 5;
+            star.style.animationDelay = `${delay}s`;
+            starsContainer.appendChild(star);
+        }
         
-        slides.forEach((_, i) => {
-            const indicator = document.createElement('div');
-            indicator.classList.add('indicator');
-            if (i === 0) indicator.classList.add('active');
-            indicator.addEventListener('click', () => goToSlide(i));
-            indicatorsContainer.appendChild(indicator);
+        // ==================== ГАЛЕРЕЯ КАРУСЕЛЬ ====================
+        const galleryTrack = document.getElementById('galleryTrack');
+        const gallerySlides = document.querySelectorAll('.carousel-slide');
+        const prevBtn = document.getElementById('prevGallery');
+        const nextBtn = document.getElementById('nextGallery');
+        const indicatorsContainer = document.getElementById('galleryIndicators');
+        let galleryCurrent = 0;
+        let galleryStartX = 0;
+        let galleryIsDragging = false;
+        
+        // Создание индикаторов
+        gallerySlides.forEach((_, i) => {
+            const ind = document.createElement('div');
+            ind.classList.add('indicator');
+            if (i === 0) ind.classList.add('active');
+            ind.addEventListener('click', () => goToGallerySlide(i));
+            indicatorsContainer.appendChild(ind);
         });
+        const indicators = document.querySelectorAll('#galleryIndicators .indicator');
         
-        const indicators = document.querySelectorAll('.indicator');
-        
-        function updateIndicators() {
+        function updateGalleryIndicators() {
             indicators.forEach((ind, i) => {
-                if (i === currentIndex) {
-                    ind.classList.add('active');
-                } else {
-                    ind.classList.remove('active');
-                }
+                if (i === galleryCurrent) ind.classList.add('active');
+                else ind.classList.remove('active');
             });
         }
         
-        function goToSlide(index) {
+        function goToGallerySlide(index) {
             if (index < 0) index = 0;
-            if (index >= slides.length) index = slides.length - 1;
-            currentIndex = index;
-            track.style.transform = `translateX(-${currentIndex * 100}%)`;
-            updateIndicators();
+            if (index >= gallerySlides.length) index = gallerySlides.length - 1;
+            galleryCurrent = index;
+            galleryTrack.style.transform = `translateX(-${galleryCurrent * 100}%)`;
+            updateGalleryIndicators();
         }
         
-        function nextSlide() {
-            if (currentIndex < slides.length - 1) {
-                goToSlide(currentIndex + 1);
-            } else {
-                goToSlide(0);
-            }
+        function nextGallery() {
+            if (galleryCurrent < gallerySlides.length - 1) goToGallerySlide(galleryCurrent + 1);
+            else goToGallerySlide(0);
         }
         
-        function prevSlide() {
-            if (currentIndex > 0) {
-                goToSlide(currentIndex - 1);
-            } else {
-                goToSlide(slides.length - 1);
-            }
+        function prevGallery() {
+            if (galleryCurrent > 0) goToGallerySlide(galleryCurrent - 1);
+            else goToGallerySlide(gallerySlides.length - 1);
         }
         
-        track.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            isDragging = true;
+        prevBtn.addEventListener('click', prevGallery);
+        nextBtn.addEventListener('click', nextGallery);
+        
+        // Свайп для галереи
+        const galleryContainer = document.querySelector('.carousel-container');
+        galleryContainer.addEventListener('touchstart', (e) => {
+            galleryStartX = e.touches[0].clientX;
+            galleryIsDragging = true;
         });
-        
-        track.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
+        galleryContainer.addEventListener('touchmove', (e) => {
+            if (!galleryIsDragging) return;
             const moveX = e.touches[0].clientX;
-            const diff = moveX - startX;
+            const diff = moveX - galleryStartX;
             if (Math.abs(diff) > 50) {
-                if (diff > 0) {
-                    prevSlide();
-                } else {
-                    nextSlide();
-                }
-                isDragging = false;
+                if (diff > 0) prevGallery();
+                else nextGallery();
+                galleryIsDragging = false;
             }
         });
+        galleryContainer.addEventListener('touchend', () => { galleryIsDragging = false; });
         
-        track.addEventListener('touchend', () => {
-            isDragging = false;
+        // Мышь для десктопа
+        galleryContainer.addEventListener('mousedown', (e) => {
+            galleryStartX = e.clientX;
+            galleryIsDragging = true;
+            galleryContainer.style.cursor = 'grabbing';
         });
-        
-        track.addEventListener('mousedown', (e) => {
-            startX = e.clientX;
-            isDragging = true;
-            track.style.cursor = 'grabbing';
-        });
-        
         window.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
+            if (!galleryIsDragging) return;
             const moveX = e.clientX;
-            const diff = moveX - startX;
+            const diff = moveX - galleryStartX;
             if (Math.abs(diff) > 50) {
-                if (diff > 0) {
-                    prevSlide();
-                } else {
-                    nextSlide();
-                }
-                isDragging = false;
-                track.style.cursor = 'grab';
+                if (diff > 0) prevGallery();
+                else nextGallery();
+                galleryIsDragging = false;
+                galleryContainer.style.cursor = 'grab';
             }
         });
-        
         window.addEventListener('mouseup', () => {
-            isDragging = false;
-            track.style.cursor = 'grab';
+            galleryIsDragging = false;
+            galleryContainer.style.cursor = 'grab';
         });
+        galleryContainer.style.cursor = 'grab';
         
-        track.style.cursor = 'grab';
-        
-        // ==================== ПАРСИНГ CSV ====================
-        let currentGallerySet = [];
-        let currentGalleryIndex = 0;
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
+        // ==================== ЗАГРУЗКА ПОСТОВ ИЗ GOOGLE ТАБЛИЦЫ ====================
         const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdSZzujU8slFBMeyFuo5r_Wo-IGtSD2XenkggmvSVDHxueB5v0JsZ2X90SPR5XlEb_JHXGYt2GCV-w/pub?output=csv";
         
         function parseCSV(csvText) {
@@ -896,26 +903,18 @@
             
             for (let i = 0; i < csvText.length; i++) {
                 const ch = csvText[i];
-                
-                if (ch === '"') {
-                    inQuote = !inQuote;
-                } else if (ch === ',' && !inQuote) {
-                    row.push(current);
-                    current = '';
-                } else if (ch === '\n' && !inQuote) {
+                if (ch === '"') inQuote = !inQuote;
+                else if (ch === ',' && !inQuote) { row.push(current); current = ''; }
+                else if (ch === '\n' && !inQuote) {
                     if (current !== '' || row.length > 0) {
                         row.push(current);
-                        if (!isFirstRow) {
-                            if (row.length >= 2 && row[1] && row[1].trim() && 
-                                row[1].toLowerCase() !== 'заголовок' && 
-                                row[1].toLowerCase() !== 'title') {
-                                posts.push({
-                                    date: row[0] ? row[0].replace(/^"|"$/g, '').trim() : '',
-                                    title: row[1] ? row[1].replace(/^"|"$/g, '').trim() : '',
-                                    text: row[2] ? row[2].replace(/^"|"$/g, '').trim() : '',
-                                    mediaUrl: row[3] ? row[3].replace(/^"|"$/g, '').trim() : ''
-                                });
-                            }
+                        if (!isFirstRow && row.length >= 2 && row[1] && row[1].trim() && row[1].toLowerCase() !== 'заголовок' && row[1].toLowerCase() !== 'title') {
+                            posts.push({
+                                date: row[0] ? row[0].replace(/^"|"$/g, '').trim() : '',
+                                title: row[1] ? row[1].replace(/^"|"$/g, '').trim() : '',
+                                text: row[2] ? row[2].replace(/^"|"$/g, '').trim() : '',
+                                mediaUrl: row[3] ? row[3].replace(/^"|"$/g, '').trim() : ''
+                            });
                         }
                         isFirstRow = false;
                     }
@@ -925,48 +924,29 @@
                     current += ch;
                 }
             }
-            
             if (current !== '' || row.length > 0) {
                 row.push(current);
-                if (!isFirstRow) {
-                    if (row.length >= 2 && row[1] && row[1].trim() && 
-                        row[1].toLowerCase() !== 'заголовок' && 
-                        row[1].toLowerCase() !== 'title') {
-                        posts.push({
-                            date: row[0] ? row[0].replace(/^"|"$/g, '').trim() : '',
-                            title: row[1] ? row[1].replace(/^"|"$/g, '').trim() : '',
-                            text: row[2] ? row[2].replace(/^"|"$/g, '').trim() : '',
-                            mediaUrl: row[3] ? row[3].replace(/^"|"$/g, '').trim() : ''
-                        });
-                    }
+                if (!isFirstRow && row.length >= 2 && row[1] && row[1].trim() && row[1].toLowerCase() !== 'заголовок' && row[1].toLowerCase() !== 'title') {
+                    posts.push({
+                        date: row[0] ? row[0].replace(/^"|"$/g, '').trim() : '',
+                        title: row[1] ? row[1].replace(/^"|"$/g, '').trim() : '',
+                        text: row[2] ? row[2].replace(/^"|"$/g, '').trim() : '',
+                        mediaUrl: row[3] ? row[3].replace(/^"|"$/g, '').trim() : ''
+                    });
                 }
             }
-            
             return posts;
         }
         
-        async function loadPosts() {
-            try {
-                const response = await fetch(CSV_URL);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const csvText = await response.text();
-                const posts = parseCSV(csvText);
-                renderPosts(posts);
-            } catch(e) {
-                console.error('Ошибка:', e);
-                document.getElementById('postsContainer').innerHTML = '<div class="section-subtitle" style="color:#ff8888;">❌ Ошибка загрузки постов</div>';
-            }
-        }
-
         function isImageUrl(url) {
             return /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url.split('?')[0]);
         }
-
+        
         function isVideoUrl(url) {
             return /\.(mp4|webm|mov|avi|mkv)$/i.test(url.split('?')[0]) || 
                    url.includes('youtube.com/watch') || url.includes('youtu.be') || url.includes('vimeo.com');
         }
-
+        
         function getVideoEmbedUrl(url) {
             if (url.includes('youtube.com/watch')) {
                 let videoId = new URL(url).searchParams.get('v');
@@ -981,23 +961,23 @@
             return url;
         }
         
-        // ==================== КАРУСЕЛЬ ДЛЯ МЕДИА В ПОСТЕ ====================
+        // ==================== КАРУСЕЛЬ ВНУТРИ ПОСТА (с кнопками и индикаторами) ====================
         function createPostCarousel(mediaUrls, postId) {
             if (!mediaUrls || mediaUrls.length === 0) return '';
             
             const items = mediaUrls.map(url => {
-                const trimmedUrl = url.trim();
-                if (isImageUrl(trimmedUrl)) {
-                    return `<div class="post-media-slide"><img src="${trimmedUrl}" loading="lazy"></div>`;
-                } else if (isVideoUrl(trimmedUrl)) {
-                    const embedUrl = getVideoEmbedUrl(trimmedUrl);
-                    if (trimmedUrl.includes('youtube.com') || trimmedUrl.includes('youtu.be') || trimmedUrl.includes('vimeo.com')) {
-                        return `<div class="post-media-slide"><iframe src="${embedUrl}" loading="lazy" allowfullscreen allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture"></iframe></div>`;
+                const trimmed = url.trim();
+                if (isImageUrl(trimmed)) {
+                    return `<div class="post-media-slide"><img src="${trimmed}" loading="lazy"></div>`;
+                } else if (isVideoUrl(trimmed)) {
+                    const embed = getVideoEmbedUrl(trimmed);
+                    if (trimmed.includes('youtube.com') || trimmed.includes('youtu.be') || trimmed.includes('vimeo.com')) {
+                        return `<div class="post-media-slide"><iframe src="${embed}" loading="lazy" allowfullscreen allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture"></iframe></div>`;
                     } else {
-                        return `<div class="post-media-slide"><video controls preload="metadata"><source src="${trimmedUrl}"></video></div>`;
+                        return `<div class="post-media-slide"><video controls preload="metadata"><source src="${trimmed}"></video></div>`;
                     }
                 } else {
-                    return `<div class="post-media-slide"><a href="${trimmedUrl}" target="_blank" style="color:#d4a5ff; display:flex; align-items:center; justify-content:center; height:100%; padding:40px;">🔗 Открыть ссылку</a></div>`;
+                    return `<div class="post-media-slide"><a href="${trimmed}" target="_blank" style="color:#d4a5ff; display:flex; align-items:center; justify-content:center; height:100%; padding:40px;">Открыть ссылку</a></div>`;
                 }
             }).join('');
             
@@ -1006,12 +986,21 @@
                     ${mediaUrls.map((_, idx) => `<div class="post-indicator ${idx === 0 ? 'active' : ''}" data-index="${idx}"></div>`).join('')}
                 </div>` : '';
             
+            // Кнопки навигации (только если больше одного медиа)
+            const navHtml = mediaUrls.length > 1 ? `
+                <div class="post-media-nav">
+                    <button class="post-nav-btn post-nav-prev" data-post-id="${postId}">‹</button>
+                    <button class="post-nav-btn post-nav-next" data-post-id="${postId}">›</button>
+                </div>
+            ` : '';
+            
             return `
                 <div class="post-media-carousel" data-post-id="${postId}">
                     <div class="post-media-track" id="track-${postId}">
                         ${items}
                     </div>
                     ${indicatorsHtml}
+                    ${navHtml}
                 </div>
             `;
         }
@@ -1021,7 +1010,6 @@
                 const postId = carousel.dataset.postId;
                 const track = document.getElementById(`track-${postId}`);
                 if (!track) return;
-                
                 const slides = track.querySelectorAll('.post-media-slide');
                 if (slides.length <= 1) return;
                 
@@ -1030,14 +1018,13 @@
                 let isDragging = false;
                 
                 const indicators = document.querySelectorAll(`#indicators-${postId} .post-indicator`);
+                const prevBtn = carousel.querySelector('.post-nav-prev');
+                const nextBtn = carousel.querySelector('.post-nav-next');
                 
                 function updateIndicators() {
                     indicators.forEach((ind, i) => {
-                        if (i === currentIdx) {
-                            ind.classList.add('active');
-                        } else {
-                            ind.classList.remove('active');
-                        }
+                        if (i === currentIdx) ind.classList.add('active');
+                        else ind.classList.remove('active');
                     });
                 }
                 
@@ -1050,21 +1037,16 @@
                 }
                 
                 function nextSlide() {
-                    if (currentIdx < slides.length - 1) {
-                        goToSlide(currentIdx + 1);
-                    } else {
-                        goToSlide(0);
-                    }
+                    if (currentIdx < slides.length - 1) goToSlide(currentIdx + 1);
+                    else goToSlide(0);
                 }
                 
                 function prevSlide() {
-                    if (currentIdx > 0) {
-                        goToSlide(currentIdx - 1);
-                    } else {
-                        goToSlide(slides.length - 1);
-                    }
+                    if (currentIdx > 0) goToSlide(currentIdx - 1);
+                    else goToSlide(slides.length - 1);
                 }
                 
+                // Индикаторы
                 indicators.forEach(ind => {
                     ind.addEventListener('click', (e) => {
                         const idx = parseInt(e.target.dataset.index);
@@ -1072,130 +1054,71 @@
                     });
                 });
                 
+                // Кнопки навигации
+                if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+                if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+                
+                // Свайп
                 track.addEventListener('touchstart', (e) => {
                     startX = e.touches[0].clientX;
                     isDragging = true;
                 });
-                
                 track.addEventListener('touchmove', (e) => {
                     if (!isDragging) return;
                     const moveX = e.touches[0].clientX;
                     const diff = moveX - startX;
                     if (Math.abs(diff) > 50) {
-                        if (diff > 0) {
-                            prevSlide();
-                        } else {
-                            nextSlide();
-                        }
+                        if (diff > 0) prevSlide();
+                        else nextSlide();
                         isDragging = false;
                     }
                 });
+                track.addEventListener('touchend', () => { isDragging = false; });
                 
-                track.addEventListener('touchend', () => {
-                    isDragging = false;
-                });
-                
+                // Мышь
                 track.addEventListener('mousedown', (e) => {
                     startX = e.clientX;
                     isDragging = true;
                     track.style.cursor = 'grabbing';
                 });
-                
                 window.addEventListener('mousemove', (e) => {
                     if (!isDragging) return;
                     const moveX = e.clientX;
                     const diff = moveX - startX;
                     if (Math.abs(diff) > 50) {
-                        if (diff > 0) {
-                            prevSlide();
-                        } else {
-                            nextSlide();
-                        }
+                        if (diff > 0) prevSlide();
+                        else nextSlide();
                         isDragging = false;
                         track.style.cursor = 'grab';
                     }
                 });
-                
                 window.addEventListener('mouseup', () => {
                     isDragging = false;
                     track.style.cursor = 'grab';
                 });
-                
                 track.style.cursor = 'grab';
             });
         }
-
-        function openPostImage(url) {
-            currentGallerySet = [url];
-            currentGalleryIndex = 0;
-            updateModalImage();
-            document.getElementById('photoModal').classList.add('show');
-        }
-
-        function openAvatarModal() {
-            const avatarUrl = document.querySelector('.avatar')?.src;
-            if (avatarUrl) {
-                currentGallerySet = [avatarUrl];
-                currentGalleryIndex = 0;
-                updateModalImage();
-                document.getElementById('photoModal').classList.add('show');
+        
+        async function loadPosts() {
+            try {
+                const response = await fetch(CSV_URL);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const csvText = await response.text();
+                const posts = parseCSV(csvText);
+                renderPosts(posts);
+            } catch(e) {
+                console.error(e);
+                document.getElementById('postsContainer').innerHTML = '<div class="section-subtitle" style="color:#ff8888;">❌ Ошибка загрузки постов</div>';
             }
         }
-
-        function updateModalImage() {
-            const img = document.getElementById('modalImage');
-            if (currentGallerySet.length > 0 && currentGalleryIndex >= 0 && currentGalleryIndex < currentGallerySet.length) {
-                img.src = currentGallerySet[currentGalleryIndex];
-            }
-        }
-
-        function nextImage(event) {
-            if (event) event.stopPropagation();
-            if (currentGallerySet.length <= 1) return;
-            currentGalleryIndex = (currentGalleryIndex + 1) % currentGallerySet.length;
-            updateModalImage();
-        }
-
-        function prevImage(event) {
-            if (event) event.stopPropagation();
-            if (currentGallerySet.length <= 1) return;
-            currentGalleryIndex = (currentGalleryIndex - 1 + currentGallerySet.length) % currentGallerySet.length;
-            updateModalImage();
-        }
-
-        function handleTouchStart(event) {
-            touchStartX = event.touches[0].clientX;
-        }
-
-        function handleTouchEnd(event) {
-            if (currentGallerySet.length <= 1) return;
-            touchEndX = event.changedTouches[0].clientX;
-            const swipeThreshold = 50;
-            if (touchEndX < touchStartX - swipeThreshold) {
-                nextImage(event);
-            }
-            if (touchEndX > touchStartX + swipeThreshold) {
-                prevImage(event);
-            }
-        }
-
-        function closeModalOnBackground(event) {
-            if (event.target === document.getElementById('photoModal')) {
-                closeModal();
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('photoModal').classList.remove('show');
-        }
-
+        
         function renderPosts(posts) {
             const container = document.getElementById('postsContainer');
             if (!posts.length) {
-                container.innerHTML = '<div class="section-subtitle">📭 Пока нет постов</div>';
+                container.innerHTML = '<div class="section-subtitle">Пока нет постов</div>';
                 return;
             }
-            
             container.innerHTML = posts.map((post, idx) => {
                 let mediaHtml = '';
                 if (post.mediaUrl && post.mediaUrl.trim()) {
@@ -1214,10 +1137,9 @@
                     </div>
                 `;
             }).join('');
-            
             setTimeout(initPostCarousels, 50);
         }
-
+        
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/[&<>]/g, m => {
@@ -1227,19 +1149,72 @@
                 return m;
             });
         }
-
+        
+        // ==================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ====================
+        let currentGallerySet = [];
+        let currentGalleryIndex = 0;
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        function openPostImage(url) {
+            currentGallerySet = [url];
+            currentGalleryIndex = 0;
+            updateModalImage();
+            document.getElementById('photoModal').classList.add('show');
+        }
+        
+        function updateModalImage() {
+            const img = document.getElementById('modalImage');
+            if (currentGallerySet.length > 0 && currentGalleryIndex >= 0 && currentGalleryIndex < currentGallerySet.length) {
+                img.src = currentGallerySet[currentGalleryIndex];
+            }
+        }
+        
+        function nextImage(event) {
+            if (event) event.stopPropagation();
+            if (currentGallerySet.length <= 1) return;
+            currentGalleryIndex = (currentGalleryIndex + 1) % currentGallerySet.length;
+            updateModalImage();
+        }
+        
+        function prevImage(event) {
+            if (event) event.stopPropagation();
+            if (currentGallerySet.length <= 1) return;
+            currentGalleryIndex = (currentGalleryIndex - 1 + currentGallerySet.length) % currentGallerySet.length;
+            updateModalImage();
+        }
+        
+        function handleTouchStart(event) {
+            touchStartX = event.touches[0].clientX;
+        }
+        
+        function handleTouchEnd(event) {
+            if (currentGallerySet.length <= 1) return;
+            touchEndX = event.changedTouches[0].clientX;
+            const swipeThreshold = 50;
+            if (touchEndX < touchStartX - swipeThreshold) nextImage(event);
+            if (touchEndX > touchStartX + swipeThreshold) prevImage(event);
+        }
+        
+        function closeModalOnBackground(event) {
+            if (event.target === document.getElementById('photoModal')) closeModal();
+        }
+        
+        function closeModal() {
+            document.getElementById('photoModal').classList.remove('show');
+        }
+        
         document.addEventListener('copy', e => { e.preventDefault(); return false; });
         document.addEventListener('contextmenu', e => { e.preventDefault(); return false; });
         document.addEventListener('dragstart', e => { e.preventDefault(); return false; });
         
-        function toggleFaq(e) { 
-            e.classList.toggle('active'); 
-            let answer = e.nextElementSibling;
-            answer.classList.toggle('show');
+        function toggleFaq(e) {
+            e.classList.toggle('active');
+            e.nextElementSibling.classList.toggle('show');
         }
         
-        function toggleChat() { 
-            document.getElementById('chatMenu').classList.toggle('show'); 
+        function toggleChat() {
+            document.getElementById('chatMenu').classList.toggle('show');
         }
         
         document.addEventListener('click', function(e) {
@@ -1257,21 +1232,14 @@
         
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeModal();
-            if (e.key === 'ArrowLeft' && document.getElementById('photoModal').classList.contains('show')) {
-                prevImage(e);
-            }
-            if (e.key === 'ArrowRight' && document.getElementById('photoModal').classList.contains('show')) {
-                nextImage(e);
-            }
+            if (e.key === 'ArrowLeft' && document.getElementById('photoModal').classList.contains('show')) prevImage(e);
+            if (e.key === 'ArrowRight' && document.getElementById('photoModal').classList.contains('show')) nextImage(e);
         });
         
         window.addEventListener('scroll', function() {
             let scrollBtn = document.getElementById('scrollTop');
-            if (window.scrollY > 300) {
-                scrollBtn.classList.add('visible');
-            } else {
-                scrollBtn.classList.remove('visible');
-            }
+            if (window.scrollY > 300) scrollBtn.classList.add('visible');
+            else scrollBtn.classList.remove('visible');
         });
         
         function scrollToTop() {
