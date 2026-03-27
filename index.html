@@ -79,16 +79,8 @@
             border: 2px solid #d4a5ff;
             backdrop-filter: blur(8px);
             text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-        }
-        
-        .game-block:hover {
-            transform: scale(1.02);
-            border-color: #ffccff;
-            box-shadow: 0 0 30px rgba(200, 120, 255, 0.6);
         }
         
         .game-title {
@@ -105,6 +97,7 @@
             filter: drop-shadow(0 0 15px #ff66ff);
             cursor: pointer;
             transition: all 0.1s;
+            margin: 10px 0;
         }
         
         .game-skull:active {
@@ -136,6 +129,60 @@
             font-size: 1.8rem;
             font-weight: bold;
             color: #ffff88;
+        }
+        
+        .goal {
+            font-size: 0.9rem;
+            color: #ffaa88;
+            margin-top: 5px;
+        }
+        
+        .goal span {
+            color: #ffaa44;
+            font-weight: bold;
+        }
+        
+        .reset-btn {
+            background: linear-gradient(145deg, #5a3a8a, #3a2a6a);
+            border: 2px solid #d4a5ff;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        
+        .reset-btn:hover {
+            background: #7a5aaa;
+            transform: scale(1.05);
+        }
+        
+        .record {
+            font-size: 0.8rem;
+            color: #ffcc88;
+            margin-top: 5px;
+        }
+        
+        .congrats-message {
+            background: linear-gradient(135deg, #ffaa44, #ff6644);
+            border-radius: 20px;
+            padding: 15px;
+            margin-top: 15px;
+            animation: pulseGlow 0.5s ease infinite alternate;
+        }
+        
+        @keyframes pulseGlow {
+            from { box-shadow: 0 0 10px #ffaa44; }
+            to { box-shadow: 0 0 30px #ff6644; }
+        }
+        
+        .congrats-message a {
+            color: #fff;
+            text-decoration: underline;
+            font-weight: bold;
         }
         
         .container {
@@ -354,7 +401,6 @@
             transform: scale(1.1);
         }
         
-        /* Кнопки навигации */
         .modal-prev, .modal-next {
             position: absolute;
             top: 50%;
@@ -674,7 +720,10 @@
             <div class="game-title">💀 ЛОПНИ ЧЕРЕП 💀</div>
             <div class="game-skull" id="gameSkull">💀</div>
             <div class="score">Счёт: <span id="scoreCount">0</span></div>
-            <div class="section-subtitle">👆 нажми на череп! 👆</div>
+            <div class="goal">🎯 Цель: <span id="goalTarget">10,000</span> взрывов!</div>
+            <div class="record">🏆 Рекорд: <span id="recordCount">0</span></div>
+            <button class="reset-btn" id="resetBtn">🔄 Начать заново</button>
+            <div id="congratsMessage"></div>
         </div>
         
         <div class="gallery-container">
@@ -783,12 +832,89 @@
     </div>
 
     <script>
-        // ==================== ИГРА "ЛОПНИ ЧЕРЕП" ====================
-        let score = localStorage.getItem('skullScore') ? parseInt(localStorage.getItem('skullScore')) : 0;
-        const scoreElement = document.getElementById('scoreCount');
-        const gameSkull = document.getElementById('gameSkull');
+        // ==================== ЗВУК (создаём аудио контекст для клика) ====================
+        let popSound = null;
         
-        scoreElement.textContent = score;
+        function initAudio() {
+            try {
+                popSound = new Audio('data:audio/wav;base64,U3RlYWx0aCBib3R0bGUgb2YgY29kZSBpcyBsb25nLCBidXQgdGhlIHNvdW5kIGlzIGdlbmVyYXRlZCBieSB0aGUgYnJvd3NlciBvbiBjbGljay4gV2UgdXNlIHRoZSBXZWIgQXVkaW8gQVBJIHRvIHBsYXkgYSBzaG9ydCBiZWVwIHNvdW5kLg==');
+                // Если data URL не работает, создаём простой beep через AudioContext
+            } catch(e) {
+                console.log('Audio not supported');
+            }
+        }
+        
+        function playPopSound() {
+            try {
+                // Создаём короткий beep звук через AudioContext
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.frequency.value = 800;
+                gainNode.gain.value = 0.2;
+                
+                oscillator.start();
+                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.2);
+                oscillator.stop(audioCtx.currentTime + 0.2);
+                
+                audioCtx.resume();
+            } catch(e) {
+                // Тишина, если звук не поддерживается
+            }
+        }
+        
+        // Инициализируем звук при первом клике на страницу
+        document.body.addEventListener('click', function initAudioOnFirstClick() {
+            initAudio();
+            document.body.removeEventListener('click', initAudioOnFirstClick);
+        });
+        
+        // ==================== ИГРА "ЛОПНИ ЧЕРЕП" ====================
+        const GOAL = 10000;
+        let score = localStorage.getItem('skullScore') ? parseInt(localStorage.getItem('skullScore')) : 0;
+        let record = localStorage.getItem('skullRecord') ? parseInt(localStorage.getItem('skullRecord')) : 0;
+        
+        const scoreElement = document.getElementById('scoreCount');
+        const recordElement = document.getElementById('recordCount');
+        const gameSkull = document.getElementById('gameSkull');
+        const resetBtn = document.getElementById('resetBtn');
+        const congratsDiv = document.getElementById('congratsMessage');
+        
+        scoreElement.textContent = score.toLocaleString();
+        recordElement.textContent = record.toLocaleString();
+        
+        // Проверяем, достигнута ли цель
+        function checkGoal() {
+            if (score >= GOAL) {
+                congratsDiv.innerHTML = `
+                    <div class="congrats-message">
+                        🎉🎊 ПОЗДРАВЛЯЕМ! 🎊🎉<br>
+                        Ты достиг ${GOAL.toLocaleString()} взрывов!<br>
+                        🎁 Получи свой подарок: звёзды и сигна! 🎁<br>
+                        📸 Сделай скриншот этого экрана и отправь в Telegram:<br>
+                        <a href="https://t.me/tvacan_bot" target="_blank">👉 @tvacan_bot 👈</a><br>
+                        ✨ Напиши туда скриншот и получи награду! ✨
+                    </div>
+                `;
+                return true;
+            } else {
+                if (congratsDiv.innerHTML) congratsDiv.innerHTML = '';
+                return false;
+            }
+        }
+        
+        // Обновление рекорда
+        function updateRecord() {
+            if (score > record) {
+                record = score;
+                localStorage.setItem('skullRecord', record);
+                recordElement.textContent = record.toLocaleString();
+            }
+        }
         
         // Функция для вибрации (если поддерживается)
         function vibrate() {
@@ -799,13 +925,19 @@
         
         // Функция для анимации "лопания"
         function popSkull() {
+            // Воспроизводим звук
+            playPopSound();
+            
             // Добавляем анимацию
             gameSkull.classList.add('pop-animation');
             
             // Увеличиваем счёт
             score++;
-            scoreElement.textContent = score;
+            scoreElement.textContent = score.toLocaleString();
             localStorage.setItem('skullScore', score);
+            
+            // Обновляем рекорд
+            updateRecord();
             
             // Вибрация
             vibrate();
@@ -828,10 +960,28 @@
                     gameSkull.textContent = '💀';
                 }
             }, 200);
+            
+            // Проверяем достижение цели
+            checkGoal();
         }
         
-        // Назначаем обработчик клика на череп
+        // Сброс игры
+        function resetGame() {
+            if (confirm('Сбросить счёт? Твой прогресс будет потерян. Рекорд останется.')) {
+                score = 0;
+                localStorage.setItem('skullScore', score);
+                scoreElement.textContent = score.toLocaleString();
+                congratsDiv.innerHTML = '';
+                // Не сбрасываем рекорд
+            }
+        }
+        
+        // Назначаем обработчики
         gameSkull.addEventListener('click', popSkull);
+        resetBtn.addEventListener('click', resetGame);
+        
+        // Проверяем цель при загрузке
+        checkGoal();
         
         // ==================== СОЗДАНИЕ ЛЕТАЮЩИХ СМАЙЛИКОВ-ЧЕРЕПОВ ====================
         const skulls = ['💀', '☠️', '💀', '☠️', '💀', '👻', '💀', '☠️'];
