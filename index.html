@@ -33,8 +33,8 @@
             100% { background-position: 0% 50%; }
         }
         
-        /* ПАДАЮЩИЕ СМАЙЛИКИ НА ФОНЕ */
-        .falling-skulls {
+        /* СТАТИЧНЫЕ МИГАЮЩИЕ СМАЙЛИКИ НА ФОНЕ */
+        .bg-skulls {
             position: fixed;
             top: 0;
             left: 0;
@@ -45,30 +45,18 @@
             overflow: hidden;
         }
         
-        .falling-skull {
+        .bg-skull {
             position: absolute;
             font-size: 1.2rem;
-            opacity: 0.6;
-            animation: fall linear infinite;
+            opacity: 0.2;
+            animation: blinkSoft 2s ease-in-out infinite;
             pointer-events: none;
-            will-change: transform;
+            text-shadow: 0 0 5px rgba(255,100,150,0.5);
         }
         
-        @keyframes fall {
-            0% {
-                transform: translateY(-5vh) rotate(0deg);
-                opacity: 0;
-            }
-            5% {
-                opacity: 0.6;
-            }
-            95% {
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateY(105vh) rotate(360deg);
-                opacity: 0;
-            }
+        @keyframes blinkSoft {
+            0%, 100% { opacity: 0.15; transform: scale(0.95); }
+            50% { opacity: 0.5; transform: scale(1.05); text-shadow: 0 0 12px #ff6699; }
         }
         
         /* ГАЛЕРЕЯ ФОТОГРАФИЙ */
@@ -602,8 +590,8 @@
     </style>
 </head>
 <body>
-    <!-- ПАДАЮЩИЕ СМАЙЛИКИ НА ФОНЕ -->
-    <div class="falling-skulls" id="fallingSkullsContainer"></div>
+    <!-- СТАТИЧНЫЕ МИГАЮЩИЕ СМАЙЛИКИ НА ФОНЕ -->
+    <div class="bg-skulls" id="bgSkulls"></div>
     
     <!-- Модальное окно для фото -->
     <div class="modal" id="photoModal" onclick="closeModalOnBackground(event)">
@@ -739,41 +727,33 @@
     </div>
 
     <script>
-        // ==================== ПАДАЮЩИЕ СМАЙЛИКИ ====================
-        const fallSkulls = ['💀', '🖤', '😈'];
-        const fallingContainer = document.getElementById('fallingSkullsContainer');
+        // ==================== СТАТИЧНЫЕ МИГАЮЩИЕ СМАЙЛИКИ ====================
+        const bgSkulls = ['💀', '🖤', '😈'];
+        const container = document.getElementById('bgSkulls');
         
-        function createFallingSkull() {
+        // Создаём 50 смайликов, равномерно распределённых по фону
+        for (let i = 0; i < 60; i++) {
             const skull = document.createElement('div');
-            skull.className = 'falling-skull';
-            skull.textContent = fallSkulls[Math.floor(Math.random() * fallSkulls.length)];
-            const size = Math.random() * 1.2 + 0.8;
-            skull.style.fontSize = `${size}rem`;
-            skull.style.left = `${Math.random() * 100}%`;
-            const duration = Math.random() * 10 + 8;
-            skull.style.animationDuration = `${duration}s`;
-            // Случайная начальная позиция по Y, чтобы смайлики не скапливались вверху
-            const startY = Math.random() * -80;
-            skull.style.transform = `translateY(${startY}vh)`;
-            // Случайная задержка от 0 до 5 секунд
-            skull.style.animationDelay = `${Math.random() * 5}s`;
-            fallingContainer.appendChild(skull);
+            skull.className = 'bg-skull';
+            skull.textContent = bgSkulls[Math.floor(Math.random() * bgSkulls.length)];
             
-            setTimeout(() => {
-                if (skull && skull.parentNode) {
-                    skull.remove();
-                }
-            }, duration * 1000 + 3000);
-        }
-        
-        // Создаём смайлики с равномерными интервалами
-        setInterval(createFallingSkull, 350);
-        
-        // Создаём начальные смайлики с большими интервалами и разной стартовой позицией
-        for (let i = 0; i < 20; i++) {
-            setTimeout(() => {
-                createFallingSkull();
-            }, i * 200);
+            // Случайный размер
+            const size = Math.random() * 1.5 + 0.8;
+            skull.style.fontSize = `${size}rem`;
+            
+            // Случайная позиция по всему экрану
+            skull.style.left = `${Math.random() * 100}%`;
+            skull.style.top = `${Math.random() * 100}%`;
+            
+            // Случайная задержка мигания
+            const delay = Math.random() * 5;
+            skull.style.animationDelay = `${delay}s`;
+            
+            // Случайная длительность мигания
+            const duration = Math.random() * 3 + 1.5;
+            skull.style.animationDuration = `${duration}s`;
+            
+            container.appendChild(skull);
         }
         
         // ==================== КАРУСЕЛЬ ГАЛЕРЕИ ====================
