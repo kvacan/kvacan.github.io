@@ -32,6 +32,12 @@
             100% { background-position: 0% 50%; }
         }
         
+        /* ОПТИМИЗАЦИЯ ЗАГРУЗКИ */
+        img, iframe, video {
+            content-visibility: auto;
+            contain: content;
+        }
+        
         .photo-gallery {
             background: rgba(50, 30, 80, 0.85);
             border-radius: 30px;
@@ -43,11 +49,11 @@
         }
         
         .photo-gallery-title {
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             margin-bottom: 15px;
             color: #fff;
             text-shadow: 0 0 10px #d4a5ff;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
         
         .gallery-carousel {
@@ -61,8 +67,9 @@
         
         .carousel-track {
             display: flex;
-            transition: transform 0.3s ease-out;
+            transition: transform 0.2s ease-out;
             cursor: grab;
+            will-change: transform;
         }
         
         .carousel-track:active {
@@ -71,7 +78,6 @@
         
         .carousel-slide {
             flex: 0 0 100%;
-            aspect-ratio: 1 / 1;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -80,9 +86,11 @@
         
         .carousel-slide img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
             pointer-events: none;
+            display: block;
         }
         
         .carousel-indicators {
@@ -148,10 +156,15 @@
         }
         
         h1 {
-            font-size: 3.5rem; text-align: center; letter-spacing: 1px; margin-bottom: 25px;
-            color: #fff; text-transform: uppercase;
+            font-size: 3.8rem;
+            text-align: center;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            color: #fff;
+            text-transform: uppercase;
             text-shadow: 0 0 25px rgba(200, 140, 255, 0.9);
             animation: glowPulse 2s infinite alternate;
+            font-weight: 400;
         }
         
         .posts-block {
@@ -178,32 +191,38 @@
         }
         
         .post-date {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: #d4a5ff;
             margin-bottom: 10px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
         }
         
         .post-title {
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             margin-bottom: 12px;
             color: #fff;
             word-break: break-word;
+            font-weight: 400;
+            letter-spacing: 1px;
         }
         
         .post-content {
             color: #f0e0ff;
             line-height: 1.6;
-            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            font-family: 'Russo One', sans-serif;
             margin-bottom: 15px;
             white-space: pre-wrap;
             word-break: break-word;
             font-size: 1rem;
+            font-weight: 400;
         }
         
         .post-content a {
             color: #e0b0ff;
             text-decoration: underline;
             word-break: break-all;
+            font-weight: 400;
         }
         
         /* КАРУСЕЛЬ ВНУТРИ ПОСТА */
@@ -219,8 +238,9 @@
         
         .post-media-track {
             display: flex;
-            transition: transform 0.3s ease-out;
+            transition: transform 0.2s ease-out;
             cursor: grab;
+            will-change: transform;
         }
         
         .post-media-track:active {
@@ -229,29 +249,31 @@
         
         .post-media-slide {
             flex: 0 0 100%;
-            aspect-ratio: 1 / 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #2a1a4a;
+            background: #1a0a2a;
+            min-height: 200px;
         }
         
         .post-media-slide img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
             pointer-events: none;
+            display: block;
         }
         
         .post-media-slide iframe {
             width: 100%;
-            height: 100%;
+            height: 300px;
             border: none;
         }
         
         .post-media-slide video {
             width: 100%;
-            height: 100%;
+            max-height: 500px;
             object-fit: contain;
         }
         
@@ -259,8 +281,7 @@
             display: flex;
             justify-content: center;
             gap: 8px;
-            margin-top: 10px;
-            margin-bottom: 5px;
+            padding: 12px 0 8px 0;
         }
         
         .post-indicator {
@@ -279,31 +300,11 @@
             box-shadow: 0 0 8px #d4a5ff;
         }
         
-        .post-video {
-            width: 100%;
-            border-radius: 20px;
-            margin: 12px 0;
-            border: 2px solid #d4a5ff;
-            aspect-ratio: 16 / 9;
-        }
-        
-        .post-image {
-            width: 100%;
-            border-radius: 20px;
-            margin: 12px 0;
-            border: 2px solid #d4a5ff;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        .post-image:hover {
-            transform: scale(1.01);
-        }
-        
         .loading {
             text-align: center;
             padding: 40px;
             color: #d4a5ff;
+            font-size: 1.2rem;
         }
         
         .modal {
@@ -397,14 +398,22 @@
         }
         
         .section-title {
-            font-size: 1.6rem; text-align: center; margin: 20px 0 15px; color: #fff;
-            text-transform: none;
+            font-size: 1.8rem;
+            text-align: center;
+            margin: 20px 0 15px;
+            color: #fff;
+            text-transform: uppercase;
             text-shadow: 0 0 12px rgba(200, 140, 255, 0.6);
+            letter-spacing: 2px;
         }
         
         .section-subtitle {
-            font-size: 1rem; text-align: center; margin: 10px 0 15px; color: #e8d0ff;
-            text-transform: none; line-height: 1.5;
+            font-size: 1rem;
+            text-align: center;
+            margin: 10px 0 15px;
+            color: #e8d0ff;
+            text-transform: none;
+            line-height: 1.5;
         }
         
         .block, .contacts-block {
@@ -479,10 +488,10 @@
             text-decoration: none;
             padding: 16px 18px;
             border-radius: 50px;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             text-align: center;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             width: 100%;
             margin-bottom: 10px;
             border: 2px solid #d4a5ff;
@@ -662,9 +671,9 @@
             <div class="photo-gallery-title">ГАЛЕРЕЯ ФОТОГРАФИЙ</div>
             <div class="gallery-carousel" id="galleryCarousel">
                 <div class="carousel-track" id="carouselTrack">
-                    <div class="carousel-slide"><img src="https://taplink.st/p/3/f/f/4/69250557.jpg?0" alt="Фото 1"></div>
-                    <div class="carousel-slide"><img src="https://taplink.st/p/4/f/f/b/69250559.jpg?0" alt="Фото 2"></div>
-                    <div class="carousel-slide"><img src="https://taplink.st/p/2/2/3/c/69471405.jpg?0" alt="Фото 3"></div>
+                    <div class="carousel-slide"><img src="https://taplink.st/p/3/f/f/4/69250557.jpg?0" alt="Фото 1" loading="lazy"></div>
+                    <div class="carousel-slide"><img src="https://taplink.st/p/4/f/f/b/69250559.jpg?0" alt="Фото 2" loading="lazy"></div>
+                    <div class="carousel-slide"><img src="https://taplink.st/p/2/2/3/c/69471405.jpg?0" alt="Фото 3" loading="lazy"></div>
                 </div>
             </div>
             <div class="carousel-indicators" id="carouselIndicators"></div>
@@ -972,7 +981,7 @@
             return url;
         }
         
-        // ==================== СОЗДАНИЕ КАРУСЕЛИ ДЛЯ МЕДИА В ПОСТЕ ====================
+        // ==================== КАРУСЕЛЬ ДЛЯ МЕДИА В ПОСТЕ ====================
         function createPostCarousel(mediaUrls, postId) {
             if (!mediaUrls || mediaUrls.length === 0) return '';
             
@@ -983,12 +992,12 @@
                 } else if (isVideoUrl(trimmedUrl)) {
                     const embedUrl = getVideoEmbedUrl(trimmedUrl);
                     if (trimmedUrl.includes('youtube.com') || trimmedUrl.includes('youtu.be') || trimmedUrl.includes('vimeo.com')) {
-                        return `<div class="post-media-slide"><iframe src="${embedUrl}" frameborder="0" allowfullscreen allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture"></iframe></div>`;
+                        return `<div class="post-media-slide"><iframe src="${embedUrl}" loading="lazy" allowfullscreen allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture"></iframe></div>`;
                     } else {
-                        return `<div class="post-media-slide"><video controls><source src="${trimmedUrl}"></video></div>`;
+                        return `<div class="post-media-slide"><video controls preload="metadata"><source src="${trimmedUrl}"></video></div>`;
                     }
                 } else {
-                    return `<div class="post-media-slide"><a href="${trimmedUrl}" target="_blank" style="color:#d4a5ff; display:flex; align-items:center; justify-content:center; height:100%;">🔗 Открыть ссылку</a></div>`;
+                    return `<div class="post-media-slide"><a href="${trimmedUrl}" target="_blank" style="color:#d4a5ff; display:flex; align-items:center; justify-content:center; height:100%; padding:40px;">🔗 Открыть ссылку</a></div>`;
                 }
             }).join('');
             
@@ -1190,7 +1199,6 @@
             container.innerHTML = posts.map((post, idx) => {
                 let mediaHtml = '';
                 if (post.mediaUrl && post.mediaUrl.trim()) {
-                    // Разделяем по | для нескольких медиа
                     const mediaUrls = post.mediaUrl.split('|').map(u => u.trim()).filter(u => u);
                     if (mediaUrls.length > 0) {
                         mediaHtml = createPostCarousel(mediaUrls, `post-${idx}`);
@@ -1274,3 +1282,4 @@
     </script>
 </body>
 </html>
+  
