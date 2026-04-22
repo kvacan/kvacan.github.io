@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>kvacan</title>
+    <title>kvacan | официальный сайт</title>
     <link rel="icon" href="https://taplink.st/a/5/8/4/d/daec4f.jpg?1">
     <link rel="apple-touch-icon" href="https://taplink.st/a/5/8/4/d/daec4f.jpg?1">
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
@@ -19,224 +19,167 @@
         
         body {
             font-family: 'Russo One', sans-serif;
-            background: linear-gradient(135deg, #3a1a5a 0%, #2a0a3a 50%, #3a1a5a 100%);
-            background-size: 200% 200%;
-            animation: gradientShift 8s ease infinite;
-            color: #fff;
-            line-height: 1.5;
+            background: #0a0520;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
         }
         
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .stars {
+        /* СЕВЕРНОЕ СИЯНИЕ - ГЛАВНЫЙ ФОН */
+        .aurora-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
             z-index: 0;
-            overflow: hidden;
+            background: linear-gradient(125deg, 
+                #0a0a2a 0%,
+                #0a2a2a 15%,
+                #1a0a3a 30%,
+                #0a3a4a 45%,
+                #2a1a5a 60%,
+                #0a2a5a 75%,
+                #0a0a2a 100%);
+            background-size: 400% 400%;
+            animation: auroraFlow 15s ease infinite;
         }
         
-        .star {
-            position: absolute;
-            background: radial-gradient(circle, #fff 0%, rgba(255,255,200,0.8) 40%, rgba(255,255,200,0) 70%);
-            border-radius: 50%;
-            animation: twinkleStar 3s ease-in-out infinite;
-            pointer-events: none;
-            box-shadow: 0 0 8px rgba(255,255,200,0.5);
+        @keyframes auroraFlow {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 50% 100%; }
+            50% { background-position: 100% 50%; }
+            75% { background-position: 50% 0%; }
+            100% { background-position: 0% 50%; }
         }
         
-        @keyframes twinkleStar {
-            0%, 100% { opacity: 0.2; transform: scale(0.8); }
-            50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 15px rgba(255,255,200,0.9); }
-        }
-        
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px 16px 80px 16px;
-            position: relative;
+        /* СВЕТЯЩИЕСЯ ВОЛНЫ СЕВЕРНОГО СИЯНИЯ */
+        .aurora-waves {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 1;
+            pointer-events: none;
+            background: 
+                radial-gradient(ellipse at 20% 40%, rgba(100, 200, 150, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 60%, rgba(80, 150, 200, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(150, 100, 200, 0.06) 0%, transparent 60%);
+            animation: auroraPulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes auroraPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        /* ЗАТЕМНЕНИЕ */
+        .dark-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        /* КОНТЕЙНЕР */
+        .container {
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 30px 16px 80px 16px;
+            position: relative;
+            z-index: 15;
         }
         
         @media (min-width: 768px) {
             .container {
-                max-width: 550px;
-                padding: 30px 20px 80px 20px;
+                max-width: 600px;
+                padding: 40px 20px 80px 20px;
             }
         }
         
-        @keyframes softPulse {
-            0% { transform: scale(1); box-shadow: 0 5px 15px rgba(180, 120, 255, 0.3); }
-            50% { transform: scale(1.02); box-shadow: 0 5px 25px rgba(200, 140, 255, 0.7); }
-            100% { transform: scale(1); box-shadow: 0 5px 15px rgba(180, 120, 255, 0.3); }
-        }
-        
-        @keyframes glowPulse {
-            0% { text-shadow: 0 0 5px rgba(200, 140, 255, 0.5); }
-            100% { text-shadow: 0 0 25px rgba(220, 160, 255, 0.9); }
-        }
-        
+        /* АВАТАР */
         .avatar {
             width: 140px;
             height: 140px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #d4a5ff;
+            border: 3px solid rgba(100, 200, 150, 0.8);
             display: block;
             margin: 0 auto 15px;
-            box-shadow: 0 10px 30px rgba(180, 100, 255, 0.5);
-            cursor: default;
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 10px 30px rgba(100, 200, 150, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
         }
         
-        .avatar:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 35px rgba(200, 120, 255, 0.7);
-        }
-        
+        /* ЗАГОЛОВОК */
         h1 {
             font-size: 3.2rem;
             text-align: center;
             letter-spacing: 2px;
             margin-bottom: 25px;
-            color: #fff;
+            color: #c8ffd8;
             text-transform: uppercase;
-            text-shadow: 0 0 25px rgba(200, 140, 255, 0.9);
-            animation: glowPulse 2s infinite alternate;
+            text-shadow: 0 0 20px rgba(100, 200, 150, 0.6);
             font-weight: 400;
+            transition: all 0.4s ease;
         }
         
-        /* МОДАЛЬНОЕ ОКНО */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
+        h1:hover {
+            text-shadow: 0 0 35px rgba(100, 200, 200, 0.9);
+            letter-spacing: 4px;
         }
         
-        .modal.show {
-            display: flex;
+        /* РАЗДЕЛИТЕЛЬ */
+        .divider {
+            text-align: center;
+            margin: 20px 0 15px;
+            color: rgba(160, 255, 204, 0.8);
+            font-size: 1.2rem;
+            letter-spacing: 8px;
         }
         
-        .modal-content {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(212, 165, 255, 0.5);
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            font-size: 40px;
-            color: #fff;
-            cursor: pointer;
-            z-index: 10001;
-            font-weight: bold;
-            transition: transform 0.2s;
-        }
-        
-        .modal-close:hover {
-            transform: scale(1.1);
-            color: #d4a5ff;
-        }
-        
-        .modal-prev, .modal-next {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 50px;
-            color: #fff;
-            cursor: pointer;
-            padding: 20px;
-            background: rgba(0,0,0,0.5);
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            z-index: 10001;
-        }
-        
-        .modal-prev {
-            left: 20px;
-        }
-        
-        .modal-next {
-            right: 20px;
-        }
-        
-        .modal-prev:hover, .modal-next:hover {
-            background: #d4a5ff;
-            color: #1a0a2a;
-        }
-        
-        @media (max-width: 768px) {
-            .modal-prev, .modal-next {
-                width: 40px;
-                height: 40px;
-                font-size: 30px;
-                padding: 10px;
-            }
-            .modal-close {
-                top: 10px;
-                right: 20px;
-                font-size: 35px;
-            }
-        }
-        
-        /* ГАЛЕРЕЯ (карусель) */
-        .gallery-carousel {
-            background: rgba(50, 30, 80, 0.85);
+        /* ГАЛЕРЕЯ */
+        .gallery-section {
+            background: rgba(20, 20, 50, 0.4);
+            backdrop-filter: blur(12px);
             border-radius: 30px;
             padding: 20px;
             margin: 25px 0;
-            border: 1px solid #d4a5ff;
-            backdrop-filter: blur(8px);
-            text-align: center;
+            border: 1px solid rgba(100, 200, 150, 0.35);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .gallery-section:hover {
+            border-color: rgba(100, 200, 200, 0.7);
+            transform: translateY(-4px);
         }
         
         .gallery-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
+            text-align: center;
             margin-bottom: 15px;
-            color: #fff;
-            text-shadow: 0 0 10px #d4a5ff;
-            letter-spacing: 1px;
-            font-weight: 400;
+            color: #c8ffd8;
+            text-shadow: 0 0 8px rgba(100, 200, 150, 0.6);
         }
         
-        .carousel-container {
+        /* КАРУСЕЛЬ - ТОЛЬКО ЛИСТАНИЕ */
+        .carousel-wrapper {
             position: relative;
             width: 100%;
             overflow: hidden;
             border-radius: 20px;
-            border: 2px solid #d4a5ff;
-            background: #1a0a2a;
+            border: 2px solid rgba(100, 200, 150, 0.6);
+            background: #0a0520;
         }
         
         .carousel-track {
             display: flex;
-            transition: transform 0.3s ease-out;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             cursor: grab;
         }
         
@@ -249,458 +192,321 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #2a1a4a;
+            background: #0f0a25;
         }
         
         .carousel-slide img {
             width: 100%;
             height: auto;
-            max-height: 500px;
+            max-height: 450px;
             object-fit: contain;
-            pointer-events: none;
             display: block;
+            pointer-events: none;
         }
         
-        .carousel-nav {
+        /* НАВИГАЦИЯ ГАЛЕРЕИ */
+        .gallery-nav {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 20px;
             margin-top: 15px;
-            gap: 15px;
         }
         
         .nav-btn {
-            background: rgba(80, 50, 130, 0.8);
-            border: 2px solid #d4a5ff;
-            color: white;
-            font-size: 1.5rem;
-            width: 50px;
-            height: 50px;
+            background: rgba(80, 60, 140, 0.8);
+            border: 2px solid rgba(100, 200, 150, 0.6);
+            color: #c8ffd8;
+            font-size: 1.4rem;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(4px);
         }
         
         .nav-btn:hover {
-            background: #d4a5ff;
-            color: #1a0a2a;
-            transform: scale(1.05);
+            background: #6a5ac0;
+            color: #fff;
+            transform: scale(1.1) rotate(360deg);
+            border-color: #a0ffcc;
         }
         
-        .carousel-indicators {
+        /* ИНДИКАТОРЫ */
+        .indicators {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             margin-top: 12px;
         }
         
         .indicator {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: rgba(212, 165, 255, 0.4);
-            border: 1px solid #d4a5ff;
+            background: rgba(100, 200, 150, 0.3);
+            border: 1px solid rgba(100, 200, 150, 0.6);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .indicator.active {
-            background: #d4a5ff;
-            transform: scale(1.2);
-            box-shadow: 0 0 10px #d4a5ff;
+            background: #a0ffcc;
+            transform: scale(1.4);
+            box-shadow: 0 0 8px #a0ffcc;
         }
         
         /* ПОСТЫ */
-        .posts-block {
-            background: rgba(50, 30, 80, 0.85);
+        .posts-section {
+            background: rgba(20, 20, 50, 0.4);
+            backdrop-filter: blur(12px);
             border-radius: 30px;
-            padding: 25px 18px;
+            padding: 25px 20px;
             margin: 25px 0;
-            border: 1px solid #d4a5ff;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 10px 30px rgba(120, 60, 200, 0.4);
+            border: 1px solid rgba(100, 200, 150, 0.35);
+            transition: all 0.4s ease;
         }
         
-        .post-item {
-            background: rgba(70, 40, 110, 0.8);
+        .posts-section:hover {
+            border-color: rgba(100, 200, 200, 0.7);
+            transform: translateY(-3px);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #c8ffd8;
+            text-shadow: 0 0 10px rgba(100, 200, 150, 0.5);
+        }
+        
+        .section-subtitle {
+            font-size: 0.9rem;
+            text-align: center;
+            margin: 5px 0 15px;
+            color: #b8d8e8;
+        }
+        
+        .post-card {
+            background: rgba(60, 45, 110, 0.45);
+            backdrop-filter: blur(8px);
             border-radius: 25px;
             padding: 18px;
-            margin-bottom: 25px;
-            border-left: 4px solid #d4a5ff;
-            transition: transform 0.2s;
+            margin-bottom: 20px;
+            border-left: 4px solid #a0ffcc;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        .post-item:hover {
-            transform: translateX(5px);
+        .post-card:hover {
+            transform: translateX(8px) translateY(-3px);
+            background: rgba(80, 60, 140, 0.6);
+            border-left-width: 6px;
         }
         
         .post-date {
-            font-size: 0.8rem;
-            color: #d4a5ff;
-            margin-bottom: 10px;
-            font-weight: 400;
+            font-size: 0.75rem;
+            color: #a0ffcc;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
         }
         
         .post-title {
-            font-size: 1.5rem;
-            margin-bottom: 12px;
-            color: #fff;
-            word-break: break-word;
-            font-weight: 400;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #e8d5ff;
         }
         
         .post-content {
-            color: #f0e0ff;
+            color: #c8b8e8;
             line-height: 1.6;
-            font-family: 'Russo One', sans-serif;
-            margin-bottom: 15px;
-            white-space: pre-wrap;
-            word-break: break-word;
-            font-size: 1rem;
-            font-weight: 400;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
         }
         
         .post-content a {
-            color: #e0b0ff;
+            color: #a0ffcc;
             text-decoration: underline;
-            word-break: break-all;
+            transition: color 0.3s;
+        }
+        
+        .post-content a:hover {
+            color: #fff;
         }
         
         /* КАРУСЕЛЬ ВНУТРИ ПОСТА */
-        .post-media-carousel {
-            position: relative;
+        .post-carousel {
             width: 100%;
             overflow: hidden;
-            border-radius: 20px;
-            border: 2px solid #d4a5ff;
-            background: #1a0a2a;
+            border-radius: 18px;
+            border: 2px solid rgba(100, 200, 150, 0.5);
+            background: #0a0520;
             margin-top: 12px;
         }
         
-        .post-media-track {
+        .post-track {
             display: flex;
-            transition: transform 0.3s ease-out;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             cursor: grab;
         }
         
-        .post-media-track:active {
-            cursor: grabbing;
-        }
+        .post-track:active { cursor: grabbing; }
         
-        .post-media-slide {
+        .post-slide {
             flex: 0 0 100%;
             display: flex;
             justify-content: center;
-            align-items: center;
-            background: #1a0a2a;
+            background: #0a0520;
         }
         
-        .post-media-slide img {
+        .post-slide img {
             width: 100%;
             height: auto;
-            object-fit: contain;
-            pointer-events: none;
             display: block;
+            cursor: pointer;
         }
         
-        .post-media-slide iframe {
+        .post-slide iframe {
             width: 100%;
-            height: auto;
             aspect-ratio: 16 / 9;
             border: none;
         }
         
-        .post-media-slide video {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-        }
-        
-        .post-carousel-indicators {
+        .post-indicators {
             display: flex;
             justify-content: center;
             gap: 8px;
-            padding: 12px 0 8px 0;
+            padding: 10px 0 5px;
         }
         
-        .post-indicator {
-            width: 8px;
-            height: 8px;
+        .post-dot {
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background: rgba(212, 165, 255, 0.4);
-            border: 1px solid #d4a5ff;
+            background: rgba(100, 200, 150, 0.3);
+            border: 1px solid rgba(100, 200, 150, 0.6);
             cursor: pointer;
             transition: all 0.2s;
         }
         
-        .post-indicator.active {
-            background: #d4a5ff;
-            transform: scale(1.2);
-            box-shadow: 0 0 8px #d4a5ff;
+        .post-dot.active {
+            background: #a0ffcc;
+            transform: scale(1.3);
         }
         
         .loading {
             text-align: center;
             padding: 40px;
-            color: #d4a5ff;
-            font-weight: 400;
+            color: #a0ffcc;
         }
         
-        .button {
+        /* КНОПКИ */
+        .btn {
             display: block;
-            background: linear-gradient(145deg, #5a3a8a, #3a2a6a);
-            color: #fff;
+            background: linear-gradient(135deg, #5a4ab0, #3a2a8a);
+            color: #c8ffd8;
             text-decoration: none;
-            padding: 16px 18px;
+            padding: 15px 20px;
             border-radius: 50px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 1px;
             width: 100%;
-            margin-bottom: 10px;
-            border: 2px solid #d4a5ff;
-            box-shadow: 0 5px 20px rgba(140, 80, 220, 0.4);
-            transition: all 0.2s ease;
-            animation: softPulse 3s infinite;
-            font-weight: 400;
+            border: 2px solid rgba(100, 200, 150, 0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
         
-        .button:hover {
-            background: linear-gradient(145deg, #7a5aaa, #5a3a8a);
-            border-color: #f0ccff;
-            transform: scale(1.02);
-            animation: none;
-            box-shadow: 0 8px 25px rgba(180, 100, 255, 0.6);
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(160, 255, 204, 0.3), transparent);
+            transition: left 0.6s ease;
         }
         
-        .button:active {
-            transform: scale(0.98);
+        .btn:hover::before {
+            left: 100%;
         }
         
-        .button-small {
-            font-size: 1rem;
-            padding: 14px 16px;
-            animation: softPulse 4s infinite;
+        .btn:hover {
+            background: linear-gradient(135deg, #7a6ad0, #5a4aaa);
+            transform: translateY(-3px);
+            letter-spacing: 1.5px;
+            border-color: #a0ffcc;
+            color: #fff;
+            box-shadow: 0 10px 25px rgba(100, 200, 150, 0.3);
         }
         
-        .button-group {
+        .btn-small {
+            font-size: 0.95rem;
+            padding: 12px 16px;
+        }
+        
+        .btn-group {
             display: flex;
             flex-direction: column;
             gap: 12px;
             margin: 15px 0;
         }
         
-        .scroll-top {
-            position: fixed;
-            bottom: 100px;
-            right: 15px;
-            width: 44px;
-            height: 44px;
-            border-radius: 22px;
-            background: #5a3a8a;
-            border: 2px solid #d4a5ff;
-            box-shadow: 0 2px 20px rgba(140, 80, 255, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s;
-            z-index: 999;
-            font-size: 1.5rem;
-            color: #fff;
-        }
-        
-        .scroll-top.visible {
-            opacity: 0.9;
-            visibility: visible;
-        }
-        
-        .scroll-top:hover {
-            transform: scale(1.1);
-            background: #7a5aaa;
-        }
-        
-        .chat-widget {
-            position: fixed;
-            bottom: 30px;
-            right: 15px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-        }
-        
-        .chat-button {
-            width: 60px;
-            height: 60px;
+        /* БЛОКИ */
+        .faq-block, .social-block, .contacts-block, .donation-block {
+            background: rgba(20, 20, 50, 0.4);
+            backdrop-filter: blur(12px);
             border-radius: 30px;
-            background: linear-gradient(145deg, #5a3a8a, #3a2a6a);
-            border: 2px solid #d4a5ff;
-            box-shadow: 0 5px 20px rgba(140, 80, 255, 0.5);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s, border-color 0.2s;
-            animation: softPulse 2.5s infinite;
-        }
-        
-        .chat-button:hover {
-            transform: scale(1.1);
-            border-color: #f0ccff;
-        }
-        
-        .chat-button:active {
-            transform: scale(0.95);
-        }
-        
-        .chat-button span {
-            font-size: 2rem;
-            color: #fff;
-        }
-        
-        .chat-menu {
-            position: absolute;
-            bottom: 70px;
-            right: 0;
-            width: 220px;
-            background: rgba(50, 30, 85, 0.98);
-            border-radius: 25px;
-            border: 2px solid #d4a5ff;
-            padding: 15px;
-            display: none;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-        }
-        
-        .chat-menu.show {
-            display: block;
-        }
-        
-        .chat-menu-item {
-            display: block;
-            background: linear-gradient(145deg, #5a3a8a, #3a2a6a);
-            color: #fff;
-            text-decoration: none;
-            padding: 14px;
-            border-radius: 40px;
-            text-align: center;
-            font-size: 1.1rem;
-            border: 2px solid #d4a5ff;
-            transition: all 0.2s;
-            font-weight: 400;
-        }
-        
-        .chat-menu-item:hover {
-            background: #7a5aaa;
-            border-color: #f0ccff;
-            transform: scale(1.02);
-        }
-        
-        footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 2px solid #d4a5ff;
-            text-align: center;
-            color: #c0a0e0;
-            font-size: 0.8rem;
-        }
-        
-        .footer-email {
-            margin-top: 10px;
-        }
-        
-        .footer-email a {
-            color: #d4a5ff;
-            text-decoration: none;
-            border-bottom: 1px dotted #d4a5ff;
-            transition: color 0.2s;
-        }
-        
-        .footer-email a:hover {
-            color: #f0ccff;
-        }
-        
-        .copyright {
-            color: #c0a0e0;
-        }
-        
-        .divider, .arrow-down {
-            text-align: center;
-            margin: 20px 0 10px;
-            color: #d4a5ff;
-            font-size: 1.5rem;
-            text-shadow: 0 0 10px rgba(200, 140, 255, 0.6);
-        }
-        
-        .section-title {
-            font-size: 1.6rem;
-            text-align: center;
-            margin: 20px 0 15px;
-            color: #fff;
-            text-transform: none;
-            text-shadow: 0 0 12px rgba(200, 140, 255, 0.6);
-            font-weight: 400;
-        }
-        
-        .section-subtitle {
-            font-size: 1rem;
-            text-align: center;
-            margin: 10px 0 15px;
-            color: #e8d0ff;
-            font-weight: 400;
-        }
-        
-        .block, .contacts-block {
-            background: rgba(50, 30, 80, 0.85);
-            border-radius: 30px;
-            padding: 25px 18px;
+            padding: 25px 20px;
             margin: 25px 0;
-            border: 1px solid #d4a5ff;
-            box-shadow: 0 10px 30px rgba(120, 60, 200, 0.4);
-            backdrop-filter: blur(8px);
+            border: 1px solid rgba(100, 200, 150, 0.35);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
+        .faq-block:hover, .social-block:hover, .contacts-block:hover, .donation-block:hover {
+            border-color: rgba(100, 200, 200, 0.7);
+            transform: translateY(-4px);
+        }
+        
+        /* FAQ АККОРДЕОН */
         .faq-item {
             margin-bottom: 12px;
-            border: 1px solid #d4a5ff;
+            border: 1px solid rgba(100, 200, 150, 0.25);
             border-radius: 20px;
             overflow: hidden;
-            background: rgba(70, 40, 110, 0.8);
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            border-color: rgba(100, 200, 150, 0.6);
         }
         
         .faq-question {
-            background: rgba(90, 55, 140, 0.9);
-            padding: 16px 18px;
-            font-size: 1.1rem;
-            color: #fff;
+            background: rgba(80, 60, 140, 0.5);
+            padding: 15px 20px;
+            font-size: 1rem;
+            color: #e8d5ff;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
-            text-align: left;
-            border: none;
-            transition: background-color 0.2s ease;
-            font-weight: 400;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .faq-question:hover {
-            background: rgba(120, 75, 180, 0.9);
+            background: rgba(100, 75, 170, 0.7);
+            padding-left: 26px;
         }
         
         .faq-question::after {
             content: "▼";
-            font-size: 0.9rem;
-            color: #d4a5ff;
-            transition: transform 0.3s ease;
+            font-size: 0.75rem;
+            color: #a0ffcc;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .faq-question.active::after {
@@ -708,616 +514,823 @@
         }
         
         .faq-answer {
-            background: rgba(50, 30, 85, 0.9);
-            padding: 0 18px;
+            background: rgba(50, 35, 100, 0.7);
+            padding: 0 20px;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
-            color: #e8d0ff;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            border-top: 0 solid #d4a5ff;
-            font-weight: 400;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #c8b8e8;
+            font-size: 0.9rem;
+            line-height: 1.6;
         }
         
         .faq-answer.show {
-            padding: 16px 18px;
-            max-height: 1500px;
-            border-top-width: 1px;
+            padding: 15px 20px;
+            max-height: 800px;
         }
         
-        .gallery-hint {
+        /* ЧАТ */
+        .chat-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 15px;
+            z-index: 100;
+        }
+        
+        .chat-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5a4ab0, #3a2a8a);
+            border: 2px solid rgba(100, 200, 150, 0.6);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 5px 20px rgba(100, 200, 150, 0.3);
+        }
+        
+        .chat-btn:hover {
+            transform: scale(1.1) rotate(10deg);
+            border-color: #a0ffcc;
+            box-shadow: 0 0 25px #a0ffcc;
+        }
+        
+        .chat-btn span {
+            font-size: 1.8rem;
+            color: #c8ffd8;
+        }
+        
+        .chat-menu {
+            position: absolute;
+            bottom: 75px;
+            right: 0;
+            width: 260px;
+            background: rgba(20, 20, 50, 0.98);
+            backdrop-filter: blur(15px);
+            border-radius: 22px;
+            border: 1px solid rgba(100, 200, 150, 0.5);
+            padding: 12px;
             display: none;
         }
         
-        /* Плавный скролл для всей страницы */
+        .chat-menu.show {
+            display: block;
+            animation: fadeSlideUp 0.2s ease;
+        }
+        
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .chat-link {
+            display: block;
+            background: linear-gradient(135deg, #4a3a9a, #2a1a6a);
+            color: #c8ffd8;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 35px;
+            text-align: center;
+            font-size: 0.9rem;
+            border: 1px solid rgba(100, 200, 150, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .chat-link:hover {
+            background: #6a5ac0;
+            transform: translateX(-5px);
+            border-color: #a0ffcc;
+            color: #fff;
+        }
+        
+        /* ФУТЕР */
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(100, 200, 150, 0.25);
+            text-align: center;
+            color: #90b8c0;
+            font-size: 0.75rem;
+        }
+        
+        .footer-email {
+            margin-top: 8px;
+        }
+        
+        .footer-email a {
+            color: #a0ffcc;
+            text-decoration: none;
+            border-bottom: 1px dotted #90b8c0;
+            transition: color 0.3s;
+        }
+        
+        .footer-email a:hover {
+            color: #fff;
+        }
+        
+        /* МОДАЛЬНОЕ ОКНО */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.97);
+            backdrop-filter: blur(20px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 0 50px rgba(100, 200, 150, 0.4);
+            animation: zoomIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .modal-close:hover {
+            transform: scale(1.1);
+            color: #a0ffcc;
+        }
+        
+        .modal-prev, .modal-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 40px;
+            color: #fff;
+            cursor: pointer;
+            padding: 15px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-prev { left: 20px; }
+        .modal-next { right: 20px; }
+        
+        .modal-prev:hover, .modal-next:hover {
+            background: #6a5ac0;
+            color: #fff;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .modal-prev, .modal-next {
+                width: 40px;
+                height: 40px;
+                font-size: 30px;
+                padding: 10px;
+            }
+            .modal-close { top: 10px; right: 20px; font-size: 35px; }
+            .chat-menu { width: 240px; }
+        }
+        
+        /* СКРОЛЛБАР */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0a0520;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #a0ffcc, #6a5ac0);
+            border-radius: 10px;
+        }
+        
         html {
             scroll-behavior: smooth;
-        }
-        
-        /* Плавные переходы для всех элементов */
-        .post-item, .button, .nav-btn, .indicator, .post-indicator, .modal-prev, .modal-next, .modal-close, .chat-button, .scroll-top {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* Улучшенная анимация для постов */
-        .post-item {
-            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
 <body>
-    <!-- ЗВЁЗДЫ НА ФОНЕ -->
-    <div class="stars" id="starsContainer"></div>
+
+<div class="aurora-bg"></div>
+<div class="aurora-waves"></div>
+<div class="dark-overlay"></div>
+
+<div class="stars-container" id="starsContainer"></div>
+
+<div class="modal" id="photoModal" onclick="closeModalOnBackground(event)">
+    <span class="modal-close" onclick="closeModal()">×</span>
+    <div class="modal-prev" onclick="prevImage(event)">‹</div>
+    <div class="modal-next" onclick="nextImage(event)">›</div>
+    <img class="modal-img" id="modalImage" src="">
+</div>
+
+<div class="chat-widget">
+    <div class="chat-btn" onclick="toggleChat()"><span>✉</span></div>
+    <div class="chat-menu" id="chatMenu">
+        <a href="https://t.me/tvacan_bot" class="chat-link" target="_blank">Связаться с поддержкой блогера</a>
+    </div>
+</div>
+
+<div class="container">
+    <img class="avatar" src="https://taplink.st/a/5/8/4/d/daec4f.jpg?1" alt="kvacan">
+    <h1>KVACAN</h1>
     
-    <!-- МОДАЛЬНОЕ ОКНО -->
-    <div class="modal" id="photoModal" onclick="closeModalOnBackground(event)">
-        <span class="modal-close" onclick="closeModal()">×</span>
-        <div class="modal-prev" onclick="prevImage(event)">‹</div>
-        <div class="modal-next" onclick="nextImage(event)">›</div>
-        <img class="modal-content" id="modalImage" src="">
+    <div class="divider">✦ ✦ ✦</div>
+    
+    <!-- ГАЛЕРЕЯ -->
+    <div class="gallery-section">
+        <div class="gallery-title">Галерея фотографий</div>
+        <div class="carousel-wrapper" id="galleryWrapper">
+            <div class="carousel-track" id="galleryTrack">
+                <div class="carousel-slide"><img src="https://taplink.st/p/3/f/f/4/69250557.jpg?0" alt="Фото 1" loading="lazy"></div>
+                <div class="carousel-slide"><img src="https://taplink.st/p/4/f/f/b/69250559.jpg?0" alt="Фото 2" loading="lazy"></div>
+                <div class="carousel-slide"><img src="https://taplink.st/p/2/2/3/c/69471405.jpg?0" alt="Фото 3" loading="lazy"></div>
+            </div>
+        </div>
+        <div class="gallery-nav">
+            <button class="nav-btn" id="prevBtn">←</button>
+            <button class="nav-btn" id="nextBtn">→</button>
+        </div>
+        <div class="indicators" id="galleryIndicators"></div>
     </div>
-
-    <div class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</div>
-
-    <div class="chat-widget">
-        <div class="chat-button" onclick="toggleChat()"><span>✉️</span></div>
-        <div class="chat-menu" id="chatMenu">
-            <a href="https://t.me/tvacan_bot" class="chat-menu-item" target="_blank">Написать блогеру</a>
+    
+    <!-- ПОСТЫ -->
+    <div class="posts-section">
+        <div class="section-title">Актуальное</div>
+        <div id="postsContainer"><div class="loading">Загрузка постов...</div></div>
+    </div>
+    
+    <!-- FAQ - ПОЛНЫЙ ТЕКСТ -->
+    <div class="faq-block" id="faq">
+        <div class="section-title">Часто задаваемые вопросы</div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">Кто такой kvacan?</div>
+            <div class="faq-answer">kvacan — это Вячеслав. Человек, который решил не откладывать, а просто начать снимать. Здесь нет сценического образа или вымышленной личности. Всё по-настоящему.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">Почему в ссылках tvacan, если автор представляется как kvacan?</div>
+            <div class="faq-answer">Хороший вопрос. Сейчас объясним.<br><br>kvacan — это ник. То самое имя, которое появилось в самом начале и под которым человека знают в сети. Оно не менялось и не поменяется.<br><br>Но с адресами в социальных сетях всё устроено немного сложнее. Когда стали собирать все ссылки в одном месте, оказалось, что не везде можно использовать одно и то же имя. Где-то kvacan уже был занят, где-то оказался свободен, но хотелось, чтобы все адреса были одинаковыми. Чтобы человек зашёл на сайт, нажал на иконку и попал куда нужно, не запоминая два или три разных варианта.<br><br>Поэтому выбрали tvacan. Всего одна буква — и порядок. Теперь все соцсети ведут на один адрес. Никакой путаницы, никаких лишних вопросов.<br><br>А kvacan остаётся тем же, чем и был — ником, по которому человека знают. Всё просто.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">Зачем создан этот сайт?</div>
+            <div class="faq-answer">Это не проект и не портфолио. Это просто навигатор, входная дверь во все социальные сети сразу. Минимум текста, максимум пользы — все ссылки в одном месте.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">Что особенного в контенте?</div>
+            <div class="faq-answer">Честность. Никаких постановочных студий, дорогих декораций или фальшивых эмоций. Только живые видео и фото, снятые в моменте. То, что окружает каждый день.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">Как часто выходит новый контент?</div>
+            <div class="faq-answer">Контент появляется по мере того, как идёт жизнь. Маленькие шаги, регулярное движение, никаких жёстких дедлайнов — только искреннее желание делиться происходящим.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">Чем контент будет отличаться в будущем?</div>
+            <div class="faq-answer">С развитием автора будет расти и контент. Главная задача — чтобы и создателю, и зрителю было комфортно. Форматы могут меняться, но основа останется — живые эмоции и честность.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">Можно ли общаться с автором?</div>
+            <div class="faq-answer">Да. Все социальные сети открыты, ссылки на них есть на этом сайте. Можно писать, комментировать, обсуждать — диалог приветствуется.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">Как можно поддержать?</div>
+            <div class="faq-answer">Если контент заходит и хочется сказать спасибо делом — можно поддержать донатом. Любая помощь греет и мотивирует снимать дальше. Ссылка на донат тоже здесь.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">Это надолго?</div>
+            <div class="faq-answer">Пока есть желание снимать и делиться — контент будет жить. А желание есть.</div>
         </div>
     </div>
+    
+    <!-- СОЦСЕТИ -->
+    <div class="social-block" id="social">
+        <div class="section-title">Социальные сети</div>
+        <div class="section-subtitle">Переходи, смотри, подписывайся</div>
+        <div class="btn-group">
+            <a href="https://t.me/tvacan" class="btn">TELEGRAM</a>
+            <a href="https://instagram.com/tvacan/" class="btn">INSTAGRAM</a>
+            <a href="https://www.tiktok.com/@kvacon" class="btn">TIKTOK</a>
+        </div>
+    </div>
+    
+    <!-- КОНТАКТЫ -->
+    <div class="contacts-block" id="contacts">
+        <div class="section-title">Контакты для связи</div>
+        <div class="section-subtitle">По вопросам рекламы и сотрудничества</div>
+        <div class="btn-group">
+            <a href="https://t.me/kvacan" class="btn btn-small">TELEGRAM</a>
+            <a href="mailto:tvacan@internet.ru" class="btn btn-small">EMAIL</a>
+        </div>
+    </div>
+    
+    <!-- ПОДДЕРЖКА -->
+    <div class="donation-block" id="donation">
+        <div class="section-title">Поддержка</div>
+        <div class="section-subtitle">Если заходит — можно поддержать донатом. Любая помощь греет и мотивирует снимать дальше.</div>
+        <div class="btn-group">
+            <a href="https://pay.cloudtips.ru/p/a64a46d8" class="btn btn-small">DONATION</a>
+            <a href="https://finance.ozon.ru/apps/sbp/ozonbankpay/019a9ca8-77bb-7f0f-a532-53c7dca11b0b" class="btn btn-small">DONATION</a>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="copyright">© 2026 kvacan, Все права защищены.</div>
+        <div class="footer-email"><a href="mailto:tvacan@internet.ru">tvacan@internet.ru</a></div>
+    </footer>
+</div>
 
-    <div class="container">
-        <img class="avatar" src="https://taplink.st/a/5/8/4/d/daec4f.jpg?1" alt="kvacan">
-        <h1>KVACAN</h1>
+<script>
+    // ==================== ЗВЕЗДЫ (МЕРЦАЮЩИЕ + ПАДАЮЩИЕ ПРИ СКРОЛЛЕ) ====================
+    const starsContainer = document.getElementById('starsContainer');
+    starsContainer.style.position = 'fixed';
+    starsContainer.style.top = '0';
+    starsContainer.style.left = '0';
+    starsContainer.style.width = '100%';
+    starsContainer.style.height = '100%';
+    starsContainer.style.pointerEvents = 'none';
+    starsContainer.style.zIndex = '5';
+    
+    // МЕРЦАЮЩИЕ ЗВЕЗДЫ
+    for (let i = 0; i < 100; i++) {
+        const star = document.createElement('div');
+        star.style.position = 'absolute';
+        star.style.width = Math.random() * 2 + 0.8 + 'px';
+        star.style.height = star.style.width;
+        star.style.background = 'white';
+        star.style.borderRadius = '50%';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.opacity = Math.random() * 0.5 + 0.2;
+        star.style.animation = `twinkleStar ${Math.random() * 4 + 2.5}s ease-in-out infinite`;
+        star.style.animationDelay = Math.random() * 6 + 's';
+        starsContainer.appendChild(star);
+    }
+    
+    const starStyle = document.createElement('style');
+    starStyle.textContent = `
+        @keyframes twinkleStar {
+            0%, 100% { opacity: 0.15; transform: scale(0.6); }
+            50% { opacity: 0.8; transform: scale(1.2); }
+        }
+    `;
+    document.head.appendChild(starStyle);
+    
+    // ПАДАЮЩИЕ ЗВЕЗДЫ ПРИ СКРОЛЛЕ
+    let shootingStarsActive = false;
+    let shootingStarTimeout = null;
+    
+    function createShootingStar() {
+        const star = document.createElement('div');
+        star.style.position = 'absolute';
+        star.style.width = '2.5px';
+        star.style.height = '2.5px';
+        star.style.background = 'linear-gradient(135deg, #a0ffcc, #6a5ac0)';
+        star.style.borderRadius = '50%';
+        star.style.left = Math.random() * 80 + 10 + '%';
+        star.style.top = '-10px';
+        star.style.pointerEvents = 'none';
+        star.style.zIndex = '6';
+        star.style.opacity = '0';
+        star.style.animation = `shootStar ${Math.random() * 2 + 1.5}s linear forwards`;
+        starsContainer.appendChild(star);
         
-        <div class="divider">✦ ✦ ✦</div>
+        setTimeout(() => {
+            if (star.parentNode) star.remove();
+        }, 2500);
+    }
+    
+    const shootStyle = document.createElement('style');
+    shootStyle.textContent = `
+        @keyframes shootStar {
+            0% { transform: translateX(0) translateY(0); opacity: 0; }
+            5% { opacity: 1; }
+            20% { opacity: 1; }
+            25% { opacity: 0; }
+            100% { transform: translateX(-180px) translateY(350px); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(shootStyle);
+    
+    let lastScrollY = window.scrollY;
+    let scrollTimeout;
+    
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        const scrollDiff = Math.abs(currentScrollY - lastScrollY);
         
-        <!-- ГАЛЕРЕЯ (карусель) -->
-        <div class="gallery-carousel">
-            <div class="gallery-title">Галерея фотографий</div>
-            <div class="carousel-container" id="galleryCarousel">
-                <div class="carousel-track" id="galleryTrack">
-                    <div class="carousel-slide"><img src="https://taplink.st/p/3/f/f/4/69250557.jpg?0" alt="Фото 1" loading="lazy"></div>
-                    <div class="carousel-slide"><img src="https://taplink.st/p/4/f/f/b/69250559.jpg?0" alt="Фото 2" loading="lazy"></div>
-                    <div class="carousel-slide"><img src="https://taplink.st/p/2/2/3/c/69471405.jpg?0" alt="Фото 3" loading="lazy"></div>
+        if (scrollDiff > 15 && !shootingStarsActive) {
+            shootingStarsActive = true;
+            
+            for (let i = 0; i < 2; i++) {
+                setTimeout(() => createShootingStar(), i * 200);
+            }
+            
+            if (shootingStarTimeout) clearTimeout(shootingStarTimeout);
+            shootingStarTimeout = setTimeout(() => {
+                shootingStarsActive = false;
+            }, 800);
+        }
+        
+        lastScrollY = currentScrollY;
+    });
+    
+    // ==================== ГАЛЕРЕЯ ====================
+    const track = document.getElementById('galleryTrack');
+    const slides = document.querySelectorAll('.carousel-slide');
+    const prevButton = document.getElementById('prevBtn');
+    const nextButton = document.getElementById('nextBtn');
+    const indicatorsContainer = document.getElementById('galleryIndicators');
+    let currentIndex = 0;
+    let startX = 0;
+    let isDragging = false;
+    
+    slides.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.classList.add('indicator');
+        if (i === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goToSlide(i));
+        indicatorsContainer.appendChild(dot);
+    });
+    const indicators = document.querySelectorAll('.indicator');
+    
+    function updateIndicators() {
+        indicators.forEach((dot, i) => {
+            if (i === currentIndex) dot.classList.add('active');
+            else dot.classList.remove('active');
+        });
+    }
+    
+    function goToSlide(index) {
+        if (index < 0) index = 0;
+        if (index >= slides.length) index = slides.length - 1;
+        currentIndex = index;
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        updateIndicators();
+    }
+    
+    function nextSlide() {
+        if (currentIndex < slides.length - 1) goToSlide(currentIndex + 1);
+        else goToSlide(0);
+    }
+    
+    function prevSlide() {
+        if (currentIndex > 0) goToSlide(currentIndex - 1);
+        else goToSlide(slides.length - 1);
+    }
+    
+    prevButton.addEventListener('click', prevSlide);
+    nextButton.addEventListener('click', nextSlide);
+    
+    const wrapper = document.getElementById('galleryWrapper');
+    wrapper.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+    });
+    wrapper.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const moveX = e.touches[0].clientX;
+        const diff = moveX - startX;
+        if (Math.abs(diff) > 50) {
+            if (diff > 0) prevSlide();
+            else nextSlide();
+            isDragging = false;
+        }
+    });
+    wrapper.addEventListener('touchend', () => { isDragging = false; });
+    
+    // ==================== ПОСТЫ ====================
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdSZzujU8slFBMeyFuo5r_Wo-IGtSD2XenkggmvSVDHxueB5v0JsZ2X90SPR5XlEb_JHXGYt2GCV-w/pub?output=csv";
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, m => {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    function isImageUrl(url) {
+        return /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url.split('?')[0]);
+    }
+    
+    function isVideoUrl(url) {
+        return /\.(mp4|webm|mov|avi|mkv)$/i.test(url.split('?')[0]) || 
+               url.includes('youtube.com/watch') || url.includes('youtu.be') || url.includes('vimeo.com');
+    }
+    
+    function getVideoEmbedUrl(url) {
+        if (url.includes('youtube.com/watch')) {
+            let videoId = new URL(url).searchParams.get('v');
+            if (videoId) return `https://www.youtube.com/embed/${videoId}`;
+        } else if (url.includes('youtu.be')) {
+            let videoId = url.split('/').pop().split('?')[0];
+            if (videoId) return `https://www.youtube.com/embed/${videoId}`;
+        } else if (url.includes('vimeo.com')) {
+            let videoId = url.split('/').pop().split('?')[0];
+            if (videoId) return `https://player.vimeo.com/video/${videoId}`;
+        }
+        return url;
+    }
+    
+    function createPostCarousel(mediaUrls, postId) {
+        if (!mediaUrls || mediaUrls.length === 0) return '';
+        const items = mediaUrls.map(url => {
+            const trimmed = url.trim();
+            if (isImageUrl(trimmed)) {
+                return `<div class="post-slide"><img src="${trimmed}" loading="lazy" onclick="openPostImage('${trimmed}')"></div>`;
+            } else if (isVideoUrl(trimmed)) {
+                const embed = getVideoEmbedUrl(trimmed);
+                return `<div class="post-slide"><iframe src="${embed}" loading="lazy" allowfullscreen></iframe></div>`;
+            } else {
+                return `<div class="post-slide"><a href="${trimmed}" target="_blank" style="color:#a0ffcc; display:flex; align-items:center; justify-content:center; padding:40px;">Открыть ссылку</a></div>`;
+            }
+        }).join('');
+        const indicatorsHtml = mediaUrls.length > 1 ? 
+            `<div class="post-indicators" id="postIndicators-${postId}">
+                ${mediaUrls.map((_, idx) => `<div class="post-dot ${idx === 0 ? 'active' : ''}" data-index="${idx}"></div>`).join('')}
+            </div>` : '';
+        return `
+            <div class="post-carousel" data-post="${postId}">
+                <div class="post-track" id="postTrack-${postId}">
+                    ${items}
                 </div>
+                ${indicatorsHtml}
             </div>
-            <div class="carousel-nav">
-                <button class="nav-btn" id="prevGallery">‹</button>
-                <button class="nav-btn" id="nextGallery">›</button>
-            </div>
-            <div class="carousel-indicators" id="galleryIndicators"></div>
-        </div>
-        
-        <div class="arrow-down">▼</div>
-        
-        <!-- БЛОК ПОСТОВ ИЗ GOOGLE ТАБЛИЦЫ -->
-        <div class="posts-block">
-            <div class="section-title">Актуальное</div>
-            <div id="postsContainer"><div class="loading">Загрузка постов...</div></div>
-        </div>
-        
-        <!-- БЛОК ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ -->
-        <div class="block">
-            <div class="section-title">Часто задаваемые вопросы</div>
+        `;
+    }
+    
+    function initPostCarousels() {
+        document.querySelectorAll('.post-carousel').forEach(carousel => {
+            const postId = carousel.dataset.post;
+            const track = document.getElementById(`postTrack-${postId}`);
+            if (!track) return;
+            const slides = track.querySelectorAll('.post-slide');
+            if (slides.length <= 1) return;
+            let current = 0;
+            let start = 0;
+            let dragging = false;
+            const dots = document.querySelectorAll(`#postIndicators-${postId} .post-dot`);
             
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Кто такой kvacan?</div>
-                <div class="faq-answer">kvacan — это Вячеслав. Человек, который решил не откладывать, а просто начать снимать. Здесь нет сценического образа или вымышленной личности. Всё по-настоящему.</div>
-            </div>
+            function updateDots() {
+                dots.forEach((dot, i) => {
+                    if (i === current) dot.classList.add('active');
+                    else dot.classList.remove('active');
+                });
+            }
             
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Почему в ссылках tvacan, если автор представляется как kvacan?</div>
-                <div class="faq-answer">Хороший вопрос. Сейчас объясним.<br><br>kvacan — это ник. То самое имя, которое появилось в самом начале и под которым человека знают в сети. Оно не менялось и не поменяется.<br><br>Но с адресами в социальных сетях всё устроено немного сложнее. Когда стали собирать все ссылки в одном месте, оказалось, что не везде можно использовать одно и то же имя. Где-то kvacan уже был занят, где-то оказался свободен, но хотелось, чтобы все адреса были одинаковыми. Чтобы человек зашёл на сайт, нажал на иконку и попал куда нужно, не запоминая два или три разных варианта.<br><br>Поэтому выбрали tvacan. Всего одна буква — и порядок. Теперь все соцсети ведут на один адрес. Никакой путаницы, никаких лишних вопросов.<br><br>А kvacan остаётся тем же, чем и был — ником, по которому человека знают. Всё просто.</div>
-            </div>
+            function goTo(idx) {
+                if (idx < 0) idx = 0;
+                if (idx >= slides.length) idx = slides.length - 1;
+                current = idx;
+                track.style.transform = `translateX(-${current * 100}%)`;
+                updateDots();
+            }
             
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Зачем создан этот сайт?</div>
-                <div class="faq-answer">Это не проект и не портфолио. Это просто навигатор, входная дверь во все социальные сети сразу. Минимум текста, максимум пользы — все ссылки в одном месте.</div>
-            </div>
+            function next() {
+                if (current < slides.length - 1) goTo(current + 1);
+                else goTo(0);
+            }
             
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Что особенного в контенте?</div>
-                <div class="faq-answer">Честность. Никаких постановочных студий, дорогих декораций или фальшивых эмоций. Только живые видео и фото, снятые в моменте. То, что окружает каждый день.</div>
-            </div>
+            function prev() {
+                if (current > 0) goTo(current - 1);
+                else goTo(slides.length - 1);
+            }
             
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Как часто выходит новый контент?</div>
-                <div class="faq-answer">Контент появляется по мере того, как идёт жизнь. Маленькие шаги, регулярное движение, никаких жёстких дедлайнов — только искреннее желание делиться происходящим.</div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Чем контент будет отличаться в будущем?</div>
-                <div class="faq-answer">С развитием автора будет расти и контент. Главная задача — чтобы и создателю, и зрителю было комфортно. Форматы могут меняться, но основа останется — живые эмоции и честность.</div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Можно ли общаться с автором?</div>
-                <div class="faq-answer">Да. Все социальные сети открыты, ссылки на них есть на этом сайте. Можно писать, комментировать, обсуждать — диалог приветствуется.</div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Как можно поддержать?</div>
-                <div class="faq-answer">Если контент заходит и хочется сказать спасибо делом — можно поддержать донатом. Любая помощь греет и мотивирует снимать дальше. Ссылка на донат тоже здесь.</div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Это надолго?</div>
-                <div class="faq-answer">Пока есть желание снимать и делиться — контент будет жить. А желание есть.</div>
-            </div>
-        </div>
-        
-        <div class="arrow-down">▼</div>
-        
-        <div class="block">
-            <div class="section-title">Социальные сети</div>
-            <div class="section-subtitle">Переходи, смотри, подписывайся</div>
-            <div class="button-group">
-                <a href="https://t.me/tvacan" class="button">TELEGRAM</a>
-                <a href="https://instagram.com/tvacan/" class="button">INSTAGRAM</a>
-                <a href="https://www.tiktok.com/@kvacon" class="button">TIKTOK</a>
-            </div>
-        </div>
-        
-        <div class="arrow-down">▼</div>
-        
-        <div class="contacts-block">
-            <div class="section-title">Контакты для связи</div>
-            <div class="section-subtitle">По вопросам рекламы и сотрудничества</div>
-            <div class="button-group">
-                <a href="https://t.me/kvacan" class="button button-small">TELEGRAM</a>
-                <a href="mailto:tvacan@internet.ru" class="button button-small">EMAIL</a>
-            </div>
-        </div>
-        
-        <div class="arrow-down">▼</div>
-        
-        <div class="block">
-            <div class="section-title">Поддержка</div>
-            <div class="section-subtitle">Если заходит — можно поддержать донатом. Любая помощь греет и мотивирует снимать дальше.</div>
-            <div class="button-group">
-                <a href="https://pay.cloudtips.ru/p/a64a46d8" class="button button-small">DONATION</a>
-                <a href="https://finance.ozon.ru/apps/sbp/ozonbankpay/019a9ca8-77bb-7f0f-a532-53c7dca11b0b" class="button button-small">DONATION</a>
-            </div>
-        </div>
-        
-        <footer>
-            <div class="copyright">© 2026 kvacan, Все права защищены.</div>
-            <div class="footer-email"><a href="mailto:tvacan@internet.ru">tvacan@internet.ru</a></div>
-        </footer>
-    </div>
-
-    <script>
-        // ==================== ЗВЁЗДЫ ====================
-        const starsContainer = document.getElementById('starsContainer');
-        for (let i = 0; i < 80; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            const size = Math.random() * 4 + 2;
-            star.style.width = `${size}px`;
-            star.style.height = `${size}px`;
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.top = `${Math.random() * 100}%`;
-            const duration = Math.random() * 5 + 2;
-            star.style.animationDuration = `${duration}s`;
-            const delay = Math.random() * 5;
-            star.style.animationDelay = `${delay}s`;
-            starsContainer.appendChild(star);
-        }
-        
-        // ==================== ГАЛЕРЕЯ КАРУСЕЛЬ ====================
-        const galleryTrack = document.getElementById('galleryTrack');
-        const gallerySlides = document.querySelectorAll('.carousel-slide');
-        const prevBtn = document.getElementById('prevGallery');
-        const nextBtn = document.getElementById('nextGallery');
-        const indicatorsContainer = document.getElementById('galleryIndicators');
-        let galleryCurrent = 0;
-        let galleryStartX = 0;
-        let galleryIsDragging = false;
-        
-        gallerySlides.forEach((_, i) => {
-            const ind = document.createElement('div');
-            ind.classList.add('indicator');
-            if (i === 0) ind.classList.add('active');
-            ind.addEventListener('click', () => goToGallerySlide(i));
-            indicatorsContainer.appendChild(ind);
-        });
-        const indicators = document.querySelectorAll('#galleryIndicators .indicator');
-        
-        function updateGalleryIndicators() {
-            indicators.forEach((ind, i) => {
-                if (i === galleryCurrent) ind.classList.add('active');
-                else ind.classList.remove('active');
+            dots.forEach(dot => {
+                dot.addEventListener('click', (e) => {
+                    const idx = parseInt(e.target.dataset.index);
+                    goTo(idx);
+                });
             });
-        }
-        
-        function goToGallerySlide(index) {
-            if (index < 0) index = 0;
-            if (index >= gallerySlides.length) index = gallerySlides.length - 1;
-            galleryCurrent = index;
-            galleryTrack.style.transform = `translateX(-${galleryCurrent * 100}%)`;
-            updateGalleryIndicators();
-        }
-        
-        function nextGallery() {
-            if (galleryCurrent < gallerySlides.length - 1) goToGallerySlide(galleryCurrent + 1);
-            else goToGallerySlide(0);
-        }
-        
-        function prevGallery() {
-            if (galleryCurrent > 0) goToGallerySlide(galleryCurrent - 1);
-            else goToGallerySlide(gallerySlides.length - 1);
-        }
-        
-        prevBtn.addEventListener('click', prevGallery);
-        nextBtn.addEventListener('click', nextGallery);
-        
-        const galleryContainer = document.querySelector('.carousel-container');
-        galleryContainer.addEventListener('touchstart', (e) => {
-            galleryStartX = e.touches[0].clientX;
-            galleryIsDragging = true;
-        });
-        galleryContainer.addEventListener('touchmove', (e) => {
-            if (!galleryIsDragging) return;
-            const moveX = e.touches[0].clientX;
-            const diff = moveX - galleryStartX;
-            if (Math.abs(diff) > 50) {
-                if (diff > 0) prevGallery();
-                else nextGallery();
-                galleryIsDragging = false;
-            }
-        });
-        galleryContainer.addEventListener('touchend', () => { galleryIsDragging = false; });
-        
-        galleryContainer.addEventListener('mousedown', (e) => {
-            galleryStartX = e.clientX;
-            galleryIsDragging = true;
-            galleryContainer.style.cursor = 'grabbing';
-        });
-        window.addEventListener('mousemove', (e) => {
-            if (!galleryIsDragging) return;
-            const moveX = e.clientX;
-            const diff = moveX - galleryStartX;
-            if (Math.abs(diff) > 50) {
-                if (diff > 0) prevGallery();
-                else nextGallery();
-                galleryIsDragging = false;
-                galleryContainer.style.cursor = 'grab';
-            }
-        });
-        window.addEventListener('mouseup', () => {
-            galleryIsDragging = false;
-            galleryContainer.style.cursor = 'grab';
-        });
-        galleryContainer.style.cursor = 'grab';
-        
-        // ==================== ЗАГРУЗКА ПОСТОВ ИЗ GOOGLE ТАБЛИЦЫ ====================
-        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdSZzujU8slFBMeyFuo5r_Wo-IGtSD2XenkggmvSVDHxueB5v0JsZ2X90SPR5XlEb_JHXGYt2GCV-w/pub?output=csv";
-        
-        function parseCSV(csvText) {
-            const posts = [];
-            let inQuote = false;
-            let current = '';
-            let row = [];
-            let isFirstRow = true;
             
-            for (let i = 0; i < csvText.length; i++) {
-                const ch = csvText[i];
-                if (ch === '"') inQuote = !inQuote;
-                else if (ch === ',' && !inQuote) { row.push(current); current = ''; }
-                else if (ch === '\n' && !inQuote) {
-                    if (current !== '' || row.length > 0) {
-                        row.push(current);
-                        if (!isFirstRow && row.length >= 2 && row[1] && row[1].trim() && row[1].toLowerCase() !== 'заголовок' && row[1].toLowerCase() !== 'title') {
-                            posts.push({
-                                date: row[0] ? row[0].replace(/^"|"$/g, '').trim() : '',
-                                title: row[1] ? row[1].replace(/^"|"$/g, '').trim() : '',
-                                text: row[2] ? row[2].replace(/^"|"$/g, '').trim() : '',
-                                mediaUrl: row[3] ? row[3].replace(/^"|"$/g, '').trim() : ''
-                            });
-                        }
-                        isFirstRow = false;
+            track.addEventListener('touchstart', (e) => {
+                start = e.touches[0].clientX;
+                dragging = true;
+            });
+            track.addEventListener('touchmove', (e) => {
+                if (!dragging) return;
+                const move = e.touches[0].clientX;
+                const diff = move - start;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) prev();
+                    else next();
+                    dragging = false;
+                }
+            });
+            track.addEventListener('touchend', () => { dragging = false; });
+        });
+    }
+    
+    async function loadPosts() {
+        const container = document.getElementById('postsContainer');
+        if (!container) return;
+        try {
+            const response = await fetch(CSV_URL);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const csvText = await response.text();
+            const posts = parseCSV(csvText);
+            renderPosts(posts);
+        } catch(e) {
+            console.error(e);
+            container.innerHTML = '<div class="loading">Ошибка загрузки постов</div>';
+        }
+    }
+    
+    function parseCSV(csvText) {
+        const posts = [];
+        let inQuote = false;
+        let current = '';
+        let row = [];
+        let isFirstRow = true;
+        
+        for (let i = 0; i < csvText.length; i++) {
+            const ch = csvText[i];
+            if (ch === '"') inQuote = !inQuote;
+            else if (ch === ',' && !inQuote) { row.push(current); current = ''; }
+            else if (ch === '\n' && !inQuote) {
+                if (current !== '' || row.length > 0) {
+                    row.push(current);
+                    if (!isFirstRow && row.length >= 2 && row[1] && row[1].trim() && row[1].toLowerCase() !== 'заголовок') {
+                        posts.push({
+                            date: row[0] ? row[0].replace(/^"|"$/g, '').trim() : '',
+                            title: row[1] ? row[1].replace(/^"|"$/g, '').trim() : '',
+                            text: row[2] ? row[2].replace(/^"|"$/g, '').trim() : '',
+                            mediaUrl: row[3] ? row[3].replace(/^"|"$/g, '').trim() : ''
+                        });
                     }
-                    row = [];
-                    current = '';
-                } else {
-                    current += ch;
+                    isFirstRow = false;
                 }
+                row = [];
+                current = '';
+            } else { current += ch; }
+        }
+        return posts;
+    }
+    
+    function renderPosts(posts) {
+        const container = document.getElementById('postsContainer');
+        if (!posts.length) {
+            container.innerHTML = '<div class="loading">Пока нет постов</div>';
+            return;
+        }
+        container.innerHTML = posts.map((post, idx) => {
+            let mediaHtml = '';
+            if (post.mediaUrl && post.mediaUrl.trim()) {
+                const mediaUrls = post.mediaUrl.split('|').map(u => u.trim()).filter(u => u);
+                if (mediaUrls.length > 0) mediaHtml = createPostCarousel(mediaUrls, `post${idx}`);
             }
-            if (current !== '' || row.length > 0) {
-                row.push(current);
-                if (!isFirstRow && row.length >= 2 && row[1] && row[1].trim() && row[1].toLowerCase() !== 'заголовок' && row[1].toLowerCase() !== 'title') {
-                    posts.push({
-                        date: row[0] ? row[0].replace(/^"|"$/g, '').trim() : '',
-                        title: row[1] ? row[1].replace(/^"|"$/g, '').trim() : '',
-                        text: row[2] ? row[2].replace(/^"|"$/g, '').trim() : '',
-                        mediaUrl: row[3] ? row[3].replace(/^"|"$/g, '').trim() : ''
-                    });
-                }
-            }
-            return posts;
-        }
-        
-        function isImageUrl(url) {
-            return /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url.split('?')[0]);
-        }
-        
-        function isVideoUrl(url) {
-            return /\.(mp4|webm|mov|avi|mkv)$/i.test(url.split('?')[0]) || 
-                   url.includes('youtube.com/watch') || url.includes('youtu.be') || url.includes('vimeo.com');
-        }
-        
-        function getVideoEmbedUrl(url) {
-            if (url.includes('youtube.com/watch')) {
-                let videoId = new URL(url).searchParams.get('v');
-                if (videoId) return `https://www.youtube.com/embed/${videoId}`;
-            } else if (url.includes('youtu.be')) {
-                let videoId = url.split('/').pop().split('?')[0];
-                if (videoId) return `https://www.youtube.com/embed/${videoId}`;
-            } else if (url.includes('vimeo.com')) {
-                let videoId = url.split('/').pop().split('?')[0];
-                if (videoId) return `https://player.vimeo.com/video/${videoId}`;
-            }
-            return url;
-        }
-        
-        function createPostCarousel(mediaUrls, postId) {
-            if (!mediaUrls || mediaUrls.length === 0) return '';
-            const items = mediaUrls.map(url => {
-                const trimmed = url.trim();
-                if (isImageUrl(trimmed)) {
-                    return `<div class="post-media-slide"><img src="${trimmed}" loading="lazy"></div>`;
-                } else if (isVideoUrl(trimmed)) {
-                    const embed = getVideoEmbedUrl(trimmed);
-                    if (trimmed.includes('youtube.com') || trimmed.includes('youtu.be') || trimmed.includes('vimeo.com')) {
-                        return `<div class="post-media-slide"><iframe src="${embed}" loading="lazy" allowfullscreen allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture"></iframe></div>`;
-                    } else {
-                        return `<div class="post-media-slide"><video controls preload="metadata"><source src="${trimmed}"></video></div>`;
-                    }
-                } else {
-                    return `<div class="post-media-slide"><a href="${trimmed}" target="_blank" style="color:#d4a5ff; display:flex; align-items:center; justify-content:center; height:100%; padding:40px;">Открыть ссылку</a></div>`;
-                }
-            }).join('');
-            const indicatorsHtml = mediaUrls.length > 1 ? 
-                `<div class="post-carousel-indicators" id="indicators-${postId}">
-                    ${mediaUrls.map((_, idx) => `<div class="post-indicator ${idx === 0 ? 'active' : ''}" data-index="${idx}"></div>`).join('')}
-                </div>` : '';
+            const textWithLinks = post.text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
             return `
-                <div class="post-media-carousel" data-post-id="${postId}">
-                    <div class="post-media-track" id="track-${postId}">
-                        ${items}
-                    </div>
-                    ${indicatorsHtml}
+                <div class="post-card">
+                    <div class="post-date">${escapeHtml(post.date)}</div>
+                    <div class="post-title">${escapeHtml(post.title)}</div>
+                    <div class="post-content">${textWithLinks}</div>
+                    ${mediaHtml}
                 </div>
             `;
+        }).join('');
+        setTimeout(initPostCarousels, 100);
+    }
+    
+    // ==================== МОДАЛЬНОЕ ОКНО ====================
+    let currentGallery = [];
+    let currentImageIndex = 0;
+    let touchStart = 0;
+    let touchEnd = 0;
+    
+    function openPostImage(url) {
+        currentGallery = [url];
+        currentImageIndex = 0;
+        updateModalImage();
+        document.getElementById('photoModal').classList.add('show');
+    }
+    
+    function updateModalImage() {
+        const img = document.getElementById('modalImage');
+        if (currentGallery.length > 0 && currentImageIndex >= 0 && currentImageIndex < currentGallery.length) {
+            img.src = currentGallery[currentImageIndex];
         }
-        
-        function initPostCarousels() {
-            document.querySelectorAll('.post-media-carousel').forEach(carousel => {
-                const postId = carousel.dataset.postId;
-                const track = document.getElementById(`track-${postId}`);
-                if (!track) return;
-                const slides = track.querySelectorAll('.post-media-slide');
-                if (slides.length <= 1) return;
-                let currentIdx = 0;
-                let startX = 0;
-                let isDragging = false;
-                const indicators = document.querySelectorAll(`#indicators-${postId} .post-indicator`);
-                
-                function updateIndicators() {
-                    indicators.forEach((ind, i) => {
-                        if (i === currentIdx) ind.classList.add('active');
-                        else ind.classList.remove('active');
-                    });
-                }
-                function goToSlide(index) {
-                    if (index < 0) index = 0;
-                    if (index >= slides.length) index = slides.length - 1;
-                    currentIdx = index;
-                    track.style.transform = `translateX(-${currentIdx * 100}%)`;
-                    updateIndicators();
-                }
-                function nextSlide() {
-                    if (currentIdx < slides.length - 1) goToSlide(currentIdx + 1);
-                    else goToSlide(0);
-                }
-                function prevSlide() {
-                    if (currentIdx > 0) goToSlide(currentIdx - 1);
-                    else goToSlide(slides.length - 1);
-                }
-                indicators.forEach(ind => {
-                    ind.addEventListener('click', (e) => {
-                        const idx = parseInt(e.target.dataset.index);
-                        goToSlide(idx);
-                    });
-                });
-                track.addEventListener('touchstart', (e) => {
-                    startX = e.touches[0].clientX;
-                    isDragging = true;
-                });
-                track.addEventListener('touchmove', (e) => {
-                    if (!isDragging) return;
-                    const moveX = e.touches[0].clientX;
-                    const diff = moveX - startX;
-                    if (Math.abs(diff) > 50) {
-                        if (diff > 0) prevSlide();
-                        else nextSlide();
-                        isDragging = false;
-                    }
-                });
-                track.addEventListener('touchend', () => { isDragging = false; });
-                track.addEventListener('mousedown', (e) => {
-                    startX = e.clientX;
-                    isDragging = true;
-                    track.style.cursor = 'grabbing';
-                });
-                window.addEventListener('mousemove', (e) => {
-                    if (!isDragging) return;
-                    const moveX = e.clientX;
-                    const diff = moveX - startX;
-                    if (Math.abs(diff) > 50) {
-                        if (diff > 0) prevSlide();
-                        else nextSlide();
-                        isDragging = false;
-                        track.style.cursor = 'grab';
-                    }
-                });
-                window.addEventListener('mouseup', () => {
-                    isDragging = false;
-                    track.style.cursor = 'grab';
-                });
-                track.style.cursor = 'grab';
-            });
+    }
+    
+    function nextImage(e) {
+        if (e) e.stopPropagation();
+        if (currentGallery.length <= 1) return;
+        currentImageIndex = (currentImageIndex + 1) % currentGallery.length;
+        updateModalImage();
+    }
+    
+    function prevImage(e) {
+        if (e) e.stopPropagation();
+        if (currentGallery.length <= 1) return;
+        currentImageIndex = (currentImageIndex - 1 + currentGallery.length) % currentGallery.length;
+        updateModalImage();
+    }
+    
+    function handleTouchStart(e) { touchStart = e.touches[0].clientX; }
+    function handleTouchEnd(e) {
+        if (currentGallery.length <= 1) return;
+        touchEnd = e.changedTouches[0].clientX;
+        if (touchEnd < touchStart - 50) nextImage(e);
+        if (touchEnd > touchStart + 50) prevImage(e);
+    }
+    
+    function closeModalOnBackground(e) {
+        if (e.target === document.getElementById('photoModal')) closeModal();
+    }
+    
+    function closeModal() {
+        document.getElementById('photoModal').classList.remove('show');
+    }
+    
+    const modal = document.getElementById('photoModal');
+    if (modal) {
+        modal.addEventListener('touchstart', handleTouchStart);
+        modal.addEventListener('touchend', handleTouchEnd);
+    }
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'ArrowLeft' && document.getElementById('photoModal').classList.contains('show')) prevImage(e);
+        if (e.key === 'ArrowRight' && document.getElementById('photoModal').classList.contains('show')) nextImage(e);
+    });
+    
+    // ==================== FAQ ====================
+    function toggleFaq(element) {
+        element.classList.toggle('active');
+        element.nextElementSibling.classList.toggle('show');
+    }
+    
+    // ==================== ЧАТ ====================
+    function toggleChat() {
+        document.getElementById('chatMenu').classList.toggle('show');
+    }
+    
+    document.addEventListener('click', (e) => {
+        const chatWidget = document.querySelector('.chat-widget');
+        const chatMenu = document.getElementById('chatMenu');
+        if (chatWidget && chatMenu && !chatWidget.contains(e.target)) {
+            chatMenu.classList.remove('show');
         }
-        
-        async function loadPosts() {
-            try {
-                const response = await fetch(CSV_URL);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const csvText = await response.text();
-                const posts = parseCSV(csvText);
-                renderPosts(posts);
-            } catch(e) {
-                console.error(e);
-                document.getElementById('postsContainer').innerHTML = '<div class="section-subtitle" style="color:#ff8888;">❌ Ошибка загрузки постов</div>';
-            }
-        }
-        
-        function renderPosts(posts) {
-            const container = document.getElementById('postsContainer');
-            if (!posts.length) {
-                container.innerHTML = '<div class="section-subtitle">Пока нет постов</div>';
-                return;
-            }
-            container.innerHTML = posts.map((post, idx) => {
-                let mediaHtml = '';
-                if (post.mediaUrl && post.mediaUrl.trim()) {
-                    const mediaUrls = post.mediaUrl.split('|').map(u => u.trim()).filter(u => u);
-                    if (mediaUrls.length > 0) {
-                        mediaHtml = createPostCarousel(mediaUrls, `post-${idx}`);
-                    }
-                }
-                const textWithLinks = post.text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
-                return `
-                    <div class="post-item">
-                        <div class="post-date">${post.date}</div>
-                        <div class="post-title">${escapeHtml(post.title)}</div>
-                        <div class="post-content">${textWithLinks}</div>
-                        ${mediaHtml}
-                    </div>
-                `;
-            }).join('');
-            setTimeout(initPostCarousels, 50);
-        }
-        
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, m => {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-        }
-        
-        // ==================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ====================
-        let currentGallerySet = [];
-        let currentGalleryIndex = 0;
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        function openPostImage(url) {
-            currentGallerySet = [url];
-            currentGalleryIndex = 0;
-            updateModalImage();
-            document.getElementById('photoModal').classList.add('show');
-        }
-        
-        function updateModalImage() {
-            const img = document.getElementById('modalImage');
-            if (currentGallerySet.length > 0 && currentGalleryIndex >= 0 && currentGalleryIndex < currentGallerySet.length) {
-                img.src = currentGallerySet[currentGalleryIndex];
-            }
-        }
-        
-        function nextImage(event) {
-            if (event) event.stopPropagation();
-            if (currentGallerySet.length <= 1) return;
-            currentGalleryIndex = (currentGalleryIndex + 1) % currentGallerySet.length;
-            updateModalImage();
-        }
-        
-        function prevImage(event) {
-            if (event) event.stopPropagation();
-            if (currentGallerySet.length <= 1) return;
-            currentGalleryIndex = (currentGalleryIndex - 1 + currentGallerySet.length) % currentGallerySet.length;
-            updateModalImage();
-        }
-        
-        function handleTouchStart(event) {
-            touchStartX = event.touches[0].clientX;
-        }
-        
-        function handleTouchEnd(event) {
-            if (currentGallerySet.length <= 1) return;
-            touchEndX = event.changedTouches[0].clientX;
-            const swipeThreshold = 50;
-            if (touchEndX < touchStartX - swipeThreshold) nextImage(event);
-            if (touchEndX > touchStartX + swipeThreshold) prevImage(event);
-        }
-        
-        function closeModalOnBackground(event) {
-            if (event.target === document.getElementById('photoModal')) closeModal();
-        }
-        
-        function closeModal() {
-            document.getElementById('photoModal').classList.remove('show');
-        }
-        
-        document.addEventListener('copy', e => { e.preventDefault(); return false; });
-        document.addEventListener('contextmenu', e => { e.preventDefault(); return false; });
-        document.addEventListener('dragstart', e => { e.preventDefault(); return false; });
-        
-        function toggleFaq(e) {
-            e.classList.toggle('active');
-            e.nextElementSibling.classList.toggle('show');
-        }
-        
-        function toggleChat() {
-            document.getElementById('chatMenu').classList.toggle('show');
-        }
-        
-        document.addEventListener('click', function(e) {
-            let chatWidget = document.querySelector('.chat-widget');
-            if (chatWidget && !chatWidget.contains(e.target)) {
-                document.getElementById('chatMenu')?.classList.remove('show');
-            }
-        });
-        
-        const modal = document.getElementById('photoModal');
-        if (modal) {
-            modal.addEventListener('touchstart', handleTouchStart, false);
-            modal.addEventListener('touchend', handleTouchEnd, false);
-        }
-        
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeModal();
-            if (e.key === 'ArrowLeft' && document.getElementById('photoModal').classList.contains('show')) prevImage(e);
-            if (e.key === 'ArrowRight' && document.getElementById('photoModal').classList.contains('show')) nextImage(e);
-        });
-        
-        window.addEventListener('scroll', function() {
-            let scrollBtn = document.getElementById('scrollTop');
-            if (window.scrollY > 300) scrollBtn.classList.add('visible');
-            else scrollBtn.classList.remove('visible');
-        });
-        
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        
-        loadPosts();
-    </script>
+    });
+    
+    // УДАЛЯЕМ СТРЕЛКУ НАВЕРХ
+    const scrollTopBtn = document.getElementById('scrollTop');
+    if (scrollTopBtn) scrollTopBtn.remove();
+    
+    // ==================== ЗАПУСК ====================
+    loadPosts();
+    
+    window.openPostImage = openPostImage;
+    window.toggleFaq = toggleFaq;
+    window.toggleChat = toggleChat;
+    window.nextImage = nextImage;
+    window.prevImage = prevImage;
+    window.closeModal = closeModal;
+    window.closeModalOnBackground = closeModalOnBackground;
+</script>
+
 </body>
 </html>
